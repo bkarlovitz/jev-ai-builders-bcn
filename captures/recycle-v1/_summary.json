@@ -1,0 +1,265 @@
+[
+  {
+    "item": "empty plastic water bottle",
+    "city": "yellow",
+    "jev_bin": "yellow",
+    "jev_conf": 0.99,
+    "rules_bin": "yellow",
+    "rules_reason": "plastic packaging",
+    "rules_unsure": [],
+    "latency_ms": 436.6,
+    "server_ms": 49,
+    "input_tokens": 761
+  },
+  {
+    "item": "empty wine bottle",
+    "city": "green",
+    "jev_bin": "green",
+    "jev_conf": 0.99,
+    "rules_bin": "green",
+    "rules_reason": "glass bottle or jar",
+    "rules_unsure": [],
+    "latency_ms": 371.5,
+    "server_ms": 103,
+    "input_tokens": 760
+  },
+  {
+    "item": "old newspaper",
+    "city": "blue",
+    "jev_bin": "blue",
+    "jev_conf": 1.0,
+    "rules_bin": "blue",
+    "rules_reason": "clean paper or cardboard",
+    "rules_unsure": [],
+    "latency_ms": 271.9,
+    "server_ms": 78,
+    "input_tokens": 759
+  },
+  {
+    "item": "banana peel",
+    "city": "brown",
+    "jev_bin": "brown",
+    "jev_conf": 1.0,
+    "rules_bin": "brown",
+    "rules_reason": "organic material",
+    "rules_unsure": [],
+    "latency_ms": 376.3,
+    "server_ms": 80,
+    "input_tokens": 759
+  },
+  {
+    "item": "cigarette end",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 1.0,
+    "rules_bin": "blue",
+    "rules_reason": "clean paper or cardboard",
+    "rules_unsure": [
+      "material"
+    ],
+    "latency_ms": 409.4,
+    "server_ms": 79,
+    "input_tokens": 762
+  },
+  {
+    "item": "empty drink can",
+    "city": "yellow",
+    "jev_bin": "yellow",
+    "jev_conf": 1.0,
+    "rules_bin": "yellow",
+    "rules_reason": "metal packaging",
+    "rules_unsure": [],
+    "latency_ms": 306.0,
+    "server_ms": 51,
+    "input_tokens": 760
+  },
+  {
+    "item": "cardboard box from an online order",
+    "city": "blue",
+    "jev_bin": "blue",
+    "jev_conf": 0.99,
+    "rules_bin": "blue",
+    "rules_reason": "clean paper or cardboard",
+    "rules_unsure": [],
+    "latency_ms": 411.9,
+    "server_ms": 68,
+    "input_tokens": 765
+  },
+  {
+    "item": "yogurt pot",
+    "city": "yellow",
+    "jev_bin": "yellow",
+    "jev_conf": 0.64,
+    "rules_bin": "yellow",
+    "rules_reason": "plastic packaging",
+    "rules_unsure": [],
+    "latency_ms": 405.2,
+    "server_ms": 47,
+    "input_tokens": 761
+  },
+  {
+    "item": "used tea bag",
+    "city": "brown",
+    "jev_bin": "brown",
+    "jev_conf": 0.99,
+    "rules_bin": "brown",
+    "rules_reason": "organic material",
+    "rules_unsure": [],
+    "latency_ms": 405.0,
+    "server_ms": 47,
+    "input_tokens": 760
+  },
+  {
+    "item": "wine cork",
+    "city": "brown",
+    "jev_bin": "brown",
+    "jev_conf": 0.99,
+    "rules_bin": "brown",
+    "rules_reason": "organic material",
+    "rules_unsure": [],
+    "latency_ms": 308.1,
+    "server_ms": 59,
+    "input_tokens": 759
+  },
+  {
+    "item": "paper napkin with oil on it",
+    "city": "brown",
+    "jev_bin": "brown",
+    "jev_conf": 1.0,
+    "rules_bin": "blue",
+    "rules_reason": "clean paper or cardboard",
+    "rules_unsure": [
+      "dirt"
+    ],
+    "latency_ms": 307.4,
+    "server_ms": 72,
+    "input_tokens": 764
+  },
+  {
+    "item": "broken drinking glass",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 0.99,
+    "rules_bin": "grey",
+    "rules_reason": "glass, but not a bottle or jar",
+    "rules_unsure": [],
+    "latency_ms": 226.7,
+    "server_ms": 40,
+    "input_tokens": 760
+  },
+  {
+    "item": "empty milk carton",
+    "city": "yellow",
+    "jev_bin": "yellow",
+    "jev_conf": 0.97,
+    "rules_bin": "yellow",
+    "rules_reason": "carton packaging",
+    "rules_unsure": [],
+    "latency_ms": 226.6,
+    "server_ms": 61,
+    "input_tokens": 760
+  },
+  {
+    "item": "aluminium foil",
+    "city": "yellow",
+    "jev_bin": "yellow",
+    "jev_conf": 1.0,
+    "rules_bin": "yellow",
+    "rules_reason": "metal packaging",
+    "rules_unsure": [
+      "is_packaging"
+    ],
+    "latency_ms": 226.8,
+    "server_ms": 59,
+    "input_tokens": 761
+  },
+  {
+    "item": "small plastic toy",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 0.97,
+    "rules_bin": "grey",
+    "rules_reason": "plastic, but not packaging",
+    "rules_unsure": [],
+    "latency_ms": 239.9,
+    "server_ms": 67,
+    "input_tokens": 760
+  },
+  {
+    "item": "used pen",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 1.0,
+    "rules_bin": "grey",
+    "rules_reason": "plastic, but not packaging",
+    "rules_unsure": [],
+    "latency_ms": 243.9,
+    "server_ms": 53,
+    "input_tokens": 759
+  },
+  {
+    "item": "broken ceramic plate",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 1.0,
+    "rules_bin": "grey",
+    "rules_reason": "other material",
+    "rules_unsure": [],
+    "latency_ms": 226.2,
+    "server_ms": 56,
+    "input_tokens": 760
+  },
+  {
+    "item": "hair from a hairbrush",
+    "city": "grey",
+    "jev_bin": "grey",
+    "jev_conf": 0.99,
+    "rules_bin": "grey",
+    "rules_reason": "other material",
+    "rules_unsure": [
+      "material"
+    ],
+    "latency_ms": 226.7,
+    "server_ms": 44,
+    "input_tokens": 763
+  },
+  {
+    "item": "greasy pizza box",
+    "city": "?",
+    "jev_bin": "brown",
+    "jev_conf": 0.92,
+    "rules_bin": "brown",
+    "rules_reason": "paper with food or oil",
+    "rules_unsure": [],
+    "latency_ms": 242.9,
+    "server_ms": 54,
+    "input_tokens": 761
+  },
+  {
+    "item": "shop receipt",
+    "city": "?",
+    "jev_bin": "blue",
+    "jev_conf": 0.83,
+    "rules_bin": "blue",
+    "rules_reason": "clean paper or cardboard",
+    "rules_unsure": [],
+    "latency_ms": 235.7,
+    "server_ms": 54,
+    "input_tokens": 759
+  },
+  {
+    "item": "coffee capsule",
+    "city": "?",
+    "jev_bin": "yellow",
+    "jev_conf": 0.6,
+    "rules_bin": "yellow",
+    "rules_reason": "plastic packaging",
+    "rules_unsure": [
+      "material",
+      "is_packaging"
+    ],
+    "latency_ms": 266.2,
+    "server_ms": 92,
+    "input_tokens": 759
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "proposals_this_run": 35768,
+  "failed_this_run": 0,
+  "wall_seconds": 1195.5,
+  "input_tokens_this_run": 31928779,
+  "concurrency": 20,
+  "max_requests_per_second": 30
+}

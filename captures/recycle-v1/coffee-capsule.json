@@ -1,0 +1,112 @@
+{
+  "request": {
+    "state": {
+      "item": "coffee capsule"
+    },
+    "model": "jev-1.13.0",
+    "questions": {
+      "bin": {
+        "type": "choice",
+        "instructions": "In Barcelona, which street bin should `item` go in?",
+        "criteria": {
+          "yellow": "Yellow bin: plastic packaging, cans, drink and food cartons, metal lids, aluminium foil, polystyrene trays.",
+          "blue": "Blue bin: clean paper and cardboard: boxes, newspapers, magazines, books, envelopes, paper bags.",
+          "green": "Green bin: glass bottles and glass jars only.",
+          "brown": "Brown bin: organic waste: food, egg shells, corks, tea bags, coffee grounds, paper napkins and towels with oil or food on them, plants.",
+          "grey": "Grey bin: everything else: cigarette ends, nappies, hair, used pens, broken glass, ceramics, toys."
+        }
+      },
+      "material": {
+        "type": "choice",
+        "instructions": "What is `item` mostly made of?",
+        "criteria": {
+          "plastic": "Plastic.",
+          "metal": "Metal, such as a can, a lid or aluminium foil.",
+          "carton": "A drink or food carton (for example a milk or juice carton).",
+          "glass": "Glass.",
+          "paper": "Paper or cardboard.",
+          "organic": "Food or other natural organic material (plants, egg shells, cork, tea, coffee).",
+          "other": "Something else, or a mix of materials (ceramic, textile, electronics, hair...)."
+        }
+      },
+      "is_packaging": {
+        "type": "noul",
+        "instructions": "Is `item` packaging, or a container that held a product (a bottle, can, jar, box, tray, wrapper or bag)?"
+      },
+      "glass_bottle": {
+        "type": "noul",
+        "instructions": "Is `item` a glass bottle or a glass jar?"
+      },
+      "dirt": {
+        "type": "score",
+        "instructions": "How much food or oil is on `item`?",
+        "criteria": [
+          "Clean, or almost clean.",
+          "A little food on it.",
+          "Covered or soaked in food or oil."
+        ]
+      }
+    }
+  },
+  "response": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "is_packaging": {
+        "type": "noul",
+        "noul": 0.71
+      },
+      "glass_bottle": {
+        "type": "noul",
+        "noul": 0.02
+      },
+      "dirt": {
+        "type": "score",
+        "score": 0.71,
+        "confidence": 0.0,
+        "legend": {
+          "0": "Clean, or almost clean.",
+          "1": "A little food on it.",
+          "2": "Covered or soaked in food or oil."
+        },
+        "probabilities": {
+          "0": 0.51,
+          "1": 0.27,
+          "2": 0.22
+        }
+      },
+      "bin": {
+        "type": "choice",
+        "choice": "yellow",
+        "confidence": 0.6,
+        "probabilities": {
+          "blue": 0.0,
+          "grey": 0.12,
+          "green": 0.0,
+          "brown": 0.19,
+          "yellow": 0.6900000000000001
+        }
+      },
+      "material": {
+        "type": "choice",
+        "choice": "plastic",
+        "confidence": 0.43,
+        "probabilities": {
+          "organic": 0.03,
+          "carton": 0.0,
+          "other": 0.03,
+          "metal": 0.43,
+          "paper": 0.0,
+          "plastic": 0.51,
+          "glass": 0.0
+        }
+      }
+    },
+    "usage": {
+      "input_tokens": 759,
+      "output_tokens": 171
+    }
+  },
+  "latency_ms": 266.2,
+  "server_ms": 92,
+  "item": "coffee capsule"
+}

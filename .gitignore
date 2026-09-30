@@ -1,0 +1,20 @@
+# Secrets: the Jev API key lives in .env and must never be committed
+.env
+.env.*
+!.env.example
+
+# Internal planning notes
+NOTES.md
+
+# Raw Decidim download
+data/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+.DS_Store
+
+# Decidim raw results: 56 MB, and they contain the proposal texts. Only summary.json is committed.
+captures/decidim/results.jsonl

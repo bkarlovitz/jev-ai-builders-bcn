@@ -1,0 +1,31 @@
+{
+  "proposals": 35768,
+  "questions_answered": 178840,
+  "input_tokens": 31928779,
+  "cost_usd": 1.341,
+  "latency_ms_median": 252.6,
+  "latency_ms_p95": 364.8,
+  "server_ms_median": 59,
+  "topics": {
+    "education_culture": 6847,
+    "mobility": 6177,
+    "social": 5517,
+    "public_space": 5327,
+    "environment": 4803,
+    "economy": 2022,
+    "government": 1839,
+    "housing": 1529,
+    "other": 1124,
+    "tourism": 583
+  },
+  "about_tourism_share": 0.037,
+  "complaint_share": 0.454,
+  "last_run": {
+    "proposals_this_run": 35768,
+    "failed_this_run": 0,
+    "wall_seconds": 1195.5,
+    "input_tokens_this_run": 31928779,
+    "concurrency": 20,
+    "max_requests_per_second": 30
+  }
+}
