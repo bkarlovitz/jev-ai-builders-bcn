@@ -24,59 +24,64 @@ Each slide has three parts:
 - **Speaker notes:** Name, one line about me. "You have probably heard of Jev. I spent some time building with
   it, and this is what I learned."
 
-### 2. Two ways to use AI (0:30)
+### 2. Reads like an LLM. Doesn't write like one. (0:45)
 
-- **On screen:** "Chat: We ask. It writes." "Decide: A program asks. The model picks."
-- **Reader text:** Most of us use AI by chatting: we ask, and the model writes. Jev works in a different way.
-  A program asks it a question, and it picks an answer.
-- **Speaker notes:** "Most of us use AI by chatting. We ask, it writes. Jev does not write. It decides."
-  The plan: how it works, two things I built with it, and when to use it.
+- **On screen:** Table, LLM vs Jev. Output: text, one token at a time / typed answers you define in advance.
+  Your code: parses the text and checks it / uses the values directly. Post-training: RLHF, answers people
+  prefer / RLCD, calibrated decisions. Confidence: only if you ask, often overconfident / a probability for
+  every option, every time.
+- **Reader text:** Jev understands language like an LLM, but it is trained to output decisions with
+  probabilities, not text.
+- **Speaker notes:** "Is Jev an LLM? It understands language like one. TypeSafe calls it a new class of model,
+  a System One model, because of what it's trained to output: decisions with probabilities, not text." In passing:
+  it is fast and cheap because it produces all answers in one pass and does not write. TypeSafe says a typical
+  call takes about 100 ms; from my laptop it was about 250 ms. $0.042 per million input tokens, and output
+  tokens are free.
 
-### 3. A model for programs, not people (0:30)
+### 3. One call (0:30)
 
-- **On screen:** Table. What it does: writes text / picks an answer. Who uses the result: a person / a program.
-- **Reader text:** A chat model writes text for a person to read. Jev picks an answer for a program to use.
-- **Speaker notes:** "The kind of decision an expert makes in one second."
+- **On screen:** your text "The app logs me out every time I close it." → your question and options: "What is
+  it about?" bug · feature request · billing · praise → Jev's answer: bug. "You write the question and the
+  options. Jev picks one."
+- **Reader text:** none.
+- **Speaker notes:** Jev gets your text, here one customer message, and a question with options that you write.
+  It answers with one of your options. One call can hold many questions; they run in parallel against the same
+  text and cannot see each other's answers.
 
-### 4. Fast and cheap, because it does not write (0:35)
+### 4. Choice: pick one option (0:30)
 
-- **On screen:** "0.1 s: a typical call, says TypeSafe." "$0.042 per million tokens you send."
-  "$0 for the answers."
-- **Reader text:** TypeSafe says most calls take about 100 milliseconds. You pay $0.042 for every million
-  tokens of text you send, and nothing for the answers.
-- **Speaker notes:** From my laptop I saw about 250 milliseconds for the full trip, and about 60 of those were
-  inside TypeSafe's servers.
+- **On screen:** "The app logs me out every time I close it." "What is it about?" Bars: bug 100%, feature
+  request 0%, billing 0%, praise 0%. "You get the pick, and a probability for every option."
+- **Reader text:** none.
+- **Speaker notes:** Choice: you get the pick and a probability for every option. The answer also has a
+  confidence number, which sums up how peaked the probabilities are.
 
-## How it works
+### 5. Score: pick a level (0:30)
 
-### 5. How one call works (0:40)
+- **On screen:** "How upset is the customer?" A 0-2 scale: 0 calm, 1 a little annoyed, 2 angry or leaving.
+  "Love the new dark mode!" 0.00, "The app logs me out…" 0.97, "…I'm cancelling." 2.00. "You describe the
+  levels. Jev places the text on them."
+- **Reader text:** none.
+- **Speaker notes:** Score: you describe each level in words. The answer can land between two levels. Read it
+  as a position on your levels, not as a measurement.
 
-- **On screen:** "your text + your questions (each with its own options)" → Jev. → "one answer per
-  question, and how sure it is".
-- **Reader text:** You send some text and a few questions. Each question has a fixed list of possible answers.
-  Jev gives back one answer for each question, and a number that says how sure it is.
-- **Speaker notes:** The answer is always one of your options. It cannot invent a new one. You can ask many
-  questions in one call, and they are answered at the same time.
+### 6. Noul: yes or no, as a probability (0:30)
 
-### 6. Three kinds of question (0:40)
-
-- **On screen:** Choice: pick one option ("Which bin? → brown"). Score: pick a level ("How dirty is it?
-  → 1.35 of 2"). Noul: yes or no, as a probability ("Is it packaging? → 0.94").
-- **Reader text:** Choice picks one option from your list. Score picks a level on a scale that you describe.
-  Noul answers yes or no, as a probability.
-- **Speaker notes:** The examples are real answers from the recycling demo: a wine cork, an oily napkin, a
-  yogurt pot.
+- **On screen:** "Does it ask for a refund?" "I was charged twice. Please refund one." 0.99, "Do you offer
+  refunds?" 0.39, "Love the new dark mode!" 0.00. "Near 1: yes. Near 0: no. In the middle: not sure."
+- **Reader text:** none.
+- **Speaker notes:** Noul: one number, the probability that the answer is yes. "Do you offer refunds?" asks
+  about refunds but does not ask for one, and Jev is not sure. A Noul has no separate confidence number.
 
 ### 7. "I'm not sure" is useful (0:50)
 
-- **On screen:** Bars for "banana peel" (brown 100%, sure). bars for "used pen" (Green Point 47%,
-  grey 45%, not sure). "Sure → act. Not sure → check, or ask a person."
+- **On screen:** Topic bars for "Love the new dark mode!" (praise 100%, sure) and for "Small thing: the export
+  button is hard to find." (feature request 69%, bug 31%, not sure). "Sure → act. Not sure → check, or ask a
+  person."
 - **Reader text:** Jev gives a probability for every option. When one option has almost all of it, Jev is
   sure. When it is spread over several options, Jev is not sure, and your program can ask a person.
 - **Speaker notes:** The model tells you how sure it is, and your program can use that. High confidence does
   not mean the answer is correct. It means the model did not hesitate.
-
-## Example 1: Which bin?
 
 ### 8. Which bin? (0:30)
 
@@ -232,7 +237,7 @@ Each slide has three parts:
 | "about 100 ms" | docs.typesafe.ai, How to build with TypeSafe |
 | About 250 ms round trip; about 60 ms inside TypeSafe | `captures/recycle/_summary.json` (median of 42 calls: 254 ms and 64 ms) |
 | Wine cork: brown 95%, confidence 0.93, 225 ms, 882 tokens | `captures/recycle/wine-cork.json` |
-| Napkin dirt 1.35; yogurt pot packaging 0.94 | `captures/recycle/` |
+| Slides 3 to 7: customer messages and their answers | `captures/basics/` (`python demos/basics.py`) |
 | About 27,000 calls per dollar | 882 input tokens × $0.042 per million |
 | 36 of 36, 33 of 36, 6 unclear | `captures/recycle/_summary.json` |
 | Broken glass: grey 99% in the first version | `captures/recycle-v1/broken-drinking-glass.json` |

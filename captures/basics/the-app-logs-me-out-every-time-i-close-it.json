@@ -1,0 +1,75 @@
+{
+  "request": {
+    "state": {
+      "message": "The app logs me out every time I close it."
+    },
+    "model": "jev-1.13.0",
+    "questions": {
+      "topic": {
+        "type": "choice",
+        "instructions": "What is `message` about?",
+        "criteria": {
+          "bug": "Something in the app is broken or does not work as expected.",
+          "feature_request": "The customer asks for something new or for a change.",
+          "billing": "Payments, charges, prices, refunds or subscriptions.",
+          "praise": "The customer says something positive about the app."
+        }
+      },
+      "upset": {
+        "type": "score",
+        "instructions": "How upset is the customer who wrote `message`?",
+        "criteria": [
+          "Calm or happy.",
+          "A little annoyed.",
+          "Angry, or threatening to leave."
+        ]
+      },
+      "refund": {
+        "type": "noul",
+        "instructions": "Does `message` ask for a refund?"
+      }
+    }
+  },
+  "response": {
+    "model": "jev-1.13.0",
+    "answers": {
+      "upset": {
+        "type": "score",
+        "score": 0.97,
+        "confidence": 0.95,
+        "legend": {
+          "0": "Calm or happy.",
+          "1": "A little annoyed.",
+          "2": "Angry, or threatening to leave."
+        },
+        "probabilities": {
+          "0": 0.03,
+          "1": 0.97,
+          "2": 0.0
+        }
+      },
+      "refund": {
+        "type": "noul",
+        "noul": 0.01
+      },
+      "topic": {
+        "type": "choice",
+        "choice": "bug",
+        "confidence": 1.0,
+        "probabilities": {
+          "bug": 1.0,
+          "praise": 0.0,
+          "feature_request": 0.0,
+          "billing": 0.0
+        }
+      }
+    },
+    "usage": {
+      "input_tokens": 461,
+      "output_tokens": 78
+    }
+  },
+  "latency_ms": 290.4,
+  "server_ms": null,
+  "message": "The app logs me out every time I close it."
+}

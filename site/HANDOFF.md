@@ -45,7 +45,7 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 ## To check after publishing
 
 1. Open the published address. The title slide appears, and the counter says `1 / 22`.
-2. Press → a few times: steps appear, then the next slide.
+2. Press → a few times: the next slide appears each time.
 3. Go to `#one-item` and click another item: the bars change.
 4. Open it on a phone: it shows as one long page.
 5. Turn the network off and open a local copy of `site/index.html`: everything still works.

@@ -35,94 +35,81 @@
 </section>
 
 <!-- 2 -->
-<section class="slide" id="two-ways" data-title="Two ways to use AI">
+<section class="slide" id="vs-llm" data-title="Reads like an LLM. Doesn't write like one.">
   <div class="slide-body">
-    <h2>Two ways to use AI</h2>
-    <div class="cols">
-      <div class="card">
-        <p class="card-label">Chat</p>
-        <p class="card-big">We ask.<br>It writes.</p>
-      </div>
-      <div class="card card--strong">
-        <p class="card-label">Decide</p>
-        <p class="card-big">A program asks.<br>The model picks.</p>
-      </div>
-    </div>
-  </div>
-  <div class="reader"><p>Most of us use AI by chatting: we ask, and the model writes. Jev works in a different way. A program asks it a question, and it picks an answer.</p></div>
-  <aside class="notes">“Most of us use AI by chatting. We ask, it writes. Jev does not write. It decides.” The plan: how it works, two things I built with it, and when to use it.</aside>
-</section>
-
-<!-- 3 -->
-<section class="slide" id="for-programs" data-title="A model for programs">
-  <div class="slide-body">
-    <h2>A model for programs, not people</h2>
-    <table class="compare">
-      <thead><tr><th></th><th>Chat model (LLM)</th><th>Jev</th></tr></thead>
+    <h2>Reads like an LLM. Doesn't write like one.</h2>
+    <table class="compare compare--rows">
+      <thead><tr><th></th><th>LLM</th><th>Jev</th></tr></thead>
       <tbody>
-        <tr><th>What it does</th><td>writes text</td><td>picks an answer</td></tr>
-        <tr><th>Who uses the result</th><td>a person</td><td>a program</td></tr>
+        <tr><th>Output</th><td>text, one token at a time</td><td>typed answers you define in advance</td></tr>
+        <tr><th>Your code</th><td>parses the text and checks it</td><td>uses the values directly</td></tr>
+        <tr><th>Post-training</th><td>RLHF: answers people prefer</td><td>RLCD: calibrated decisions</td></tr>
+        <tr><th>Confidence</th><td>only if you ask, often overconfident</td><td>a probability for every option, every time</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="reader"><p>A chat model writes text for a person to read. Jev picks an answer for a program to use.</p></div>
-  <aside class="notes">“The kind of decision an expert makes in one second.”</aside>
+  <div class="reader"><p>Jev understands language like an LLM, but it is trained to output decisions with probabilities, not text.</p></div>
+  <aside class="notes">“Is Jev an LLM? It understands language like one. TypeSafe calls it a new class of model, a System One model, because of what it's trained to output: decisions with probabilities, not text.” In passing: it is fast and cheap because it produces all answers in one pass and does not write. TypeSafe says a typical call takes about 100 ms; from my laptop it was about 250 ms. $0.042 per million input tokens, and output tokens are free.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="one-call" data-title="One call">
+  <div class="slide-body">
+    <h2>One call</h2>
+    <div class="call">
+      <div class="call-part call-part--wide">
+        <p class="call-label">your text</p>
+        <p class="call-text call-text--wrap">“The app logs me out every time I close it.”</p>
+      </div>
+      <div class="call-arrow" aria-hidden="true">→</div>
+      <div class="call-part call-part--wide">
+        <p class="call-label">your question and options</p>
+        <p class="call-text">What is it about?</p>
+        <p class="call-options"><span class="chip">bug</span> <span class="chip">feature request</span> <span class="chip">billing</span> <span class="chip">praise</span></p>
+      </div>
+      <div class="call-arrow" aria-hidden="true">→</div>
+      <div class="call-part">
+        <p class="call-label">Jev's answer</p>
+        <p class="call-text"><span class="chip chip--answer">bug</span></p>
+      </div>
+    </div>
+    <p class="lead">You write the question and the options. Jev picks one.</p>
+  </div>
+  <aside class="notes">Jev gets your text, here one customer message, and a question with options that you write. It answers with one of your options. One call can hold many questions; they run in parallel against the same text and cannot see each other's answers.</aside>
 </section>
 
 <!-- 4 -->
-<section class="slide" id="fast-cheap" data-title="Fast and cheap">
+<section class="slide" id="choice" data-title="Choice: pick one option">
   <div class="slide-body">
-    <h2>Fast and cheap, because it does not write</h2>
-    <div class="stats">
-      <div><p class="stat-num">0.1 s</p><p class="stat-label">a typical call, says TypeSafe</p></div>
-      <div><p class="stat-num">$0.042</p><p class="stat-label">per million tokens you send</p></div>
-      <div><p class="stat-num">$0</p><p class="stat-label">for the answers</p></div>
-    </div>
+    <h2>Choice: pick one option</h2>
+    <p class="statement">“The app logs me out every time I close it.”</p>
+    <p class="big">What is it about?</p>
+    <div class="bars" data-topic-bars="The app logs me out every time I close it."></div>
+    <p class="lead">You get the pick, and a probability for every option.</p>
   </div>
-  <div class="reader"><p>TypeSafe says most calls take about 100 milliseconds. You pay $0.042 for every million tokens of text you send, and nothing for the answers.</p></div>
-  <aside class="notes">From my laptop I saw about 250 milliseconds for the full trip, and about 60 of those were inside TypeSafe's servers.</aside>
+  <aside class="notes">Choice: you get the pick and a probability for every option. The answer also has a confidence number, which sums up how peaked the probabilities are.</aside>
 </section>
 
 <!-- 5 -->
-<section class="slide" id="one-call" data-title="How one call works">
+<section class="slide" id="score" data-title="Score: pick a level">
   <div class="slide-body">
-    <h2>How one call works</h2>
-    <div class="flow">
-      <div class="flow-box">your text<br>+ your questions<small>each with its own options</small></div>
-      <div class="flow-arrow" aria-hidden="true">→</div>
-      <div class="flow-box flow-box--jev">Jev</div>
-      <div class="flow-arrow" aria-hidden="true">→</div>
-      <div class="flow-box">one answer per question<small>and how sure it is</small></div>
-    </div>
+    <h2>Score: pick a level</h2>
+    <p class="statement">How upset is the customer?</p>
+    <div class="scale" data-upset-scale data-items="Love the new dark mode!|The app logs me out every time I close it.|Third time this week I've lost my work. I'm cancelling." data-labels="“Love the new dark mode!”|“The app logs me out…”|“…I'm cancelling.”" data-levels="calm|a little annoyed|angry or leaving"></div>
+    <p class="lead">You describe the levels. Jev places the text on them.</p>
   </div>
-  <div class="reader"><p>You send some text and a few questions. Each question has a fixed list of possible answers. Jev gives back one answer for each question, and a number that says how sure it is.</p></div>
-  <aside class="notes">The answer is always one of your options. It cannot invent a new one. You can ask many questions in one call, and they are answered at the same time.</aside>
+  <aside class="notes">Score: you describe each level in words. The answer can land between two levels. Read it as a position on your levels, not as a measurement.</aside>
 </section>
 
 <!-- 6 -->
-<section class="slide" id="question-types" data-title="Three kinds of question">
+<section class="slide" id="noul" data-title="Noul: yes or no, as a probability">
   <div class="slide-body">
-    <h2>Three kinds of question</h2>
-    <div class="cols-3">
-      <div class="card">
-        <p class="kind-name">Choice</p>
-        <p class="kind-what">Pick one option.</p>
-        <p class="kind-example">Which bin? → <strong>brown</strong></p>
-      </div>
-      <div class="card">
-        <p class="kind-name">Score</p>
-        <p class="kind-what">Pick a level.</p>
-        <p class="kind-example">How dirty is it? → <strong>1.35</strong> of 2</p>
-      </div>
-      <div class="card">
-        <p class="kind-name">Noul</p>
-        <p class="kind-what">Yes or no, as a probability.</p>
-        <p class="kind-example">Is it packaging? → <strong>0.94</strong></p>
-      </div>
-    </div>
+    <h2>Noul: yes or no, as a probability</h2>
+    <p class="statement">Does it ask for a refund?</p>
+    <div class="bars bars--labels-wide" data-refund-bars data-items="I was charged twice this month. Please refund one of them.|Do you offer refunds?|Love the new dark mode!" data-labels="“I was charged twice. Please refund one.”|“Do you offer refunds?”|“Love the new dark mode!”"></div>
+    <p class="lead">Near 1: yes. Near 0: no. In the middle: not sure.</p>
   </div>
-  <div class="reader"><p>Choice picks one option from your list. Score picks a level on a scale that you describe. Noul answers yes or no, as a probability.</p></div>
-  <aside class="notes">The examples are real answers from the recycling demo: a wine cork, an oily napkin, a yogurt pot.</aside>
+  <aside class="notes">Noul: one number, the probability that the answer is yes. “Do you offer refunds?” asks about refunds but does not ask for one, and Jev is not sure. A Noul has no separate confidence number.</aside>
 </section>
 
 <!-- 7 -->
@@ -131,12 +118,12 @@
     <h2>“I'm not sure” is useful</h2>
     <div class="cols">
       <div>
-        <p class="chart-title">banana peel <span class="tag tag--good">sure</span></p>
-        <div class="bars" data-bars="banana peel"></div>
+        <p class="chart-title">“Love the new dark mode!” <span class="tag tag--good">sure</span></p>
+        <div class="bars" data-topic-bars="Love the new dark mode!"></div>
       </div>
       <div>
-        <p class="chart-title">used pen <span class="tag tag--warn">not sure</span></p>
-        <div class="bars" data-bars="used pen"></div>
+        <p class="chart-title">“Small thing: the export button is hard to find.” <span class="tag tag--warn">not sure</span></p>
+        <div class="bars" data-topic-bars="Small thing: the export button is hard to find."></div>
       </div>
     </div>
     <p class="big"><strong>Sure</strong> → act. &nbsp; <strong>Not sure</strong> → check, or ask a person.</p>

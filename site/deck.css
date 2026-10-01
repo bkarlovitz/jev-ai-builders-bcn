@@ -281,6 +281,10 @@ button { font: inherit; color: inherit; }
 .compare thead th { font-size: var(--text-sm); color: var(--color-muted); font-weight: var(--weight-strong); letter-spacing: var(--tracking-label); text-transform: uppercase; border-bottom: var(--border-strong) solid var(--color-text); }
 .compare tbody th { color: var(--color-muted); font-weight: var(--weight-text); width: 32%; }
 .compare td:last-child { font-weight: var(--weight-strong); }
+/* A comparison table with several rows */
+.compare--rows { font-size: var(--text-md); }
+.compare--rows th, .compare--rows td { padding: var(--space-2) var(--space-2); }
+.compare--rows tbody th { width: 18%; }
 
 /* How one call works */
 .flow { display: flex; align-items: center; gap: var(--space-3); }
@@ -310,6 +314,75 @@ button { font: inherit; color: inherit; }
 .kind-what { margin: var(--space-1) 0 var(--space-3); }
 .kind-example { font-size: var(--text-sm); color: var(--color-muted); border-top: var(--border) solid var(--color-line); padding-top: var(--space-2); }
 .kind-example strong { color: var(--color-text); }
+
+/* One call: text -> question and options -> answer */
+.call { display: flex; align-items: stretch; gap: var(--space-2); }
+.call-part {
+  flex: 0 1 auto;
+  background: var(--color-surface);
+  border: var(--border) solid var(--color-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: flex; flex-direction: column; justify-content: center; gap: var(--space-2);
+}
+.call-part--wide { flex: 1 1 0; }
+.call-label { font-size: var(--text-xs); letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--color-muted); font-weight: var(--weight-strong); }
+.call-text { font-size: var(--text-lg); font-weight: var(--weight-strong); white-space: nowrap; }
+.call-text code { font-size: 0.95em; }
+.call-text--wrap { white-space: normal; }
+.chip--answer { background: var(--color-text); color: var(--color-bg); }
+/* Bars whose labels are whole sentences */
+.bars--labels-wide .bar-row { grid-template-columns: minmax(0, 1.4fr) 1fr 3.5em; }
+.bars--labels-wide .bar-name { white-space: normal; }
+.call-options { display: flex; flex-wrap: wrap; gap: var(--space-1); font-size: var(--text-sm); }
+.call-arrow { align-self: center; font-size: var(--text-xl); color: var(--color-muted); }
+@media (orientation: portrait) {
+  .call { flex-direction: column; }
+  .call-arrow { transform: rotate(90deg); text-align: center; }
+}
+.view-scroll .call { flex-direction: column; }
+.view-scroll .call-arrow { transform: rotate(90deg); text-align: center; }
+
+/* Score: items placed on a 0-2 scale */
+.scale { display: grid; gap: var(--space-3); padding: 0 var(--space-4); }
+.scale-line {
+  position: relative;
+  height: var(--border-strong);
+  background: var(--color-text);
+  margin: calc(var(--u) * 8) 0 calc(var(--u) * 6);
+}
+.scale-tick {
+  position: absolute; top: 0; transform: translate(-50%, 0);
+  padding-top: var(--space-3);
+  display: flex; flex-direction: column; align-items: center;
+  font-size: var(--text-sm); color: var(--color-muted); white-space: nowrap;
+}
+.scale-tick strong { color: var(--color-text); }
+.scale-tick::before {
+  content: ""; position: absolute; left: 50%; top: calc(var(--space-1) * -1);
+  width: var(--border-strong); height: var(--space-3); background: var(--color-text); transform: translateX(-50%);
+}
+.scale-mark {
+  position: absolute; bottom: 0; transform: translate(-50%, 0);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding-bottom: var(--space-3);
+  white-space: nowrap; font-size: var(--text-sm);
+}
+.scale-mark::after {
+  content: ""; position: absolute; left: 50%; bottom: calc(var(--space-1) * -1.5);
+  width: calc(var(--u) * 1.6); height: calc(var(--u) * 1.6);
+  border-radius: 50%; background: var(--chart-bar); transform: translateX(-50%);
+}
+.scale-mark-value { font-weight: var(--weight-strong); font-size: var(--text-md); }
+/* Labels at either end of the scale grow inwards, so they never stick out of the slide */
+.scale-tick.is-start, .scale-mark.is-start { transform: none; align-items: flex-start; text-align: left; }
+.scale-tick.is-end, .scale-mark.is-end { transform: translateX(-100%); align-items: flex-end; text-align: right; }
+.scale-tick.is-start::before, .scale-mark.is-start::after { left: 0; }
+.scale-tick.is-end::before, .scale-mark.is-end::after { left: 100%; }
+/* Narrow screens: raise every other label so neighbours do not overlap */
+.view-scroll .scale-line { margin-top: 9.5em; }
+.view-scroll .scale-mark-name { white-space: normal; max-width: 9em; }
+.view-scroll .scale-mark:nth-of-type(even) { padding-bottom: calc(var(--space-3) + 4.8em); }
 
 /* Option descriptions */
 .options { list-style: none; display: grid; gap: var(--space-1); font-size: var(--text-sm); }

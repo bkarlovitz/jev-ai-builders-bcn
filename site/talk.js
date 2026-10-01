@@ -73,6 +73,76 @@
     renderBars(box, R.first_version_broken_glass.probabilities, R.first_version_broken_glass.choice);
   });
 
+  // ---- The basics: short customer messages (slides 3 to 7) ----
+  var B = DATA.basics;
+  var TOPIC_LABEL = { bug: "bug", feature_request: "feature request", billing: "billing", praise: "praise" };
+  function message(text) { return B.messages.filter(function (m) { return m.message === text; })[0]; }
+  function plainBar(box, label, width, value, isPick) {
+    var row = el("div", "bar-row" + (isPick ? " is-pick" : ""));
+    row.appendChild(el("span", "bar-name", label));
+    var track = el("div", "bar-track"), fill = el("div", "bar-fill");
+    fill.style.width = (width * 100) + "%";
+    track.appendChild(fill);
+    row.appendChild(track);
+    row.appendChild(el("span", "bar-pct", value));
+    box.appendChild(row);
+  }
+  // Choice: the topic of one message, a bar per option
+  $all("[data-topic-bars]").forEach(function (box) {
+    var m = message(box.getAttribute("data-topic-bars"));
+    B.topics.forEach(function (t) { plainBar(box, TOPIC_LABEL[t] || t, m.topic.probabilities[t], pct(m.topic.probabilities[t]), t === m.topic.choice); });
+  });
+  // Noul: does each message ask for a refund?
+  $all("[data-refund-bars]").forEach(function (box) {
+    var names = box.getAttribute("data-items").split("|"), labels = box.getAttribute("data-labels").split("|");
+    names.forEach(function (name, k) { var v = message(name).refund; plainBar(box, labels[k], v, v.toFixed(2), false); });
+  });
+  // Score: how upset, placed on the 0-2 scale
+  $all("[data-upset-scale]").forEach(function (box) {
+    box.setAttribute("data-scale", "upset");
+  });
+
+  // Noul answers for a few items: one yes-probability each
+  $all("[data-noul]").forEach(function (box) {
+    var field = box.getAttribute("data-noul");
+    var names = box.getAttribute("data-items").split("|"), labels = (box.getAttribute("data-labels") || "").split("|");
+    names.forEach(function (name, k) {
+      var it = item(name), v = it[field];
+      var row = el("div", "bar-row");
+      row.appendChild(el("span", "bar-name", labels[k] || name));
+      var track = el("div", "bar-track"), fill = el("div", "bar-fill");
+      fill.style.width = (v * 100) + "%";
+      track.appendChild(fill);
+      row.appendChild(track);
+      row.appendChild(el("span", "bar-pct", v.toFixed(2)));
+      box.appendChild(row);
+    });
+  });
+
+  // Score answers for a few items, placed on the 0-2 scale
+  $all("[data-scale]").forEach(function (box) {
+    var field = box.getAttribute("data-scale");
+    var names = box.getAttribute("data-items").split("|"), labels = (box.getAttribute("data-labels") || "").split("|");
+    var levels = (box.getAttribute("data-levels") || "").split("|");
+    var line = el("div", "scale-line");
+    [0, 1, 2].forEach(function (t) {
+      var tick = el("span", "scale-tick" + (t === 0 ? " is-start" : t === 2 ? " is-end" : ""));
+      tick.appendChild(el("strong", null, String(t)));
+      tick.appendChild(el("span", null, levels[t] || ""));
+      tick.style.left = (t / 2 * 100) + "%";
+      line.appendChild(tick);
+    });
+    names.forEach(function (name, k) {
+      var v = field === "upset" ? message(name).upset.score : item(name)[field];
+      var mark = el("div", "scale-mark" + (v < 0.2 ? " is-start" : v > 1.8 ? " is-end" : ""));
+      mark.style.left = (v / 2 * 100) + "%";
+      mark.appendChild(el("span", "scale-mark-name", labels[k] || name));
+      mark.appendChild(el("span", "scale-mark-value", v.toFixed(2)));
+      line.appendChild(mark);
+    });
+    box.insertBefore(line, box.firstChild);
+  });
+
   // The six places
   $all("[data-bins]").forEach(function (box) {
     BIN_ORDER.forEach(function (b) {
