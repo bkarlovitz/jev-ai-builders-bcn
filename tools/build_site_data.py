@@ -43,6 +43,8 @@ def recycle_data() -> dict:
             "is_packaging": a["is_packaging"]["noul"],
             "glass_bottle": a["glass_bottle"]["noul"],
             "dirt": a["dirt"]["score"],
+            "dirt_probabilities": a["dirt"]["probabilities"],
+            "dirt_confidence": a["dirt"]["confidence"],
             "rules_bin": row["rules_bin"],
             "rules_reason": row["rules_reason"],
             "rules_unsure": [recycle.LABELS[q] for q in row["rules_unsure"]],
@@ -63,6 +65,7 @@ def recycle_data() -> dict:
             "direct_right": sum(i["choice"] == i["city"] for i in known),
             "rules_right": sum(i["rules_bin"] == i["city"] for i in known),
             "first_version_right": sum(i["rules_bin_first_version"] == i["city"] for i in known),
+            "flagged": sum(1 for i in items if i["rules_unsure"]),
             "median_latency_ms": round(statistics.median(i["latency_ms"] for i in items)),
             "median_input_tokens": round(statistics.median(i["input_tokens"] for i in items)),
         },
@@ -97,6 +100,7 @@ def basics_data() -> dict:
         })
     return {
         "topics": list(basics.QUESTIONS["topic"]["criteria"]),
+        "topic_criteria": basics.QUESTIONS["topic"]["criteria"],
         "upset_levels": basics.QUESTIONS["upset"]["criteria"],
         "messages": messages,
     }

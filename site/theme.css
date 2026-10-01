@@ -10,7 +10,12 @@
    screens.
    ========================================================================= */
 
-:root {
+/* The tokens are declared on :root and again on .dense, so a dense slide
+   (a slide with more on it) recomputes every size from a smaller --u. */
+:root { --u-scale: 1; }
+.dense { --u-dense: 0.88; }
+
+:root, .dense {
   /* ---- fonts --------------------------------------------------------- */
   /* To use a custom font, put the files in site/fonts/, add an @font-face
      rule below, and put its name first in the list. Never load fonts from
@@ -28,7 +33,7 @@
   --leading-display: 1.05;
 
   /* ---- slide unit and type scale ------------------------------------- */
-  --u: min(1vw, 1.7778vh);
+  --u: calc(min(1vw, 1.7778vh) * var(--u-scale) * var(--u-dense, 1));
 
   --text-xs: max(12px, calc(var(--u) * 1.2));
   --text-sm: max(14px, calc(var(--u) * 1.5));
@@ -108,4 +113,4 @@
 
 /* When the reader text is shown under each slide (not presenting), the slides
    get a little smaller so the text fits below them. */
-:root.has-captions { --u: min(0.88vw, 1.564vh); }
+:root.has-captions { --u-scale: 0.88; }

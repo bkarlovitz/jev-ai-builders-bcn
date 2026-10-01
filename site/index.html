@@ -35,105 +35,25 @@
 </section>
 
 <!-- 2 -->
-<section class="slide" id="vs-llm" data-title="Reads like an LLM. Doesn't write like one.">
+<section class="slide" id="vs-llm" data-title="Jev next to an LLM">
   <div class="slide-body">
-    <h2>Reads like an LLM. Doesn't write like one.</h2>
+    <h2>Jev next to an LLM</h2>
     <table class="compare compare--rows">
       <thead><tr><th></th><th>LLM</th><th>Jev</th></tr></thead>
       <tbody>
-        <tr><th>Output</th><td>text, one token at a time</td><td>typed answers you define in advance</td></tr>
-        <tr><th>Your code</th><td>parses the text and checks it</td><td>uses the values directly</td></tr>
-        <tr><th>Post-training</th><td>RLHF: answers people prefer</td><td>RLCD: calibrated decisions</td></tr>
-        <tr><th>Confidence</th><td>only if you ask, often overconfident</td><td>a probability for every option, every time</td></tr>
+        <tr><th>What it gives back</th><td>text</td><td>one of your answers, with a probability for each</td></tr>
+        <tr><th>Who it is for</th><td>a person reads it</td><td>your code uses it directly</td></tr>
+        <tr><th>How sure it is</th><td>no probability for each answer</td><td>a probability for every answer, every time</td></tr>
       </tbody>
     </table>
+    <p class="small">TypeSafe calls this a System One model.</p>
   </div>
-  <div class="reader"><p>Jev understands language like an LLM, but it is trained to output decisions with probabilities, not text.</p></div>
-  <aside class="notes">“Is Jev an LLM? It understands language like one. TypeSafe calls it a new class of model, a System One model, because of what it's trained to output: decisions with probabilities, not text.” In passing: it is fast and cheap because it produces all answers in one pass and does not write. TypeSafe says a typical call takes about 100 ms; from my laptop it was about 250 ms. $0.042 per million input tokens, and output tokens are free.</aside>
+  <div class="reader"><p>Jev understands language like an LLM, but it is trained to give back decisions with probabilities, not text.</p></div>
+  <aside class="notes">“Is Jev an LLM? It understands language like one. It does not write. It is trained to give calibrated probabilities, which TypeSafe calls RLCD, instead of text that people like, which is RLHF.” If someone thinks of JSON mode: “JSON mode fixes the format of an LLM's answer. It still writes one token at a time, and it does not give you a probability for every answer.” In passing: about 100 ms according to TypeSafe, about 250 ms from my laptop; $0.042 per million input tokens, and the answers are free.</aside>
 </section>
 
 <!-- 3 -->
-<section class="slide" id="one-call" data-title="One call">
-  <div class="slide-body">
-    <h2>One call</h2>
-    <div class="call">
-      <div class="call-part call-part--wide">
-        <p class="call-label">your text</p>
-        <p class="call-text call-text--wrap">“The app logs me out every time I close it.”</p>
-      </div>
-      <div class="call-arrow" aria-hidden="true">→</div>
-      <div class="call-part call-part--wide">
-        <p class="call-label">your question and options</p>
-        <p class="call-text">What is it about?</p>
-        <p class="call-options"><span class="chip">bug</span> <span class="chip">feature request</span> <span class="chip">billing</span> <span class="chip">praise</span></p>
-      </div>
-      <div class="call-arrow" aria-hidden="true">→</div>
-      <div class="call-part">
-        <p class="call-label">Jev's answer</p>
-        <p class="call-text"><span class="chip chip--answer">bug</span></p>
-      </div>
-    </div>
-    <p class="lead">You write the question and the options. Jev picks one.</p>
-  </div>
-  <aside class="notes">Jev gets your text, here one customer message, and a question with options that you write. It answers with one of your options. One call can hold many questions; they run in parallel against the same text and cannot see each other's answers.</aside>
-</section>
-
-<!-- 4 -->
-<section class="slide" id="choice" data-title="Choice: pick one option">
-  <div class="slide-body">
-    <h2>Choice: pick one option</h2>
-    <p class="statement">“The app logs me out every time I close it.”</p>
-    <p class="big">What is it about?</p>
-    <div class="bars" data-topic-bars="The app logs me out every time I close it."></div>
-    <p class="lead">You get the pick, and a probability for every option.</p>
-  </div>
-  <aside class="notes">Choice: you get the pick and a probability for every option. The answer also has a confidence number, which sums up how peaked the probabilities are.</aside>
-</section>
-
-<!-- 5 -->
-<section class="slide" id="score" data-title="Score: pick a level">
-  <div class="slide-body">
-    <h2>Score: pick a level</h2>
-    <p class="statement">How upset is the customer?</p>
-    <div class="scale" data-upset-scale data-items="Love the new dark mode!|The app logs me out every time I close it.|Third time this week I've lost my work. I'm cancelling." data-labels="“Love the new dark mode!”|“The app logs me out…”|“…I'm cancelling.”" data-levels="calm|a little annoyed|angry or leaving"></div>
-    <p class="lead">You describe the levels. Jev places the text on them.</p>
-  </div>
-  <aside class="notes">Score: you describe each level in words. The answer can land between two levels. Read it as a position on your levels, not as a measurement.</aside>
-</section>
-
-<!-- 6 -->
-<section class="slide" id="noul" data-title="Noul: yes or no, as a probability">
-  <div class="slide-body">
-    <h2>Noul: yes or no, as a probability</h2>
-    <p class="statement">Does it ask for a refund?</p>
-    <div class="bars bars--labels-wide" data-refund-bars data-items="I was charged twice this month. Please refund one of them.|Do you offer refunds?|Love the new dark mode!" data-labels="“I was charged twice. Please refund one.”|“Do you offer refunds?”|“Love the new dark mode!”"></div>
-    <p class="lead">Near 1: yes. Near 0: no. In the middle: not sure.</p>
-  </div>
-  <aside class="notes">Noul: one number, the probability that the answer is yes. “Do you offer refunds?” asks about refunds but does not ask for one, and Jev is not sure. A Noul has no separate confidence number.</aside>
-</section>
-
-<!-- 7 -->
-<section class="slide" id="not-sure" data-title="“I'm not sure” is useful">
-  <div class="slide-body">
-    <h2>“I'm not sure” is useful</h2>
-    <div class="cols">
-      <div>
-        <p class="chart-title">“Love the new dark mode!” <span class="tag tag--good">sure</span></p>
-        <div class="bars" data-topic-bars="Love the new dark mode!"></div>
-      </div>
-      <div>
-        <p class="chart-title">“Small thing: the export button is hard to find.” <span class="tag tag--warn">not sure</span></p>
-        <div class="bars" data-topic-bars="Small thing: the export button is hard to find."></div>
-      </div>
-    </div>
-    <p class="big"><strong>Sure</strong> → act. &nbsp; <strong>Not sure</strong> → check, or ask a person.</p>
-  </div>
-  <div class="reader"><p>Jev gives a probability for every option. When one option has almost all of it, Jev is sure. When it is spread over several options, Jev is not sure, and your program can ask a person.</p></div>
-  <aside class="notes">The model tells you how sure it is, and your program can use that. High confidence does not mean the answer is correct. It means the model did not hesitate.</aside>
-</section>
-
-<!-- 8 -->
-<section class="slide slide--section" id="which-bin" data-title="Example 1: Which bin?">
+<section class="slide slide--section" id="which-bin" data-title="Which bin?">
   <div class="slide-body">
     <div class="slide-title-row">
       <p class="eyebrow">Example 1</p>
@@ -141,95 +61,147 @@
     </div>
     <div class="bins" data-bins></div>
     <p class="statement">Where does a wine cork go?</p>
-    <p class="big"><span class="chip" data-bin="brown">brown</span> &nbsp;Cork is organic.</p>
+    <p class="big" data-step="1"><span class="chip" data-bin="brown">brown</span> &nbsp;Cork is organic.</p>
   </div>
   <div class="reader"><p>Barcelona has five street bins. Some things do not go in any bin: you take them to a recycling centre called a Green Point. It is not always clear where something goes.</p></div>
-  <aside class="notes">Ask the room, calmly: “Where does a wine cork go?” Wait. “Brown. It is organic.”</aside>
+  <aside class="notes">Ask the room, calmly: “Where does a wine cork go?” Wait. Next key: “Brown. It is organic.” Then: “The city has rules. Let's give the rules to Jev.”</aside>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="city-rules" data-title="The city's rules">
+  <div class="slide-body">
+    <h2>The city's rules</h2>
+    <ul class="rules-table">
+      <li><span class="chip" data-bin="yellow">yellow</span><span class="rule-name">packaging</span><span class="rule-text">plastic packaging and bags, cans, cartons, caps and lids, foil, trays</span></li>
+      <li><span class="chip" data-bin="blue">blue</span><span class="rule-name">paper and cardboard</span><span class="rule-text">clean boxes, newspapers, magazines, envelopes, paper bags, receipts</span></li>
+      <li><span class="chip" data-bin="green">green</span><span class="rule-name">glass</span><span class="rule-text">bottles and jars only, without lids</span></li>
+      <li class="is-focus"><span class="chip" data-bin="brown">brown</span><span class="rule-name">organic</span><span class="rule-text">food, egg shells, <mark>corks</mark>, tea bags, coffee grounds, oily napkins, flowers</span></li>
+      <li><span class="chip" data-bin="grey">grey</span><span class="rule-name">general waste</span><span class="rule-text">cigarette ends, nappies, used tissues, dust, hair</span></li>
+      <li><span class="chip" data-bin="green_point">Green Point</span><span class="rule-name">not a street bin</span><span class="rule-text">toys, ceramics, plates and drinking glasses, mirrors, bulbs, single-use coffee capsules</span></li>
+    </ul>
+    <div class="foot-row"><p class="small">Written from the city's website.</p><p class="small">Next: give these rules to Jev.</p></div>
+  </div>
+  <div class="reader"><p>I did not teach Jev anything about Barcelona. I wrote the city's rules in plain words. They are shortened here; the full text sent to Jev is in the repo.</p></div>
+  <aside class="notes">“The city publishes rules. Here they are, in plain words. Cork is in the brown line. Now let's give these six lines to Jev, exactly like this.”</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="one-call" data-title="One call">
+  <div class="slide-body">
+    <div class="title-tag-row"><h2>One call</h2><span class="type-tag"><span class="term">type</span> choice</span></div>
+    <div class="frame">
+      <div class="frame-col">
+        <p class="frame-head">I send</p>
+        <div class="frame-row"><span class="term">state</span><span class="frame-big">wine cork</span></div>
+        <div class="frame-row"><span class="term">instructions</span><span>In Barcelona, where should <code>`item`</code> go?</span></div>
+        <div class="frame-row"><span class="term">criteria</span><span><span class="chip-row"><span class="chip" data-bin="yellow">yellow</span> <span class="chip" data-bin="blue">blue</span> <span class="chip" data-bin="green">green</span> <span class="chip" data-bin="brown">brown</span> <span class="chip" data-bin="grey">grey</span> <span class="chip" data-bin="green_point">Green Point</span></span><span class="small">the six rules you just saw</span></span></div>
+      </div>
+      <div class="frame-col" data-step="1">
+        <p class="frame-head">Jev sends back</p>
+        <div class="frame-row"><span class="term">choice</span><span class="frame-big"><span class="chip" data-bin="brown">brown</span></span></div>
+        <div class="frame-row"><span class="term">confidence</span><span class="frame-value" data-conf="wine cork">0.93</span></div>
+        <div class="frame-row frame-row--stack"><span class="term">probabilities</span><div class="bars bars--compact" data-top-bars="wine cork"></div></div>
+      </div>
+    </div>
+    <p class="small" data-result-meta-static>225 ms · 882 tokens · about 27,000 calls for one dollar</p>
+  </div>
+  <div class="reader"><p>This is a real call. The state is the item. The question has instructions and criteria. Jev sends back its choice, a probability for every criterion, and a confidence number. The same request also had four more questions; see “Ask small questions”.</p></div>
+  <aside class="notes">Step 1, the left side: “State is the text Jev reads. The question has instructions and criteria. The criteria are the six rules from the last slide, word for word.” Next key, the right side: “Jev gives a probability for every criterion. The choice is the highest. Confidence says how concentrated that is. That is the whole API. This question type is a Choice; there are two more.”</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide dense" id="score" data-title="Score: a position on your levels">
+  <div class="slide-body">
+    <div class="title-tag-row"><h2>Score: a position on your levels</h2><span class="type-tag"><span class="term">type</span> score</span></div>
+    <div class="frame">
+      <div class="frame-col">
+        <p class="frame-head">I send</p>
+        <div class="frame-row"><span class="term">state</span><span class="frame-big">paper napkin with oil on it</span></div>
+        <div class="frame-row"><span class="term">instructions</span><span>How much food or oil is on <code>`item`</code>?</span></div>
+        <div class="frame-row"><span class="term">criteria</span><span><span class="small">levels, in order</span><ol class="levels" start="0"><li>clean, or almost clean</li><li>a little food on it</li><li>covered or soaked in food or oil</li></ol></span></div>
+      </div>
+      <div class="frame-col">
+        <p class="frame-head">Jev sends back</p>
+        <div class="frame-row"><span class="term">score</span><span class="frame-big" data-score-value="paper napkin with oil on it">1.35</span></div>
+        <div class="frame-row"><span class="term">confidence</span><span class="frame-value" data-score-conf="paper napkin with oil on it">0.46</span></div>
+        <div class="frame-row frame-row--stack"><span class="term">probabilities</span><div class="bars bars--compact" data-level-bars="paper napkin with oil on it" data-levels="0 clean|1 a little|2 covered"></div></div>
+      </div>
+    </div>
+    <p class="big">Between level 1 and level 2: a position, not a measurement.</p>
+  </div>
+  <div class="reader"><p>A Score question has levels that you describe in words, in order. Jev gives a probability for each level, and the score is the weighted average, so it can land between two levels.</p></div>
+  <aside class="notes">“Same frame. The criteria are now levels, in order. Jev does not pick one; it gives a probability for each level, and the score is the weighted average, so it can land between two. For this napkin: between ‘a little’ and ‘covered’. The city only needs clean or not clean. My code decides where to cut; that comes later.”</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide" id="noul" data-title="Noul: yes or no, as one number">
+  <div class="slide-body">
+    <div class="title-tag-row"><h2>Noul: yes or no, as one number</h2><span class="type-tag"><span class="term">type</span> noul</span></div>
+    <div class="frame">
+      <div class="frame-col">
+        <p class="frame-head">I send</p>
+        <div class="frame-row"><span class="term">state</span><span class="frame-big">wine cork</span></div>
+        <div class="frame-row"><span class="term">instructions</span><span>Is <code>`item`</code> packaging, or a container that held a product?</span></div>
+        <div class="frame-row"><span class="term">criteria</span><span class="muted">none needed</span></div>
+      </div>
+      <div class="frame-col">
+        <p class="frame-head">Jev sends back</p>
+        <div class="frame-row"><span class="term">noul</span><span class="frame-big" data-noul-value="wine cork">0.37</span></div>
+        <div class="yesno" data-yesno="is_packaging" data-main="wine cork" data-others="old newspaper|empty plastic water bottle" data-labels="old newspaper|water bottle"></div>
+      </div>
+    </div>
+    <p class="big">Near 1: yes. &nbsp;Near 0: no. &nbsp;Near 0.5: not sure.</p>
+  </div>
+  <div class="reader"><p>A Noul is a yes-or-no question. Jev gives back one number: the probability that the answer is yes. It needs no criteria.</p></div>
+  <aside class="notes">“Third type. Yes or no, as a probability. No criteria needed. Is a cork packaging? 0.37: Jev is not sure, and that is fair. It does not mean ‘a little bit packaging’; it means yes and no are both possible. Which brings us to the useful part.”</aside>
+</section>
+
+<!-- 8 -->
+<section class="slide" id="not-sure" data-title="“Not sure” is useful">
+  <div class="slide-body">
+    <h2>“Not sure” is useful</h2>
+    <div class="cols">
+      <div>
+        <p class="chart-title">old newspaper <span class="tag tag--good"><span class="term">confidence</span> <span data-conf="old newspaper"></span></span></p>
+        <div class="bars" data-bars="old newspaper"></div>
+      </div>
+      <div>
+        <p class="chart-title">used pen <span class="tag tag--warn"><span class="term">confidence</span> <span data-conf="used pen"></span></span></p>
+        <div class="bars" data-bars="used pen"></div>
+      </div>
+    </div>
+    <p class="big"><strong>Sure</strong> → act. &nbsp; <strong>Not sure</strong> → check, or ask a person.</p>
+    <p class="small">For a Noul, look at how close it is to 0.5.</p>
+  </div>
+  <div class="reader"><p>Confidence tells you how concentrated the probabilities are. Your program can act on a sure answer and send an unsure one to a person.</p></div>
+  <aside class="notes">“Confidence tells you how concentrated the probabilities are. TypeSafe suggests starting around 0.8 to act and below 0.5 to ask a person, and tuning it for your case. My demo uses 0.6. For the pen, the city is also unclear: its two pages disagree, between grey and yellow.”</aside>
 </section>
 
 <!-- 9 -->
-<section class="slide" id="options" data-title="Your rules go in the options">
+<section class="slide dense" id="small-questions" data-title="A second way: ask small questions">
   <div class="slide-body">
-    <h2>Your rules go in the options</h2>
-    <ul class="options" data-options></ul>
-    <p class="small">The descriptions come from the city's website.</p>
-  </div>
-  <div class="reader"><p>I did not teach Jev anything about Barcelona. I wrote the city's rules into the options, in plain words. Jev reads the item, reads the options, and picks.</p></div>
-  <aside class="notes">This is the main idea of building with Jev: you write your rules as options. These six descriptions are the city's rules, made short.</aside>
-</section>
-
-<!-- 10 -->
-<section class="slide" id="wrong-options" data-title="My first options were wrong">
-  <div class="slide-body">
-    <div class="slide-title-row">
-      <h2>My first options were wrong</h2>
-      <p class="lead">broken drinking glass</p>
-    </div>
-    <div class="cols">
-      <div>
-        <p class="chart-title">My first options <span class="tag tag--warn">“broken glass” under grey</span></p>
-        <div class="bars" data-bars-v1></div>
-      </div>
-      <div>
-        <p class="chart-title">The city's rules <span class="tag tag--good">Green Point added</span></p>
-        <div class="bars" data-bars="broken drinking glass"></div>
-      </div>
-    </div>
-    <p class="big">Jev follows the rules you give it.</p>
-  </div>
-  <div class="reader"><p>My first version had five options, and I wrote “broken glass” under the grey bin. Jev said grey, and it was 99% sure. The city says broken glass goes to a Green Point. When I fixed the options, Jev said Green Point.</p></div>
-  <aside class="notes">My first version had a mistake. I wrote “broken glass” under the grey bin. Jev said grey, 99% sure. But the city says broken glass goes to a Green Point. When I fixed the options, Jev said Green Point. It follows the rules you give it, so the rules must be right.</aside>
-</section>
-
-<!-- 11 -->
-<section class="slide" id="one-item" data-title="One item, one call">
-  <div class="slide-body">
-    <h2>One item, one call</h2>
-    <div class="picker" role="group" aria-label="Choose an item" data-picker></div>
-    <div class="bars" data-result-bars></div>
-    <p class="pick-line" data-result-pick></p>
-    <p class="small" data-result-meta>About 250 ms. About 900 tokens. One dollar pays for about 27,000 of these calls.</p>
-  </div>
-  <div class="reader"><p>Here is one real call. I sent the words “wine cork” and the question with six options. Jev answered “brown” with 95% probability, in about a quarter of a second. Choose another item to see its saved answer.</p></div>
-  <aside class="notes">Click another item if useful. Optional: if the wifi is good, run it live in the terminal and take one item from the room.</aside>
-</section>
-
-<!-- 12 -->
-<section class="slide" id="real-call" data-title="The real call">
-  <div class="slide-body">
-    <h2>The real call</h2>
-    <div class="code-cols">
-      <div class="stack"><p class="small">What I sent (one of the five questions)</p><pre data-json="request"></pre></div>
-      <div class="stack"><p class="small">What Jev sent back</p><pre data-json="response"></pre></div>
-    </div>
-  </div>
-  <div class="reader"><p>This is the real request and answer for the wine cork, for one of the five questions in the call. The full call is in the repo.</p></div>
-  <aside class="notes">Point at: the item, the question, the options. Then the answer: the choice, the confidence, a probability for every option, and the token count.</aside>
-</section>
-
-<!-- 13 -->
-<section class="slide" id="small-questions" data-title="Ask small questions">
-  <div class="slide-body">
-    <h2>Ask small questions</h2>
+    <h2>A second way: ask small questions</h2>
+    <p class="big">One call, five questions, the same state.</p>
     <div class="cols">
       <ol class="list-big list-num">
-        <li>Where should it go?</li>
-        <li>What is it made of?</li>
-        <li>Is it packaging?</li>
-        <li>Is it a glass bottle or jar?</li>
-        <li>How much food or oil is on it?</li>
+        <li>Where should it go? <span class="term">choice</span></li>
+        <li>What is it made of? <span class="term">choice</span></li>
+        <li>Is it packaging? <span class="term">noul</span></li>
+        <li>Is it a glass bottle or jar? <span class="term">noul</span></li>
+        <li>How much food or oil is on it? <span class="term">score</span></li>
       </ol>
       <div>
         <p class="chart-title">paper napkin with oil on it</p>
         <table class="answers"><tbody data-small-answers></tbody></table>
       </div>
     </div>
+    <p class="small">Five questions take about the same time as one.</p>
   </div>
-  <div class="reader"><p>You can ask several small questions in the same call. They are answered at the same time, so it is not slower.</p></div>
-  <aside class="notes">One call, five questions. The first is the direct question. The other four are small facts about the item.</aside>
+  <div class="reader"><p>One call can hold many questions about the same state. They are answered at the same time, and they cannot see each other's answers.</p></div>
+  <aside class="notes">“Question 1 is the direct question. Questions 2 to 5 are small facts. They are answered together and cannot see each other. Why ask small facts when the direct question works? Next slide.”</aside>
 </section>
 
-<!-- 14 -->
+<!-- 10 -->
 <section class="slide" id="code-decides" data-title="Your code decides">
   <div class="slide-body">
     <h2>Your code decides</h2>
@@ -245,10 +217,10 @@
     </div>
   </div>
   <div class="reader"><p>The rules are normal code, so you can read them, test them and change them. My first paper rule sent an oily napkin to the blue bin. I changed one number, and it was fixed without calling Jev again.</p></div>
-  <aside class="notes">Jev answers the small questions. My code makes the decision. When I fixed the rule, I did not call the model again, because I already had its answers.</aside>
+  <aside class="notes">“Jev answers the small questions. My code makes the decision. When I fixed the rule, I did not call the model again; I already had its answers. This is how TypeSafe says to build: code owns the decision, the model supplies the judgment.”</aside>
 </section>
 
-<!-- 15 -->
+<!-- 11 -->
 <section class="slide" id="results" data-title="42 everyday items">
   <div class="slide-body">
     <h2><span data-k="recycle.items">42</span> everyday items</h2>
@@ -256,71 +228,54 @@
       <div><p class="stat-num"><span data-k="recycle.direct_right">36</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with the direct question</p></div>
       <div><p class="stat-num"><span data-k="recycle.rules_right">33</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with small questions + my rules</p></div>
     </div>
-    <p class="big">Every mistake in my rules came with “not sure”.</p>
-    <p class="small"><span data-k="recycle.unclear">6</span> more items have no clear answer from the city.</p>
+    <p class="big"><span data-k="recycle.flagged">8</span> items said “not sure”. The 3 mistakes were among them.</p>
+    <p class="small"><span data-k="recycle.unclear">6</span> items: the city has no clear answer.</p>
     <details class="all-items">
       <summary>See all <span data-k="recycle.items">42</span> items</summary>
       <div class="table-scroll"><table class="items"><thead><tr><th>Item</th><th>City</th><th>Jev, direct</th><th>Sure?</th><th>My rules</th><th>Rules not sure about</th></tr></thead><tbody data-all-items></tbody></table></div>
     </details>
   </div>
-  <div class="reader"><p>I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question was right every time, because the city's rules are in the options. My rules were wrong three times, and each time the code said it was not sure.</p></div>
-  <aside class="notes">The direct question won here, because the city's rules are in the options. My rules were weaker, but every mistake came with a warning.</aside>
+  <div class="reader"><p>I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question was right every time, because the city's list is in the criteria. My rules were wrong three times, and each time the code said it was not sure.</p></div>
+  <aside class="notes">“The direct question wins here because the city's list is in the criteria, so it is close to a lookup. Small questions give you facts you can reuse and rules you can change. Pick by your problem.”</aside>
 </section>
 
-<!-- 16 -->
-<section class="slide" id="three-answers" data-title="Three answers">
-  <div class="slide-body">
-    <h2>Three answers</h2>
-    <div class="cols-3">
-      <div class="card">
-        <p class="card-label">Broken drinking glass</p>
-        <p class="card-big"><span class="chip" data-bin="green_point">Green Point</span></p>
-        <p class="muted">100%. Not the green bin.</p>
-      </div>
-      <div class="card">
-        <p class="card-label">Coffee capsule</p>
-        <p class="card-big"><span class="chip" data-bin="yellow">yellow</span></p>
-        <p class="muted">My rules, and “not sure”. The city says Green Point.</p>
-      </div>
-      <div class="card">
-        <p class="card-label">Used pen</p>
-        <p class="card-big">47% / 45%</p>
-        <p class="muted">Green Point or grey. Not sure, and the city's own pages do not agree.</p>
-      </div>
-    </div>
-  </div>
-  <div class="reader"><p>Three answers worth a look. The broken glass goes to a Green Point, not the green bin. For the coffee capsule my rules were wrong, but they said “not sure”. For the used pen Jev is not sure, and neither is the city.</p></div>
-  <aside class="notes">For the pen, “not sure” is the honest answer.</aside>
-</section>
-
-<!-- 17 -->
-<section class="slide slide--section" id="every-proposal" data-title="Example 2: Every proposal in the city">
+<!-- 12 -->
+<section class="slide slide--section dense" id="every-proposal" data-title="Every proposal in the city">
   <div class="slide-body">
     <div class="slide-title-row">
       <p class="eyebrow">Example 2</p>
       <h2>Every proposal in the city</h2>
+      <p class="lead">decidim.barcelona, 2018 to 2026, mostly in Catalan</p>
     </div>
-    <div class="stats">
-      <div><p class="stat-num" data-k="decidim.proposals">35,768</p><p class="stat-label">proposals on decidim.barcelona</p></div>
-      <div><p class="stat-num" data-k="decidim.minutes">20 min</p><p class="stat-label">5 questions about each one</p></div>
-      <div><p class="stat-num" data-k="decidim.cost">$1.34</p><p class="stat-label">for all of it</p></div>
+    <div class="stats stats--4">
+      <div><p class="stat-num" data-k="decidim.proposals">35,768</p><p class="stat-label">proposals</p></div>
+      <div><p class="stat-num">5</p><p class="stat-label">questions about each one</p></div>
+      <div><p class="stat-num" data-k="decidim.minutes">20 min</p><p class="stat-label">for all of them</p></div>
+      <div><p class="stat-num" data-k="decidim.cost">$1.34</p><p class="stat-label">in total</p></div>
     </div>
+    <ul class="kinds-list">
+      <li>main topic <span class="term">choice</span></li>
+      <li>about tourism? <span class="term">noul</span></li>
+      <li>describes a problem? <span class="term">noul</span></li>
+      <li>how big a change? <span class="term">score</span></li>
+      <li>about children? <span class="term">noul</span></li>
+    </ul>
   </div>
   <div class="reader"><p>Barcelona has a public website where people and groups send proposals to the city: more than 35,000 since 2018, mostly in Catalan. I asked Jev five questions about every one. It took 20 minutes and cost $1.34. Jev is trained mostly on English; on a sample, its topic agreed with the city's own label about 8 times in 10.</p></div>
-  <aside class="notes">The text is in Catalan and Spanish, and Jev is trained mostly on English, so I checked a sample: it agreed with the city's own topic labels about 8 times in 10.</aside>
+  <aside class="notes">“Same shape as the bins, but here the state is a title and up to 2,000 characters of Catalan. Jev is trained mostly on English, so I checked a sample: its topic agreed with the city's own label about 8 times in 10. The 20 minutes was my own rate limit, 30 calls a second.”</aside>
 </section>
 
-<!-- 18 -->
+<!-- 13 -->
 <section class="slide" id="topics" data-title="What the proposals are about">
   <div class="slide-body">
     <h2>What the proposals are about</h2>
     <div class="topics" data-topics></div>
   </div>
-  <div class="reader"><p>The main topic of every proposal, as Jev chose it from ten options.</p></div>
-  <aside class="notes">Education and culture, mobility and social topics are the biggest. Tourism is the main topic of only 583, but it is mentioned in about 1,300.</aside>
+  <div class="reader"><p>The main topic of every proposal, as Jev chose it from ten criteria.</p></div>
+  <aside class="notes">“Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a problem” question was weak, about 45% unsure, so I do not show it.</aside>
 </section>
 
-<!-- 19 -->
+<!-- 14 -->
 <section class="slide slide--statement" id="cheap" data-title="When reading gets cheap">
   <div class="slide-body">
     <h2>When reading gets cheap</h2>
@@ -332,7 +287,7 @@
   <aside class="notes">Could one person read them all? Not really. When something gets very cheap, people find new uses for it.</aside>
 </section>
 
-<!-- 20 -->
+<!-- 15 -->
 <section class="slide" id="when" data-title="When to use it, and when not">
   <div class="slide-body">
     <h2>When to use it, and when not</h2>
@@ -348,10 +303,10 @@
     </div>
   </div>
   <div class="reader"><p>Jev is good when a program needs a quick decision about some text. It is not good at writing, at maths or at dates, and it cannot look at images. It works together with chat models; it does not replace them.</p></div>
-  <aside class="notes">It works with LLMs, not instead of them. TypeSafe publishes this list of weak points themselves.</aside>
+  <aside class="notes">“TypeSafe publishes this list themselves. It works with LLMs, not instead of them.”</aside>
 </section>
 
-<!-- 21 -->
+<!-- 16 -->
 <section class="slide" id="becoming-normal" data-title="This is becoming normal">
   <div class="slide-body">
     <h2>This is becoming normal</h2>
@@ -367,13 +322,13 @@
   <aside class="notes">It is built on GPT-6 Luna. The numbers are OpenAI's own.</aside>
 </section>
 
-<!-- 22 -->
+<!-- 17 -->
 <section class="slide slide--section" id="remember" data-title="Three things to remember">
   <div class="slide-body">
     <h2>Three things to remember</h2>
     <ol class="list-big list-num">
-      <li>Chat models write for people. Jev decides for programs.</li>
-      <li>Write your rules in the options. Ask small questions. Let your code decide.</li>
+      <li>LLMs write for people. Jev decides for programs.</li>
+      <li>Write your rules in the criteria. Ask small questions. Let your code decide.</li>
       <li>Use “not sure”.</li>
     </ol>
     <p class="links"><a href="https://docs.typesafe.ai">docs.typesafe.ai</a> <a href="https://github.com/bkarlovitz/jev-ai-builders-bcn">github.com/bkarlovitz/jev-ai-builders-bcn</a></p>
@@ -388,7 +343,7 @@
 
 <nav class="controls" aria-label="Slide controls">
   <button type="button" data-act="prev" aria-label="Previous">←</button>
-  <span class="count" data-count>1 / 22</span>
+  <span class="count" data-count>1 / 17</span>
   <button type="button" data-act="next" aria-label="Next">→</button>
   <span class="sep" aria-hidden="true"></span>
   <button type="button" data-act="overview" title="All slides (O)">All</button>

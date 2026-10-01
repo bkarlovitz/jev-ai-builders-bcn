@@ -1,16 +1,13 @@
 # What is Jev, and why should I use it?
 
-Outline and speaker notes. AI Builders, Barcelona, 2 October 2026.
+Outline. AI Builders, Barcelona, 2 October 2026.
 
-**Status: draft 3. One section here = one slide in `site/index.html`.** Keep the two in step.
+**Status: draft 4, after the structure review. One section here = one slide in `site/index.html`.** Keep the two in step.
 
-Each slide has three parts:
+The recycling example teaches every concept, from slide 3 on. Decidim shows the same pattern at volume.
+Speaker notes are also in `talk/speaker-notes.md`.
 
-- **On screen:** what the room sees. "Then:" marks a part that appears on the next key press.
-- **Reader text:** one or two plain sentences for someone reading the page later. Hidden while presenting.
-- **Speaker notes:** what Bryan says live. Shown only in the speaker view.
-
-22 slides, about 13 minutes. Times are rough.
+17 slides, about 12 minutes. Times are rough. Two reveal steps: slides 3 and 5.
 
 ---
 
@@ -19,181 +16,159 @@ Each slide has three parts:
 ### 1. Title (0:20)
 
 - **On screen:** Only the title, centred: "What is Jev, and why should I use it?" Under it, a QR code to the
-  published deck. (The QR code is a placeholder until the address is known.)
+  published deck (placeholder until the address is known).
 - **Reader text:** none.
-- **Speaker notes:** Name, one line about me. "You have probably heard of Jev. I spent some time building with
-  it, and this is what I learned."
+- **Speaker notes:** Name, one line about me. “You have probably heard of Jev. I spent some time building with
+  it, and this is what I learned.”
 
-### 2. Reads like an LLM. Doesn't write like one. (0:45)
+### 2. Jev next to an LLM (0:50)
 
-- **On screen:** Table, LLM vs Jev. Output: text, one token at a time / typed answers you define in advance.
-  Your code: parses the text and checks it / uses the values directly. Post-training: RLHF, answers people
-  prefer / RLCD, calibrated decisions. Confidence: only if you ask, often overconfident / a probability for
-  every option, every time.
-- **Reader text:** Jev understands language like an LLM, but it is trained to output decisions with
+- **On screen:** Table, LLM vs Jev. What it gives back: text / one of your answers, with a probability for
+  each. Who it is for: a person reads it / your code uses it directly. How sure it is: no probability for each
+  answer / a probability for every answer, every time. Footer: "TypeSafe calls this a System One model."
+- **Reader text:** Jev understands language like an LLM, but it is trained to give back decisions with
   probabilities, not text.
-- **Speaker notes:** "Is Jev an LLM? It understands language like one. TypeSafe calls it a new class of model,
-  a System One model, because of what it's trained to output: decisions with probabilities, not text." In passing:
-  it is fast and cheap because it produces all answers in one pass and does not write. TypeSafe says a typical
-  call takes about 100 ms; from my laptop it was about 250 ms. $0.042 per million input tokens, and output
-  tokens are free.
+- **Speaker notes:** “Is Jev an LLM? It understands language like one. It does not write. It is trained to
+  give calibrated probabilities, which TypeSafe calls RLCD, instead of text that people like, which is RLHF.”
+  If someone thinks of JSON mode: “JSON mode fixes the format of an LLM's answer. It still writes one token at
+  a time, and it does not give you a probability for every answer.” In passing: about 100 ms according to
+  TypeSafe, about 250 ms from my laptop; $0.042 per million input tokens, and the answers are free.
 
-### 3. One call (0:30)
+## Example 1: Which bin? (teaches how Jev works)
 
-- **On screen:** your text "The app logs me out every time I close it." → your question and options: "What is
-  it about?" bug · feature request · billing · praise → Jev's answer: bug. "You write the question and the
-  options. Jev picks one."
-- **Reader text:** none.
-- **Speaker notes:** Jev gets your text, here one customer message, and a question with options that you write.
-  It answers with one of your options. One call can hold many questions; they run in parallel against the same
-  text and cannot see each other's answers.
+### 3. Which bin? (0:30)
 
-### 4. Choice: pick one option (0:30)
-
-- **On screen:** "The app logs me out every time I close it." "What is it about?" Bars: bug 100%, feature
-  request 0%, billing 0%, praise 0%. "You get the pick, and a probability for every option."
-- **Reader text:** none.
-- **Speaker notes:** Choice: you get the pick and a probability for every option. The answer also has a
-  confidence number, which sums up how peaked the probabilities are.
-
-### 5. Score: pick a level (0:30)
-
-- **On screen:** "How upset is the customer?" A 0-2 scale: 0 calm, 1 a little annoyed, 2 angry or leaving.
-  "Love the new dark mode!" 0.00, "The app logs me out…" 0.97, "…I'm cancelling." 2.00. "You describe the
-  levels. Jev places the text on them."
-- **Reader text:** none.
-- **Speaker notes:** Score: you describe each level in words. The answer can land between two levels. Read it
-  as a position on your levels, not as a measurement.
-
-### 6. Noul: yes or no, as a probability (0:30)
-
-- **On screen:** "Does it ask for a refund?" "I was charged twice. Please refund one." 0.99, "Do you offer
-  refunds?" 0.39, "Love the new dark mode!" 0.00. "Near 1: yes. Near 0: no. In the middle: not sure."
-- **Reader text:** none.
-- **Speaker notes:** Noul: one number, the probability that the answer is yes. "Do you offer refunds?" asks
-  about refunds but does not ask for one, and Jev is not sure. A Noul has no separate confidence number.
-
-### 7. "I'm not sure" is useful (0:50)
-
-- **On screen:** Topic bars for "Love the new dark mode!" (praise 100%, sure) and for "Small thing: the export
-  button is hard to find." (feature request 69%, bug 31%, not sure). "Sure → act. Not sure → check, or ask a
-  person."
-- **Reader text:** Jev gives a probability for every option. When one option has almost all of it, Jev is
-  sure. When it is spread over several options, Jev is not sure, and your program can ask a person.
-- **Speaker notes:** The model tells you how sure it is, and your program can use that. High confidence does
-  not mean the answer is correct. It means the model did not hesitate.
-
-### 8. Which bin? (0:30)
-
-- **On screen:** The six places: yellow, blue, green, brown, grey, Green Point. "Where does a wine cork go?"
-  "brown. Cork is organic."
+- **On screen:** Example 1. The six places (yellow, blue, green, brown, grey, Green Point). "Where does a wine
+  cork go?" Next key (reveal): "brown. Cork is organic."
 - **Reader text:** Barcelona has five street bins. Some things do not go in any bin: you take them to a
-  recycling centre called a Green Point.
-- **Speaker notes:** Ask the room, calmly: "Where does a wine cork go?" Wait. "Brown. It is
-  organic."
+  recycling centre called a Green Point. It is not always clear where something goes.
+- **Speaker notes:** Ask the room, calmly: “Where does a wine cork go?” Wait. Next key: “Brown. It is
+  organic.” Then: “The city has rules. Let's give the rules to Jev.”
 
-### 9. Your rules go in the options (0:30)
+### 4. The city's rules (0:30)
 
-- **On screen:** The six option descriptions, as sent to Jev. "The descriptions come from the city's website."
-- **Reader text:** I did not teach Jev anything about Barcelona. I wrote the city's rules into the options, in
-  plain words. Jev reads the item, reads the options, and picks.
-- **Speaker notes:** This is the main idea of building with Jev: you write your rules as options. These six
-  descriptions are the city's rules, made short.
+- **On screen:** Six rows: the bin chip, a short name, one line of examples from the city's rules (yellow
+  packaging, blue paper and cardboard, green glass, brown organic, grey general waste, Green Point not a
+  street bin). In the brown row, the word corks is highlighted. Footer: Written from the city's website. /
+  Next: give these rules to Jev.
+- **Reader text:** I did not teach Jev anything about Barcelona. I wrote the city's rules in plain words. They
+  are shortened here; the full text sent to Jev is in the repo.
+- **Speaker notes:** “The city publishes rules. Here they are, in plain words. Cork is in the brown line. Now
+  let's give these six lines to Jev, exactly like this.”
 
-### 10. My first options were wrong (0:35)
+### 5. One call (1:00)
 
-- **On screen:** "broken drinking glass". Bars with my first options (grey 99%). bars with the city's
-  rules (Green Point 100%). "Jev follows the rules you give it."
-- **Reader text:** My first version had five options, and I wrote "broken glass" under the grey bin. Jev said
-  grey, and it was 99% sure. The city says broken glass goes to a Green Point. When I fixed the options, Jev
-  said Green Point.
-- **Speaker notes:** My first version had a mistake. I wrote "broken glass" under the grey bin. Jev said grey,
-  99% sure. But the city says broken glass goes to a Green Point. When I fixed the options, Jev said Green
-  Point. It follows the rules you give it, so the rules must be right.
+- **On screen:** Two columns, I send / Jev sends back, and a tag: type choice. Left: state wine cork (big),
+  instructions In Barcelona, where should `item` go?, criteria the six bin chips, the six rules you just saw.
+  Next key (reveal) shows the right: choice brown (big), confidence 0.93, probabilities brown 95%, Green Point
+  5%, the other 4 0%. Small: 225 ms, 882 tokens, about 27,000 calls for one dollar.
+- **Reader text:** This is a real call. The state is the item. The question has instructions and criteria. Jev
+  sends back its choice, a probability for every criterion, and a confidence number. The same request also had
+  four more questions; see “Ask small questions”.
+- **Speaker notes:** Step 1, the left side: “State is the text Jev reads. The question has instructions and
+  criteria. The criteria are the six rules from the last slide, word for word.” Next key, the right side: “Jev
+  gives a probability for every criterion. The choice is the highest. Confidence says how concentrated that
+  is. That is the whole API. This question type is a Choice; there are two more.”
 
-### 11. One item, one call (0:40)
+### 6. Score: a position on your levels (0:40)
 
-- **On screen:** Item buttons (wine cork, broken drinking glass, yogurt pot, used pen, coffee capsule). Bars
-  for the wine cork: brown 95%, Green Point 5%. "brown. Confidence 0.93." "225 ms. 882 tokens sent. One
-  dollar pays for about 27,000 of these calls."
-- **Reader text:** Here is one real call. I sent the words "wine cork" and the question with six options. Jev
-  answered "brown" with 95% probability, in about a quarter of a second.
-- **Speaker notes:** Click another item if useful. Optional: if the wifi is good, run it live in the terminal
-  and take one item from the room.
+- **On screen:** Same frame, tag: type score. Left: state paper napkin with oil on it, instructions How much
+  food or oil is on `item`?, criteria levels in order 0 clean or almost clean / 1 a little food on it / 2
+  covered or soaked in food or oil. Right: score 1.35 (big), confidence 0.46, probabilities 0 clean 0%, 1 a
+  little 64%, 2 covered 36%. Line: Between level 1 and level 2: a position, not a measurement.
+- **Reader text:** A Score question has levels that you describe in words, in order. Jev gives a probability
+  for each level, and the score is the weighted average, so it can land between two levels.
+- **Speaker notes:** “Same frame. The criteria are now levels, in order. Jev does not pick one; it gives a
+  probability for each level, and the score is the weighted average, so it can land between two. For this
+  napkin: between ‘a little’ and ‘covered’. The city only needs clean or not clean. My code decides where to
+  cut; that comes later.”
 
-### 12. The real call (0:30)
+### 7. Noul: yes or no, as one number (0:35)
 
-- **On screen:** The JSON I sent (one of the five questions). the JSON Jev sent back.
-- **Reader text:** This is the real request and answer for the wine cork, for one of the five questions in the
-  call. The full call is in the repo.
-- **Speaker notes:** Point at: the item, the question, the options. Then the answer: the choice, the
-  confidence, a probability for every option, and the token count.
+- **On screen:** Same frame, tag: type noul. Left: state wine cork, instructions Is `item` packaging, or a
+  container that held a product?, criteria none needed. Right: noul 0.37 (big), and a no-to-yes line with a
+  mark at 0.5: wine cork 0.37 (big dot), old newspaper 0.15 and water bottle 0.97 (small). Line: Near 1: yes.
+  Near 0: no. Near 0.5: not sure.
+- **Reader text:** A Noul is a yes-or-no question. Jev gives back one number: the probability that the answer
+  is yes. It needs no criteria.
+- **Speaker notes:** “Third type. Yes or no, as a probability. No criteria needed. Is a cork packaging? 0.37:
+  Jev is not sure, and that is fair. It does not mean ‘a little bit packaging’; it means yes and no are both
+  possible. Which brings us to the useful part.”
 
-### 13. Ask small questions (0:35)
+### 8. “Not sure” is useful (0:50)
 
-- **On screen:** Five questions in one call: Where should it go? What is it made of? Is it packaging? Is it a
-  glass bottle or jar? How much food or oil is on it? the answers for "paper napkin with oil on it".
-- **Reader text:** You can ask several small questions in the same call. They are answered at the same time,
-  so it is not slower.
-- **Speaker notes:** One call, five questions. The first is the direct question. The other four are small facts
-  about the item.
+- **On screen:** Bin bars for "old newspaper" (blue 100%, `confidence` 1.00) and "used pen" (Green Point 47%,
+  grey 45%, `confidence` 0.36). "Sure → act. Not sure → check, or ask a person." "For a Noul, look at how
+  close it is to 0.5."
+- **Reader text:** Confidence tells you how concentrated the probabilities are. Your program can act on a sure
+  answer and send an unsure one to a person.
+- **Speaker notes:** “Confidence tells you how concentrated the probabilities are. TypeSafe suggests starting
+  around 0.8 to act and below 0.5 to ask a person, and tuning it for your case. My demo uses 0.6. For the pen,
+  the city is also unclear: its two pages disagree, between grey and yellow.”
 
-### 14. Your code decides (0:45)
+### 9. A second way: ask small questions (0:40)
 
-- **On screen:** "Glass, but not a bottle or jar → Green Point." "Paper, and not clean → brown." "A small
-  answer is not sure → check the city guide." "My first paper rule was wrong. I changed one number.
-  CLEAN_PAPER_BELOW = 1.5 → 0.5. Oily napkin: blue (wrong) → brown. No new call to Jev."
+- **On screen:** "One call, five questions, the same state." 1 Where should it go? `choice` / 2 What is it
+  made of? `choice` / 3 Is it packaging? `noul` / 4 Is it a glass bottle or jar? `noul` / 5 How much food or
+  oil is on it? `score`. Right: answers for "paper napkin with oil on it": brown, paper, 0.11, 0.01, 1.35 (not
+  sure). "Five questions take about the same time as one."
+- **Reader text:** One call can hold many questions about the same state. They are answered at the same time,
+  and they cannot see each other's answers.
+- **Speaker notes:** “Question 1 is the direct question. Questions 2 to 5 are small facts. They are answered
+  together and cannot see each other. Why ask small facts when the direct question works? Next slide.”
+
+### 10. Your code decides (0:50)
+
+- **On screen:** Rules in plain words: glass, but not a bottle or jar → Green Point; paper, and not clean →
+  brown; a small answer is not sure → "check the city guide". Callout: "My first paper rule was wrong. I
+  changed one number. CLEAN_PAPER_BELOW = 1.5 → 0.5. Oily napkin: blue (wrong) → brown. No new call to Jev."
 - **Reader text:** The rules are normal code, so you can read them, test them and change them. My first paper
   rule sent an oily napkin to the blue bin. I changed one number, and it was fixed without calling Jev again.
-- **Speaker notes:** Jev answers the small questions. My code makes the decision. When I fixed the rule, I did
-  not call the model again, because I already had its answers.
+- **Speaker notes:** “Jev answers the small questions. My code makes the decision. When I fixed the rule, I
+  did not call the model again; I already had its answers. This is how TypeSafe says to build: code owns the
+  decision, the model supplies the judgment.”
 
-### 15. 42 everyday items (0:40)
+### 11. 42 everyday items (0:40)
 
 - **On screen:** "36 of 36: right with the direct question." "33 of 36: right with small questions + my
-  rules." "Every mistake in my rules came with 'not sure'." "6 more items have no clear answer from the
-  city."
+  rules." "8 items said not sure. The 3 mistakes were among them." "6 items: the city has no clear answer."
+  (The full table of 42 items shows only in the long-page view.)
 - **Reader text:** I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question
-  was right every time, because the city's rules are in the options. My rules were wrong three times, and each
+  was right every time, because the city's list is in the criteria. My rules were wrong three times, and each
   time the code said it was not sure.
-- **Speaker notes:** The direct question won here, because the city's rules are in the options. My rules were
-  weaker, but every mistake came with a warning.
+- **Speaker notes:** “The direct question wins here because the city's list is in the criteria, so it is close
+  to a lookup. Small questions give you facts you can reuse and rules you can change. Pick by your problem.”
 
-### 16. Three answers (0:35)
+## Example 2: Every proposal in the city (volume)
 
-- **On screen:** Broken drinking glass: Green Point, 100%, not the green bin. coffee capsule: my rules
-  said yellow, and "not sure"; the city says Green Point. used pen: 47% / 45%, Green Point or grey; the
-  city's own pages do not agree.
-- **Reader text:** The broken glass goes to a Green Point, not the green bin. For the coffee capsule my rules
-  were wrong, but they said "not sure". For the used pen Jev is not sure, and neither is the city.
-- **Speaker notes:** For the pen, "not sure" is the honest answer.
+### 12. Every proposal in the city (0:40)
 
-## Example 2: Every proposal in the city
+- **On screen:** Example 2. "decidim.barcelona, 2018 to 2026, mostly in Catalan." 35,768 proposals / 5
+  questions about each one / 20 min for all of them / $1.34 in total. The five questions with their types:
+  main topic `choice`, about tourism? `noul`, describes a problem? `noul`, how big a change? `score`, about
+  children? `noul`.
+- **Reader text:** Barcelona has a public website where people and groups send proposals to the city: more
+  than 35,000 since 2018, mostly in Catalan. I asked Jev five questions about every one. It took 20 minutes
+  and cost $1.34. Jev is trained mostly on English; on a sample, its topic agreed with the city's own label
+  about 8 times in 10.
+- **Speaker notes:** “Same shape as the bins, but here the state is a title and up to 2,000 characters of
+  Catalan. Jev is trained mostly on English, so I checked a sample: its topic agreed with the city's own label
+  about 8 times in 10. The 20 minutes was my own rate limit, 30 calls a second.”
 
-### 17. Every proposal in the city (0:40)
+### 13. What the proposals are about (0:30)
 
-- **On screen:** "35,768 proposals on decidim.barcelona." "20 min: 5 questions about each one."
-  "$1.34 for all of it."
-- **Reader text:** Barcelona has a public website where people and groups send proposals to the city: more than
-  35,000 since 2018, mostly in Catalan. I asked Jev five questions about every one. It took 20 minutes and cost
-  $1.34. On a sample, its topic agreed with the city's own label about 8 times in 10.
-- **Speaker notes:** The text is in Catalan and Spanish, and Jev is trained mostly on English, so I checked a
-  sample: it agreed with the city's own topic labels about 8 times in 10.
-
-### 18. What the proposals are about (0:30)
-
-- **On screen:** Bar chart of the main topic: education and culture 6,847 · mobility 6,177 · social 5,517 ·
-  public space 5,327 · environment 4,803 · economy 2,022 · government 1,839 · housing 1,529 · other 1,124 ·
+- **On screen:** Bar chart of the main topic: education and culture 6,847 / mobility 6,177 / social 5,517 /
+  public space 5,327 / environment 4,803 / economy 2,022 / government 1,839 / housing 1,529 / other 1,124 /
   tourism 583.
-- **Reader text:** The main topic of every proposal, as Jev chose it from ten options.
-- **Speaker notes:** Education and culture, mobility and social topics are the biggest. Tourism is the main
-  topic of only 583, but it is mentioned in about 1,300.
+- **Reader text:** The main topic of every proposal, as Jev chose it from ten criteria.
+- **Speaker notes:** “Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a
+  problem” question was weak, about 45% unsure, so I do not show it.
 
-### 19. When reading gets cheap (0:35)
+### 14. When reading gets cheap (0:30)
 
-- **On screen:** "One person, one minute for each proposal: about 600 hours." "Jev: 20 minutes and
-  $1.34." "When something gets very cheap, people find new uses for it. That idea comes from the
-  economist William Stanley Jevons, and it is where the name Jev comes from."
+- **On screen:** "One person, one minute for each proposal: about 600 hours." "Jev: 20 minutes and $1.34."
+  "When something gets very cheap, people find new uses for it. That idea comes from the economist William
+  Stanley Jevons, and it is where the name Jev comes from."
 - **Reader text:** Reading every proposal would take one person about 600 hours. Jev did it in 20 minutes for
   $1.34. When something gets very cheap, people find new uses for it: that is the idea behind the name Jev.
 - **Speaker notes:** Could one person read them all? Not really. When something gets very cheap, people find
@@ -201,30 +176,30 @@ Each slide has three parts:
 
 ## Closing
 
-### 20. When to use it, and when not (0:45)
+### 15. When to use it, and when not (0:40)
 
 - **On screen:** Good for: sorting and routing, checking and scoring, big piles of text, things that must be
-  fast. not good for: writing text, maths and dates, text that tries to trick it, images.
+  fast. Not good for: writing text, maths and dates, text that tries to trick it, images.
 - **Reader text:** Jev is good when a program needs a quick decision about some text. It is not good at
-  writing, at maths or at dates, and it cannot look at images. It works together with chat models; it does
-  not replace them.
-- **Speaker notes:** It works with LLMs, not instead of them. TypeSafe publishes this list of weak points
-  themselves.
+  writing, at maths or at dates, and it cannot look at images. It works together with chat models; it does not
+  replace them.
+- **Speaker notes:** “TypeSafe publishes this list themselves. It works with LLMs, not instead of them.”
 
-### 21. This is becoming normal (0:35)
+### 16. This is becoming normal (0:25)
 
-- **On screen:** "OpenAI Decisions API, announced 29 September 2026." The same idea · about 150 ms · text and
-  images · limited preview, no price yet.
+- **On screen:** "OpenAI Decisions API, announced 29 September 2026." The same idea / about 150 ms / text and
+  images / limited preview, no price yet.
 - **Reader text:** Three days before this talk, OpenAI announced a product with the same idea. So this is
   becoming a kind of model, not one product from one company.
 - **Speaker notes:** It is built on GPT-6 Luna. The numbers are OpenAI's own.
 
-### 22. Three things to remember (0:30)
+### 17. Three things to remember (0:30)
 
-- **On screen:** 1. Chat models write for people. Jev decides for programs. 2. Write your rules in the
-  options. Ask small questions. Let your code decide. 3. Use "not sure". Links: docs.typesafe.ai and
-  this repo.
-- **Reader text:** The code, the saved results and the speaker notes are all in the repo, with the sources.
+- **On screen:** 1. LLMs write for people. Jev decides for programs. 2. Write your rules in the criteria. Ask
+  small questions. Let your code decide. 3. Use "not sure". Links: docs.typesafe.ai and this repo.
+- **Reader text:** The code, the saved results and the speaker notes are all in the repo. Sources: TypeSafe AI
+  documentation; Ajuntament de Barcelona street bins page and Waste Finder; Decidim Barcelona open data;
+  OpenAI DevDay 2026 recap. All results were saved on 30 September 2026 with jev-1.13.0.
 - **Speaker notes:** Thank you. Questions.
 
 ---
@@ -237,9 +212,9 @@ Each slide has three parts:
 | "about 100 ms" | docs.typesafe.ai, How to build with TypeSafe |
 | About 250 ms round trip; about 60 ms inside TypeSafe | `captures/recycle/_summary.json` (median of 42 calls: 254 ms and 64 ms) |
 | Wine cork: brown 95%, confidence 0.93, 225 ms, 882 tokens | `captures/recycle/wine-cork.json` |
-| Slides 3 to 7: customer messages and their answers | `captures/basics/` (`python demos/basics.py`) |
+| Wine cork, newspaper, pen, napkin, pizza box, water bottle answers | `captures/recycle/*.json` |
 | About 27,000 calls per dollar | 882 input tokens × $0.042 per million |
-| 36 of 36, 33 of 36, 6 unclear | `captures/recycle/_summary.json` |
+| 36 of 36, 33 of 36, 8 not sure, 6 unclear | `captures/recycle/_summary.json` |
 | Broken glass: grey 99% in the first version | `captures/recycle-v1/broken-drinking-glass.json` |
 | 35,768 proposals; 178,840 answers; 20 minutes; $1.34 | `captures/decidim/summary.json` (1,195 seconds, 31.9 million input tokens) |
 | Topic counts | `captures/decidim/summary.json` |

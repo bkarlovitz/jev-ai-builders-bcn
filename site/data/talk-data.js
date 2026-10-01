@@ -7,6 +7,12 @@ window.TALK_DATA = {
    "billing",
    "praise"
   ],
+  "topic_criteria": {
+   "bug": "Something in the app is broken or does not work as expected.",
+   "feature_request": "The customer asks for something new or for a change.",
+   "billing": "Payments, charges, prices, refunds or subscriptions.",
+   "praise": "The customer says something positive about the app."
+  },
   "upset_levels": [
    "Calm or happy.",
    "A little annoyed.",
@@ -205,6 +211,12 @@ window.TALK_DATA = {
     "is_packaging": 0.97,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 1.0,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [],
@@ -230,6 +242,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.94,
     "dirt": 0.02,
+    "dirt_probabilities": {
+     "0": 0.99,
+     "1": 0.01,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.97,
     "rules_bin": "green",
     "rules_reason": "glass bottle or jar",
     "rules_unsure": [],
@@ -255,6 +273,12 @@ window.TALK_DATA = {
     "is_packaging": 0.15,
     "glass_bottle": 0.01,
     "dirt": 0.07,
+    "dirt_probabilities": {
+     "0": 0.95,
+     "1": 0.03,
+     "2": 0.02
+    },
+    "dirt_confidence": 0.89,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -280,6 +304,12 @@ window.TALK_DATA = {
     "is_packaging": 0.11,
     "glass_bottle": 0.01,
     "dirt": 0.24,
+    "dirt_probabilities": {
+     "0": 0.77,
+     "1": 0.21,
+     "2": 0.02
+    },
+    "dirt_confidence": 0.63,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -305,6 +335,12 @@ window.TALK_DATA = {
     "is_packaging": 0.05,
     "glass_bottle": 0.01,
     "dirt": 0.02,
+    "dirt_probabilities": {
+     "0": 0.99,
+     "1": 0.01,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.96,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [
@@ -332,6 +368,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 0.01,
+    "dirt_probabilities": {
+     "0": 0.99,
+     "1": 0.01,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.98,
     "rules_bin": "yellow",
     "rules_reason": "metal packaging",
     "rules_unsure": [],
@@ -357,6 +399,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 0.02,
+    "dirt_probabilities": {
+     "0": 0.98,
+     "1": 0.02,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.97,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -382,6 +430,12 @@ window.TALK_DATA = {
     "is_packaging": 0.94,
     "glass_bottle": 0.11,
     "dirt": 0.69,
+    "dirt_probabilities": {
+     "0": 0.54,
+     "1": 0.23,
+     "2": 0.23
+    },
+    "dirt_confidence": 0.0,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [],
@@ -407,6 +461,12 @@ window.TALK_DATA = {
     "is_packaging": 0.61,
     "glass_bottle": 0.01,
     "dirt": 0.28,
+    "dirt_probabilities": {
+     "0": 0.79,
+     "1": 0.14,
+     "2": 0.07
+    },
+    "dirt_confidence": 0.58,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -432,6 +492,12 @@ window.TALK_DATA = {
     "is_packaging": 0.37,
     "glass_bottle": 0.02,
     "dirt": 0.11,
+    "dirt_probabilities": {
+     "0": 0.91,
+     "1": 0.07,
+     "2": 0.02
+    },
+    "dirt_confidence": 0.84,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -457,6 +523,12 @@ window.TALK_DATA = {
     "is_packaging": 0.11,
     "glass_bottle": 0.01,
     "dirt": 1.35,
+    "dirt_probabilities": {
+     "0": 0.0,
+     "1": 0.64,
+     "2": 0.36
+    },
+    "dirt_confidence": 0.46,
     "rules_bin": "brown",
     "rules_reason": "paper with food or oil",
     "rules_unsure": [
@@ -484,6 +556,12 @@ window.TALK_DATA = {
     "is_packaging": 0.25,
     "glass_bottle": 0.05,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "green_point",
     "rules_reason": "glass, but not a bottle or jar",
     "rules_unsure": [],
@@ -509,6 +587,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 0.12,
+    "dirt_probabilities": {
+     "0": 0.88,
+     "1": 0.11,
+     "2": 0.01
+    },
+    "dirt_confidence": 0.81,
     "rules_bin": "yellow",
     "rules_reason": "carton packaging",
     "rules_unsure": [],
@@ -534,6 +618,12 @@ window.TALK_DATA = {
     "is_packaging": 0.67,
     "glass_bottle": 0.01,
     "dirt": 0.05,
+    "dirt_probabilities": {
+     "0": 0.96,
+     "1": 0.02,
+     "2": 0.02
+    },
+    "dirt_confidence": 0.92,
     "rules_bin": "yellow",
     "rules_reason": "metal packaging",
     "rules_unsure": [
@@ -561,6 +651,12 @@ window.TALK_DATA = {
     "is_packaging": 0.07,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 1.0,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [],
@@ -586,6 +682,12 @@ window.TALK_DATA = {
     "is_packaging": 0.06,
     "glass_bottle": 0.01,
     "dirt": 0.07,
+    "dirt_probabilities": {
+     "0": 0.93,
+     "1": 0.07,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.89,
     "rules_bin": "green_point",
     "rules_reason": "ceramic",
     "rules_unsure": [],
@@ -611,6 +713,12 @@ window.TALK_DATA = {
     "is_packaging": 0.01,
     "glass_bottle": 0.01,
     "dirt": 0.35,
+    "dirt_probabilities": {
+     "0": 0.77,
+     "1": 0.1,
+     "2": 0.13
+    },
+    "dirt_confidence": 0.48,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [
@@ -638,6 +746,12 @@ window.TALK_DATA = {
     "is_packaging": 0.03,
     "glass_bottle": 0.01,
     "dirt": 0.01,
+    "dirt_probabilities": {
+     "0": 0.99,
+     "1": 0.01,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.98,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -663,6 +777,12 @@ window.TALK_DATA = {
     "is_packaging": 0.71,
     "glass_bottle": 0.02,
     "dirt": 0.68,
+    "dirt_probabilities": {
+     "0": 0.51,
+     "1": 0.29,
+     "2": 0.2
+    },
+    "dirt_confidence": 0.0,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [
@@ -691,6 +811,12 @@ window.TALK_DATA = {
     "is_packaging": 0.04,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [],
@@ -716,6 +842,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 1.84,
+    "dirt_probabilities": {
+     "0": 0.01,
+     "1": 0.15,
+     "2": 0.84
+    },
+    "dirt_confidence": 0.75,
     "rules_bin": "brown",
     "rules_reason": "paper with food or oil",
     "rules_unsure": [],
@@ -741,6 +873,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.09,
     "dirt": 0.01,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [],
@@ -766,6 +904,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 0.14,
+    "dirt_probabilities": {
+     "0": 0.89,
+     "1": 0.09,
+     "2": 0.02
+    },
+    "dirt_confidence": 0.79,
     "rules_bin": "yellow",
     "rules_reason": "metal packaging",
     "rules_unsure": [],
@@ -791,6 +935,12 @@ window.TALK_DATA = {
     "is_packaging": 0.92,
     "glass_bottle": 0.01,
     "dirt": 0.06,
+    "dirt_probabilities": {
+     "0": 0.94,
+     "1": 0.05,
+     "2": 0.01
+    },
+    "dirt_confidence": 0.9,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [],
@@ -816,6 +966,12 @@ window.TALK_DATA = {
     "is_packaging": 0.95,
     "glass_bottle": 0.01,
     "dirt": 0.75,
+    "dirt_probabilities": {
+     "0": 0.48,
+     "1": 0.29,
+     "2": 0.23
+    },
+    "dirt_confidence": 0.0,
     "rules_bin": "yellow",
     "rules_reason": "plastic packaging",
     "rules_unsure": [],
@@ -841,6 +997,12 @@ window.TALK_DATA = {
     "is_packaging": 0.74,
     "glass_bottle": 0.05,
     "dirt": 0.41,
+    "dirt_probabilities": {
+     "0": 0.64,
+     "1": 0.31,
+     "2": 0.05
+    },
+    "dirt_confidence": 0.38,
     "rules_bin": "yellow",
     "rules_reason": "metal packaging",
     "rules_unsure": [
@@ -868,6 +1030,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.97,
     "dirt": 0.16,
+    "dirt_probabilities": {
+     "0": 0.84,
+     "1": 0.15,
+     "2": 0.01
+    },
+    "dirt_confidence": 0.76,
     "rules_bin": "green",
     "rules_reason": "glass bottle or jar",
     "rules_unsure": [],
@@ -893,6 +1061,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.92,
     "dirt": 0.01,
+    "dirt_probabilities": {
+     "0": 0.99,
+     "1": 0.01,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.98,
     "rules_bin": "green",
     "rules_reason": "glass bottle or jar",
     "rules_unsure": [],
@@ -918,6 +1092,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.78,
     "dirt": 0.01,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "green",
     "rules_reason": "glass bottle or jar",
     "rules_unsure": [
@@ -945,6 +1125,12 @@ window.TALK_DATA = {
     "is_packaging": 0.97,
     "glass_bottle": 0.01,
     "dirt": 0.02,
+    "dirt_probabilities": {
+     "0": 0.98,
+     "1": 0.02,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.97,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -970,6 +1156,12 @@ window.TALK_DATA = {
     "is_packaging": 0.98,
     "glass_bottle": 0.01,
     "dirt": 0.1,
+    "dirt_probabilities": {
+     "0": 0.9,
+     "1": 0.1,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.85,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -995,6 +1187,12 @@ window.TALK_DATA = {
     "is_packaging": 0.06,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 1.0,
     "rules_bin": "blue",
     "rules_reason": "clean paper or cardboard",
     "rules_unsure": [],
@@ -1020,6 +1218,12 @@ window.TALK_DATA = {
     "is_packaging": 0.02,
     "glass_bottle": 0.01,
     "dirt": 0.53,
+    "dirt_probabilities": {
+     "0": 0.5,
+     "1": 0.46,
+     "2": 0.04
+    },
+    "dirt_confidence": 0.2,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -1045,6 +1249,12 @@ window.TALK_DATA = {
     "is_packaging": 0.02,
     "glass_bottle": 0.01,
     "dirt": 0.55,
+    "dirt_probabilities": {
+     "0": 0.53,
+     "1": 0.4,
+     "2": 0.07
+    },
+    "dirt_confidence": 0.18,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -1070,6 +1280,12 @@ window.TALK_DATA = {
     "is_packaging": 0.03,
     "glass_bottle": 0.02,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "brown",
     "rules_reason": "organic material",
     "rules_unsure": [],
@@ -1095,6 +1311,12 @@ window.TALK_DATA = {
     "is_packaging": 0.16,
     "glass_bottle": 0.01,
     "dirt": 1.17,
+    "dirt_probabilities": {
+     "0": 0.0,
+     "1": 0.82,
+     "2": 0.18
+    },
+    "dirt_confidence": 0.73,
     "rules_bin": "brown",
     "rules_reason": "paper with food or oil",
     "rules_unsure": [],
@@ -1120,6 +1342,12 @@ window.TALK_DATA = {
     "is_packaging": 0.12,
     "glass_bottle": 0.05,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.99,
     "rules_bin": "green_point",
     "rules_reason": "glass, but not a bottle or jar",
     "rules_unsure": [],
@@ -1145,6 +1373,12 @@ window.TALK_DATA = {
     "is_packaging": 0.03,
     "glass_bottle": 0.01,
     "dirt": 0.2,
+    "dirt_probabilities": {
+     "0": 0.81,
+     "1": 0.18,
+     "2": 0.01
+    },
+    "dirt_confidence": 0.7,
     "rules_bin": "grey",
     "rules_reason": "other material",
     "rules_unsure": [],
@@ -1170,6 +1404,12 @@ window.TALK_DATA = {
     "is_packaging": 0.03,
     "glass_bottle": 0.01,
     "dirt": 0.03,
+    "dirt_probabilities": {
+     "0": 0.97,
+     "1": 0.03,
+     "2": 0.0
+    },
+    "dirt_confidence": 0.95,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [],
@@ -1195,6 +1435,12 @@ window.TALK_DATA = {
     "is_packaging": 0.18,
     "glass_bottle": 0.01,
     "dirt": 0.08,
+    "dirt_probabilities": {
+     "0": 0.93,
+     "1": 0.05,
+     "2": 0.01
+    },
+    "dirt_confidence": 0.88,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [],
@@ -1220,6 +1466,12 @@ window.TALK_DATA = {
     "is_packaging": 0.07,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 1.0,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [],
@@ -1245,6 +1497,12 @@ window.TALK_DATA = {
     "is_packaging": 0.15,
     "glass_bottle": 0.01,
     "dirt": 0.0,
+    "dirt_probabilities": {
+     "0": 1.0,
+     "1": 0.0,
+     "2": 0.0
+    },
+    "dirt_confidence": 1.0,
     "rules_bin": "green_point",
     "rules_reason": "plastic, but not packaging",
     "rules_unsure": [
@@ -1262,6 +1520,7 @@ window.TALK_DATA = {
    "direct_right": 36,
    "rules_right": 33,
    "first_version_right": 31,
+   "flagged": 8,
    "median_latency_ms": 254,
    "median_input_tokens": 883
   },
