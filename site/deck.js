@@ -8,6 +8,7 @@
      F  full screen           O  all slides           S  slides or one long page
      P  hide or show the text under the slides (presenting)
      N  speaker notes box     V  open the speaker view in a new window
+     J  the real JSON behind the slide: request, then response, then close (Esc closes)
 
    URL options: ?present  ?page  ?notes  ?speaker  ?all (show every step at once)
    and #slide-id to open a slide. */
@@ -17,7 +18,7 @@
   var body = document.body;
   var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
   var params = new URLSearchParams(location.search);
-  var state = { index: 0, step: 0 };
+  var state = { index: 0, step: 0, json: 0 };
   var speakerWin = null;
 
   function q(sel) { return document.querySelector(sel); }
@@ -48,14 +49,15 @@
       q("[data-sp-count]").textContent = (spState.index + 1) + " / " + slides.length;
       q("[data-sp-notes]").textContent = textOf(s, ".notes");
       var steps = stepsIn(s);
-      q("[data-sp-step]").textContent = steps ? (spState.step + " of " + steps + " reveals shown") : "No reveals on this slide";
+      q("[data-sp-step]").textContent = (steps ? (spState.step + " of " + steps + " reveals shown") : "No reveals on this slide") +
+        (s.hasAttribute("data-json") ? " · JSON: " + ["closed (press J)", "request", "response"][spState.json || 0] : "");
       q("[data-sp-next]").textContent = spState.index + 1 < slides.length ? title(spState.index + 1) : "End";
       q("[data-sp-reader]").textContent = textOf(s, ".reader");
       document.title = "Speaker: " + title(spState.index);
     };
     window.addEventListener("message", function (e) {
       var d = e.data || {};
-      if (d.jevDeck === "state") { spState.index = d.index; spState.step = d.step; renderSpeaker(); if (!started && (d.index || d.step)) started = Date.now(); }
+      if (d.jevDeck === "state") { spState.index = d.index; spState.step = d.step; spState.json = d.json; renderSpeaker(); if (!started && (d.index || d.step)) started = Date.now(); }
     });
     document.querySelectorAll("[data-sp-act]").forEach(function (b) {
       b.addEventListener("click", function () {
@@ -118,20 +120,39 @@
     if (location.hash !== hash) { try { history.replaceState(null, "", hash); } catch (e) { /* some file:// cases */ } }
     var notes = q("[data-notes-overlay]");
     if (!notes.hidden) notes.textContent = textOf(slides[state.index], ".notes");
-    if (speakerWin && !speakerWin.closed) speakerWin.postMessage({ jevDeck: "state", index: state.index, step: state.step }, "*");
+    var overlay = q("[data-json-overlay]"), spec = slides[state.index].getAttribute("data-json");
+    var view = !pageView && spec && state.json && window.JEV_JSON ? window.JEV_JSON(spec, state.json) : null;
+    overlay.hidden = !view;
+    if (view) {
+      q("[data-json-title]").textContent = view.title;
+      q("[data-json-code]").innerHTML = view.html;
+      q("[data-json-note]").textContent = view.note;
+      // Shrink the code until the panel fits the screen (never below 14 px)
+      var code = q("[data-json-code]"), panel = overlay.querySelector(".json-panel");
+      code.style.fontSize = "";
+      var size = parseFloat(getComputedStyle(code).fontSize);
+      while (panel.scrollHeight > panel.clientHeight + 1 && size > 14) {
+        size -= 1;
+        code.style.fontSize = size + "px";
+      }
+    }
+    if (speakerWin && !speakerWin.closed) speakerWin.postMessage({ jevDeck: "state", index: state.index, step: state.step, json: state.json }, "*");
   }
 
   function goTo(index, step) {
+    state.json = 0;
     state.index = Math.max(0, Math.min(slides.length - 1, index));
     state.step = Math.max(0, Math.min(stepsIn(slides[state.index]), step || 0));
     if (pageView) slides[state.index].scrollIntoView({ behavior: "smooth", block: "start" });
     render();
   }
   function next() {
+    state.json = 0;
     if (!pageView && state.step < stepsIn(slides[state.index])) { state.step++; render(); }
     else if (state.index < slides.length - 1) goTo(state.index + 1, 0);
   }
   function prev() {
+    state.json = 0;
     if (!pageView && state.step > 0) { state.step--; render(); }
     else if (state.index > 0) goTo(state.index - 1, pageView ? 0 : stepsIn(slides[state.index - 1]));
   }
@@ -155,6 +176,13 @@
       overviewList.querySelectorAll("button").forEach(function (b, i) { b.setAttribute("aria-current", String(i === state.index)); });
       overviewList.querySelectorAll("button")[state.index].focus();
     }
+  }
+
+  // J: request, then response, then closed. Only on slides with data-json.
+  function cycleJson() {
+    if (pageView || !slides[state.index].hasAttribute("data-json")) return;
+    state.json = (state.json + 1) % 3;
+    render();
   }
 
   function toggleNotes() {
@@ -196,6 +224,8 @@
     else if (k === "p" || k === "P") setPresenting(!body.classList.contains("is-presenting"));
     else if (k === "n" || k === "N") toggleNotes();
     else if (k === "v" || k === "V") openSpeaker();
+    else if (k === "j" || k === "J") cycleJson();
+    else if (k === "Escape" && state.json) { state.json = 0; render(); }
   });
 
   var touchX = null, touchY = null;
@@ -206,6 +236,13 @@
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) next(); else prev(); }
     touchX = null;
   }, { passive: true });
+
+  document.querySelectorAll("[data-json-open]").forEach(function (b) {
+    b.addEventListener("click", function () { cycleJson(); b.blur(); });
+  });
+  q("[data-json-overlay]").addEventListener("click", function (e) {
+    if (e.target === e.currentTarget) { state.json = 0; render(); }
+  });
 
   document.querySelectorAll("[data-act]").forEach(function (b) {
     b.addEventListener("click", function () {

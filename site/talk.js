@@ -57,7 +57,8 @@
     "recycle.items": T.items, "recycle.known": T.known, "recycle.unclear": T.unclear,
     "recycle.direct_right": T.direct_right, "recycle.rules_right": T.rules_right, "recycle.flagged": T.flagged,
     "decidim.proposals": num(D.proposals), "decidim.answers": num(D.answers),
-    "decidim.minutes": Math.round(D.seconds / 60) + " min", "decidim.cost": "$" + D.cost_usd.toFixed(2)
+    "decidim.minutes": Math.round(D.seconds / 60) + " min", "decidim.cost": "$" + D.cost_usd.toFixed(2),
+    "decidim.processes": num(D.processes), "decidim.years": D.years[0] + "–" + D.years[1], "decidim.failed": num(D.failed)
   };
   $all("[data-k]").forEach(function (n) {
     var v = values[n.getAttribute("data-k")];
@@ -176,17 +177,27 @@
   });
 
   // One call: the real request and answer, with the API terms highlighted
-  var TERMS = { state: 1, questions: 1, type: 1, instructions: 1, criteria: 1, choice: 1, probabilities: 1, confidence: 1 };
+  var TERMS = { state: 1, questions: 1, type: 1, instructions: 1, criteria: 1, choice: 1, probabilities: 1, confidence: 1,
+                score: 1, legend: 1, noul: 1, answers: 1 };
+  // Shortening markers inside the JSON: {__more: "4 more questions"} and {__collapsed: "6 criteria"}
+  function More(text) { this.text = text; }
+  function Collapsed(text) { this.text = text; }
   function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
   function jsonHtml(v, pad) {
     pad = pad || "";
+    if (v instanceof Collapsed) return '<span class="json-muted">{ … ' + esc(v.text) + " }</span>";
     if (v === null || typeof v !== "object") return esc(JSON.stringify(v));
     var inner = pad + "  ";
-    var simple = Object.keys(v).every(function (k) { return v[k] === null || typeof v[k] !== "object"; });
+    var simple = Object.keys(v).every(function (k) { return v[k] === null || typeof v[k] !== "object" || v[k] instanceof Collapsed; });
     if (simple && JSON.stringify(v).length < 110) {
-      return "{ " + Object.keys(v).map(function (k) { return esc(JSON.stringify(k)) + ": " + esc(JSON.stringify(v[k])); }).join(", ") + " }";
+      return "{ " + Object.keys(v).map(function (k) {
+        var key = esc(JSON.stringify(k));
+        if (TERMS[k]) key = '<span class="term-key">' + key + "</span>";
+        return key + ": " + jsonHtml(v[k]);
+      }).join(", ") + " }";
     }
     var parts = Object.keys(v).map(function (k) {
+      if (v[k] instanceof More) return inner + '<span class="json-muted">… ' + esc(v[k].text) + "</span>";
       var key = esc(JSON.stringify(k));
       if (TERMS[k]) key = '<span class="term-key">' + key + "</span>";
       return inner + key + ": " + jsonHtml(v[k], inner);
@@ -272,6 +283,148 @@
     box.appendChild(line);
     box.appendChild(el("span", "yesno-end", "yes"));
   });
+
+  // ---- The JSON view: the real request and response behind a slide ----
+  function cut(s, n) {
+    if (s.length <= n) return s;
+    var part = s.slice(0, n), space = part.lastIndexOf(" ");
+    return (space > n / 2 ? part.slice(0, space) : part).replace(/[,.:;]$/, "") + " …";
+  }
+  function sortedProbs(p, top) {
+    var out = {}, keys = Object.keys(p).sort(function (a, b) { return p[b] - p[a]; });
+    keys.slice(0, top || keys.length).forEach(function (k) { out[k] = p[k]; });
+    if (top && keys.length > top) out._more = new More((keys.length - top) + " more");
+    return out;
+  }
+  function shortQuestion(q, criteriaMax) {
+    var out = { type: q.type, instructions: q.instructions };
+    if (q.criteria) {
+      if (criteriaMax === 0) out.criteria = new Collapsed(Array.isArray(q.criteria) ? q.criteria.length + " levels" : Object.keys(q.criteria).length + " criteria");
+      else if (Array.isArray(q.criteria)) out.criteria = q.criteria.slice();
+      else { out.criteria = {}; Object.keys(q.criteria).forEach(function (k) { out.criteria[k] = cut(q.criteria[k], criteriaMax || 46); }); }
+    }
+    return out;
+  }
+  function shortAnswer(a, top) {
+    var out = {};
+    Object.keys(a).forEach(function (k) {
+      if (k === "probabilities" && a.type === "choice") out[k] = sortedProbs(a[k], top);
+      else out[k] = a[k];
+    });
+    return out;
+  }
+  function oneQuestion(call, qid, criteriaMax) {
+    var req = call.request, res = call.response, n = Object.keys(req.questions).length - 1;
+    var questions = {}; questions[qid] = shortQuestion(req.questions[qid], criteriaMax);
+    if (n) questions._more = new More(n + " more questions");
+    var answers = {}; answers[qid] = shortAnswer(res.answers[qid]);
+    if (n) answers._more = new More(n + " more answers");
+    return {
+      request: { state: req.state, model: req.model, questions: questions },
+      response: { model: res.model, answers: answers, usage: res.usage }
+    };
+  }
+  function allQuestions(call) {
+    var req = call.request, res = call.response, questions = {}, answers = {};
+    Object.keys(req.questions).forEach(function (q) {
+      var full = req.questions[q];
+      questions[q] = { type: full.type, criteria: new Collapsed("instructions, " + (Array.isArray(full.criteria) ? full.criteria.length + " levels" : full.criteria ? Object.keys(full.criteria).length + " criteria" : "no criteria")) };
+      var a = res.answers[q], short = { type: a.type };
+      if (a.type === "choice") { short.choice = a.choice; short.confidence = a.confidence; }
+      if (a.type === "score") { short.score = a.score; short.confidence = a.confidence; }
+      if (a.type === "noul") short.noul = a.noul;
+      answers[q] = short;
+    });
+    return { request: { state: req.state, questions: questions }, response: { answers: answers, usage: res.usage } };
+  }
+  function decidimCall(ex) {
+    var questions = {};
+    Object.keys(D.questions).forEach(function (q) {
+      var full = D.questions[q];
+      questions[q] = { type: full.type, criteria: new Collapsed("instructions, " + (Array.isArray(full.criteria) ? full.criteria.length + " levels" : full.criteria ? Object.keys(full.criteria).length + " criteria" : "no criteria")) };
+    });
+    var answers = {};
+    Object.keys(ex.answers).forEach(function (q) {
+      var a = ex.answers[q], short = { type: a.type };
+      if (a.type === "choice") { short.choice = a.choice; short.confidence = a.confidence; }
+      if (a.type === "score") { short.score = a.score; short.confidence = a.confidence; }
+      if (a.type === "noul") short.noul = a.noul;
+      answers[q] = short;
+    });
+    return {
+      request: { state: { proposal_title: ex.title, proposal_text: cut(ex.body, 120) }, questions: questions },
+      response: { answers: answers, usage: ex.usage }
+    };
+  }
+  var JSON_VIEWS = {
+    "cork-bin": function () { return [oneQuestion(R.calls["wine cork"], "bin"), "captures/recycle/wine-cork.json"]; },
+    "napkin-dirt": function () { return [oneQuestion(R.calls["paper napkin with oil on it"], "dirt"), "captures/recycle/paper-napkin-with-oil-on-it.json"]; },
+    "cork-noul": function () { return [oneQuestion(R.calls["wine cork"], "is_packaging"), "captures/recycle/wine-cork.json"]; },
+    "napkin-all": function () { return [allQuestions(R.calls["paper napkin with oil on it"]), "captures/recycle/paper-napkin-with-oil-on-it.json"]; },
+    "decidim": function () { return [decidimCall(D.examples[0]), "captures/decidim/examples.json"]; }
+  };
+  // Used by deck.js for the pop-up: returns {title, html, note} for part 1 (request) or 2 (response)
+  window.JEV_JSON = function (spec, part) {
+    var view = JSON_VIEWS[spec] && JSON_VIEWS[spec]();
+    if (!view) return null;
+    var call = view[0], file = view[1];
+    return {
+      title: part === 1 ? "Request: what I send" : "Response: what Jev sends back",
+      html: jsonHtml(part === 1 ? call.request : call.response),
+      note: "Real data, shortened (… marks what is left out). Full JSON in " + file + "."
+    };
+  };
+  // For readers (page view and phones): the same JSON inline under the slide
+  $all("[data-json]").forEach(function (slide) {
+    var spec = slide.getAttribute("data-json"), req = window.JEV_JSON(spec, 1), res = window.JEV_JSON(spec, 2);
+    if (!req) return;
+    var d = el("details", "json-inline"), s = el("summary", null, "The real request and answer");
+    d.appendChild(s);
+    [req, res].forEach(function (part) {
+      d.appendChild(el("p", "small", part.title));
+      var pre = el("pre", "json");
+      pre.innerHTML = part.html;
+      d.appendChild(pre);
+    });
+    d.appendChild(el("p", "small", req.note));
+    slide.querySelector(".slide-body").appendChild(d);
+  });
+
+  // ---- Decidim: example proposals, the five-question frame, and the size of change ----
+  function example(id) { return D.examples.filter(function (e) { return String(e.id) === String(id); })[0]; }
+  $all("[data-proposal-cards]").forEach(function (box) {
+    D.examples.forEach(function (ex) {
+      var card = el("div", "card proposal");
+      card.appendChild(el("p", "card-label", ex.district + ", " + ex.year + ", " + ex.result));
+      card.appendChild(el("p", "proposal-title", ex.title));
+      card.appendChild(el("p", "proposal-text", ex.body));
+      card.appendChild(el("p", "proposal-gloss", ex.gloss));
+      box.appendChild(card);
+    });
+  });
+  $all("[data-proposal-title]").forEach(function (n) { n.textContent = example(n.getAttribute("data-proposal-title")).title; });
+  $all("[data-proposal-text]").forEach(function (n) { n.textContent = example(n.getAttribute("data-proposal-text")).body; });
+  var SCALE_WORDS = ["a small fix in one place", "one neighbourhood or district", "the whole city"];
+  $all("[data-proposal-answers]").forEach(function (list) {
+    var a = example(list.getAttribute("data-proposal-answers")).answers;
+    [
+      ["main topic", TOPIC_NAME[a.topic.choice] + " " + a.topic.confidence.toFixed(2)],
+      ["about tourism?", a.about_tourism.noul.toFixed(2)],
+      ["describes a problem?", a.complaint.noul.toFixed(2)],
+      ["how big a change?", a.scale.score.toFixed(2) + ": " + SCALE_WORDS[Math.round(a.scale.score)]],
+      ["about children?", a.children.noul.toFixed(2)]
+    ].forEach(function (r) {
+      var li = el("li");
+      li.appendChild(el("span", "qname", r[0]));
+      li.appendChild(el("strong", null, r[1]));
+      list.appendChild(li);
+    });
+  });
+  $all("[data-proposal-meta]").forEach(function (n) {
+    var ex = example(n.getAttribute("data-proposal-meta"));
+    n.textContent = ex.usage.input_tokens + " tokens · " + Math.round(ex.latency_ms) + " ms";
+  });
+  $all("[data-scale-level]").forEach(function (n) { n.textContent = num(D.scale_levels[n.getAttribute("data-scale-level")]); });
 
   // Confidence of an item's direct answer, and the level probabilities of a Score
   $all("[data-conf]").forEach(function (n) { n.textContent = item(n.getAttribute("data-conf")).confidence.toFixed(2); });

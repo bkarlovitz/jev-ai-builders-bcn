@@ -7,7 +7,7 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 
 | File | What it is |
 |---|---|
-| `index.html` | The 16 slides. Each has on-screen content, a short reader text and hidden speaker notes |
+| `index.html` | The 17 slides. Each has on-screen content, a short reader text and hidden speaker notes |
 | `theme.css` | **The whole look**: fonts, colours, sizes, spacing, motion. Edit this file to restyle |
 | `deck.css` | Layout and components. Uses the tokens from `theme.css`; no colours or fonts of its own |
 | `deck.js` | The slide engine: navigation, steps, views, overview, speaker view |
@@ -38,13 +38,15 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 - **Steps:** some slides reveal parts one key press at a time. `index.html?all` shows every step at once.
 - **Keys:** → space Enter Page Down = next. ← Page Up = back. Home / End. `F` full screen. `O` all slides.
   `N` speaker notes box. `V` speaker view in a second window, with notes, the next slide and a timer.
+  `J` on slides with a `{ } JSON` button: the real request, then the response, then closed (`Esc` closes).
+  In page view the same JSON is shown under the slide as "The real request and answer".
 - **Links to a slide:** every slide has an id, for example `index.html#every-proposal`.
 - Checked on 1 October 2026 at 1280×720, 1366×768, 1440×900, 1920×1080, 2560×1080, 1024×768 and 768×1024
   in slides view, and at 375 px wide in page view.
 
 ## To check after publishing
 
-1. Open the published address. The title slide appears, and the counter says `1 / 16`.
+1. Open the published address. The title slide appears, and the counter says `1 / 17`.
 2. Press → a few times: the next slide appears each time.
 3. Go to `#one-item` and click another item: the bars change.
 4. Open it on a phone: it shows as one long page.

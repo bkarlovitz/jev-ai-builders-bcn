@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "demos"))
 
 import basics  # noqa: E402
+import decidim  # noqa: E402
 import recycle  # noqa: E402
 
 OUT = ROOT / "site" / "data" / "talk-data.js"
@@ -84,7 +85,15 @@ def recycle_data() -> dict:
             },
         },
         "rule_limits": {"first_version": recycle.FIRST_VERSION_LIMIT, "now": recycle.CLEAN_PAPER_BELOW},
+        # Full real calls (all five questions) for the JSON view
+        "calls": {name: full_call(recycle.CAPTURE_DIR / f"{recycle.slug(name)}.json")
+                  for name in ("wine cork", "paper napkin with oil on it")},
     }
+
+
+def full_call(path: Path) -> dict:
+    cap = load(path)
+    return {"request": cap["request"], "response": cap["response"], "latency_ms": cap["latency_ms"]}
 
 
 def basics_data() -> dict:
@@ -106,9 +115,36 @@ def basics_data() -> dict:
     }
 
 
+# Shown on the slides with each example proposal. The English is a short gloss, not a full translation.
+# District and city label come from the open data (taxonomies); author names are left out on purpose.
+EXAMPLE_NOTES = {
+    "17120": {
+        "gloss": "Finish the bike lane on Avinguda Vallcarca. Today it has a gap. We need a safe bike route "
+                 "from Plaça Lesseps to the Ronda de Dalt.",
+        "district": "Gràcia", "result": "accepted", "city_label": "Mobilitat sostenible i segura",
+    },
+    "17535": {
+        "gloss": "A collection system for glass and plastic containers, like in other countries, that pays people "
+                 "who recycle with money, vouchers or discounts. Machines in markets, supermarkets and public spaces.",
+        "district": "la Barceloneta", "result": "rejected", "city_label": "Residu zero",
+    },
+}
+
+
 def decidim_data() -> dict:
     s = load(ROOT / "captures" / "decidim" / "summary.json")
+    examples = []
+    for r in load(ROOT / "captures" / "decidim" / "examples.json"):
+        examples.append({**r, **EXAMPLE_NOTES[str(r["id"])], "year": r["published_at"][:4]})
     return {
+        "questions": decidim.QUESTIONS,
+        "examples": examples,
+        "scale_levels": s["scale_levels"],
+        "children_count": s["children_count"],
+        "about_tourism_count": s["about_tourism_count"],
+        "processes": s["processes"],
+        "years": s["years"],
+        "failed": s["last_run"].get("failed_this_run", 0),
         "proposals": s["proposals"],
         "answers": s["questions_answered"],
         "seconds": s["last_run"]["wall_seconds"],

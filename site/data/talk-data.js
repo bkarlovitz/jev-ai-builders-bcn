@@ -1581,9 +1581,429 @@ window.TALK_DATA = {
   "rule_limits": {
    "first_version": 1.5,
    "now": 0.5
+  },
+  "calls": {
+   "wine cork": {
+    "request": {
+     "state": {
+      "item": "wine cork"
+     },
+     "model": "jev-1.13.0",
+     "questions": {
+      "bin": {
+       "type": "choice",
+       "instructions": "In Barcelona, where should `item` go?",
+       "criteria": {
+        "yellow": "Yellow bin (packaging): plastic packaging and plastic bags, drink and food cans, cartons, metal caps and lids, aluminium foil, plastic wrap, polystyrene trays.",
+        "blue": "Blue bin (paper and cardboard): clean cardboard boxes and packaging, newspapers, magazines, notebooks, envelopes, paper bags, sheets of paper, gift wrap, receipts.",
+        "green": "Green bin (glass): glass bottles and glass jars only, without lids.",
+        "brown": "Brown bin (organic): food, egg and nut shells, corks, tea bags, coffee grounds, kitchen paper and paper napkins dirty with oil or food, flowers and garden waste.",
+        "grey": "Grey bin (general waste): cigarette ends, nappies, sanitary pads, used tissues, sweepings and dust, cotton, hair, animal excrement.",
+        "green_point": "Not a street bin. Take it to a Green Point (recycling centre): toys, ceramics and porcelain, plates and drinking glasses (whole or broken), mirrors, flat glass, light bulbs, single-use coffee capsules, small appliances, wood, CDs, clothes."
+       }
+      },
+      "material": {
+       "type": "choice",
+       "instructions": "What is `item` mostly made of?",
+       "criteria": {
+        "plastic": "Plastic.",
+        "metal": "Metal, such as a can, a lid or aluminium foil.",
+        "carton": "A drink or food carton (for example a milk or juice carton).",
+        "glass": "Glass.",
+        "paper": "Paper or cardboard.",
+        "organic": "Food or other natural organic material (plants, egg shells, cork, tea, coffee).",
+        "ceramic": "Ceramic, porcelain or clay.",
+        "other": "Something else, or a mix of materials (textile, electronics, hair, dust...)."
+       }
+      },
+      "is_packaging": {
+       "type": "noul",
+       "instructions": "Is `item` packaging, or a container that held a product (a bottle, can, jar, box, tray, wrapper or bag)?"
+      },
+      "glass_bottle": {
+       "type": "noul",
+       "instructions": "Is `item` a glass bottle or a glass jar?"
+      },
+      "dirt": {
+       "type": "score",
+       "instructions": "How much food or oil is on `item`?",
+       "criteria": [
+        "Clean, or almost clean.",
+        "A little food on it.",
+        "Covered or soaked in food or oil."
+       ]
+      }
+     }
+    },
+    "response": {
+     "model": "jev-1.13.0",
+     "answers": {
+      "bin": {
+       "type": "choice",
+       "choice": "brown",
+       "confidence": 0.93,
+       "probabilities": {
+        "blue": 0.0,
+        "green_point": 0.05,
+        "brown": 0.95,
+        "yellow": 0.0,
+        "grey": 0.0,
+        "green": 0.0
+       }
+      },
+      "material": {
+       "type": "choice",
+       "choice": "organic",
+       "confidence": 1.0,
+       "probabilities": {
+        "glass": 0.0,
+        "carton": 0.0,
+        "paper": 0.0,
+        "organic": 1.0,
+        "plastic": 0.0,
+        "other": 0.0,
+        "ceramic": 0.0,
+        "metal": 0.0
+       }
+      },
+      "is_packaging": {
+       "type": "noul",
+       "noul": 0.37
+      },
+      "glass_bottle": {
+       "type": "noul",
+       "noul": 0.02
+      },
+      "dirt": {
+       "type": "score",
+       "score": 0.11,
+       "confidence": 0.84,
+       "legend": {
+        "0": "Clean, or almost clean.",
+        "1": "A little food on it.",
+        "2": "Covered or soaked in food or oil."
+       },
+       "probabilities": {
+        "0": 0.91,
+        "1": 0.07,
+        "2": 0.02
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 882,
+      "output_tokens": 186
+     }
+    },
+    "latency_ms": 225.0
+   },
+   "paper napkin with oil on it": {
+    "request": {
+     "state": {
+      "item": "paper napkin with oil on it"
+     },
+     "model": "jev-1.13.0",
+     "questions": {
+      "bin": {
+       "type": "choice",
+       "instructions": "In Barcelona, where should `item` go?",
+       "criteria": {
+        "yellow": "Yellow bin (packaging): plastic packaging and plastic bags, drink and food cans, cartons, metal caps and lids, aluminium foil, plastic wrap, polystyrene trays.",
+        "blue": "Blue bin (paper and cardboard): clean cardboard boxes and packaging, newspapers, magazines, notebooks, envelopes, paper bags, sheets of paper, gift wrap, receipts.",
+        "green": "Green bin (glass): glass bottles and glass jars only, without lids.",
+        "brown": "Brown bin (organic): food, egg and nut shells, corks, tea bags, coffee grounds, kitchen paper and paper napkins dirty with oil or food, flowers and garden waste.",
+        "grey": "Grey bin (general waste): cigarette ends, nappies, sanitary pads, used tissues, sweepings and dust, cotton, hair, animal excrement.",
+        "green_point": "Not a street bin. Take it to a Green Point (recycling centre): toys, ceramics and porcelain, plates and drinking glasses (whole or broken), mirrors, flat glass, light bulbs, single-use coffee capsules, small appliances, wood, CDs, clothes."
+       }
+      },
+      "material": {
+       "type": "choice",
+       "instructions": "What is `item` mostly made of?",
+       "criteria": {
+        "plastic": "Plastic.",
+        "metal": "Metal, such as a can, a lid or aluminium foil.",
+        "carton": "A drink or food carton (for example a milk or juice carton).",
+        "glass": "Glass.",
+        "paper": "Paper or cardboard.",
+        "organic": "Food or other natural organic material (plants, egg shells, cork, tea, coffee).",
+        "ceramic": "Ceramic, porcelain or clay.",
+        "other": "Something else, or a mix of materials (textile, electronics, hair, dust...)."
+       }
+      },
+      "is_packaging": {
+       "type": "noul",
+       "instructions": "Is `item` packaging, or a container that held a product (a bottle, can, jar, box, tray, wrapper or bag)?"
+      },
+      "glass_bottle": {
+       "type": "noul",
+       "instructions": "Is `item` a glass bottle or a glass jar?"
+      },
+      "dirt": {
+       "type": "score",
+       "instructions": "How much food or oil is on `item`?",
+       "criteria": [
+        "Clean, or almost clean.",
+        "A little food on it.",
+        "Covered or soaked in food or oil."
+       ]
+      }
+     }
+    },
+    "response": {
+     "model": "jev-1.13.0",
+     "answers": {
+      "bin": {
+       "type": "choice",
+       "choice": "brown",
+       "confidence": 1.0,
+       "probabilities": {
+        "blue": 0.0,
+        "grey": 0.0,
+        "green": 0.0,
+        "brown": 1.0,
+        "yellow": 0.0,
+        "green_point": 0.0
+       }
+      },
+      "material": {
+       "type": "choice",
+       "choice": "paper",
+       "confidence": 1.0,
+       "probabilities": {
+        "organic": 0.0,
+        "metal": 0.0,
+        "paper": 1.0,
+        "glass": 0.0,
+        "other": 0.0,
+        "plastic": 0.0,
+        "ceramic": 0.0,
+        "carton": 0.0
+       }
+      },
+      "is_packaging": {
+       "type": "noul",
+       "noul": 0.11
+      },
+      "glass_bottle": {
+       "type": "noul",
+       "noul": 0.01
+      },
+      "dirt": {
+       "type": "score",
+       "score": 1.35,
+       "confidence": 0.46,
+       "legend": {
+        "0": "Clean, or almost clean.",
+        "1": "A little food on it.",
+        "2": "Covered or soaked in food or oil."
+       },
+       "probabilities": {
+        "0": 0.0,
+        "1": 0.64,
+        "2": 0.36
+       }
+      }
+     },
+     "usage": {
+      "input_tokens": 887,
+      "output_tokens": 186
+     }
+    },
+    "latency_ms": 250.1
+   }
   }
  },
  "decidim": {
+  "questions": {
+   "topic": {
+    "type": "choice",
+    "instructions": "What is the main topic of this citizen proposal to the city of Barcelona?",
+    "criteria": {
+     "mobility": "Transport, traffic, cars, bikes, buses, metro, parking, walking.",
+     "public_space": "Streets, squares, pavements, benches, lighting, cleaning, noise in the street.",
+     "housing": "Housing, rent, flats, evictions.",
+     "environment": "Parks, gardens, trees and green areas, recycling, pollution, climate, energy, water.",
+     "social": "Health, care, elderly people, poverty, inclusion, equality.",
+     "education_culture": "Schools, children, libraries, culture, sport, festivals.",
+     "tourism": "Tourists, tourist flats, cruise ships, tourist crowds.",
+     "economy": "Jobs, shops, markets, businesses, taxes.",
+     "government": "How the city council works, participation, transparency, digital services.",
+     "other": "None of the above."
+    }
+   },
+   "about_tourism": {
+    "type": "noul",
+    "instructions": "Does this proposal talk about tourism or tourists, even as a side point?"
+   },
+   "complaint": {
+    "type": "noul",
+    "instructions": "Does the author describe a problem they are unhappy about, not only suggest a new idea?",
+    "criteria": {
+     "true": "The text describes something that is wrong, missing or annoying today (for example dirt, noise, danger, a broken or missing service).",
+     "false": "The text only proposes an action or a new idea and does not describe a current problem."
+    }
+   },
+   "scale": {
+    "type": "score",
+    "instructions": "How big is the change this proposal asks for?",
+    "criteria": [
+     "A small fix in one place (one street, one bench, one crossing).",
+     "A change for one neighbourhood or district.",
+     "A change for the whole city."
+    ]
+   },
+   "children": {
+    "type": "noul",
+    "instructions": "Is this proposal mainly about children or young people?"
+   }
+  },
+  "examples": [
+   {
+    "id": "17120",
+    "title": "Carril bici Av. Vallcarca",
+    "body": "Completar el carril bici de av. Vallcarca que ara mateix està inconnex. Es necessita una via segura per a la bici per a connectar pl. Lesseps amb Ronda de Dalt",
+    "url": "https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17120",
+    "published_at": "2020-02-03 18:33:22 +0100",
+    "state": "acceptada",
+    "likes": "16",
+    "process": "https://www.decidim.barcelona/processes/PAM2020",
+    "answers": {
+     "topic": {
+      "type": "choice",
+      "choice": "mobility",
+      "confidence": 1.0,
+      "probabilities": {
+       "government": 0.0,
+       "mobility": 1.0,
+       "education_culture": 0.0,
+       "housing": 0.0,
+       "environment": 0.0,
+       "tourism": 0.0,
+       "social": 0.0,
+       "other": 0.0,
+       "public_space": 0.0,
+       "economy": 0.0
+      }
+     },
+     "about_tourism": {
+      "type": "noul",
+      "noul": 0.03
+     },
+     "complaint": {
+      "type": "noul",
+      "noul": 0.91
+     },
+     "scale": {
+      "type": "score",
+      "score": 0.24,
+      "confidence": 0.64,
+      "legend": {
+       "0": "A small fix in one place (one street, one bench, one crossing).",
+       "1": "A change for one neighbourhood or district.",
+       "2": "A change for the whole city."
+      },
+      "probabilities": {
+       "0": 0.76,
+       "1": 0.24,
+       "2": 0.0
+      }
+     },
+     "children": {
+      "type": "noul",
+      "noul": 0.08
+     }
+    },
+    "usage": {
+     "input_tokens": 807,
+     "output_tokens": 162
+    },
+    "latency_ms": 249.6,
+    "gloss": "Finish the bike lane on Avinguda Vallcarca. Today it has a gap. We need a safe bike route from Plaça Lesseps to the Ronda de Dalt.",
+    "district": "Gràcia",
+    "result": "accepted",
+    "city_label": "Mobilitat sostenible i segura",
+    "year": "2020"
+   },
+   {
+    "id": "17535",
+    "title": "Instal·lar sistema de recollida selectiva de residus remunerada",
+    "body": "Habilitar sistema de recollida, com fan en altres països, d'envasos de vidre i/o plàstic (ampliable a altres materials), bonificant als ciutadans que reciclen amb remuneració, vals o descomptes. Instal·lacions posades en mercat, supermercats o espais públics a càrrec Adm. Públiques.",
+    "url": "https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17535",
+    "published_at": "2020-02-10 20:43:12 +0100",
+    "state": "rebutjada",
+    "likes": "6",
+    "process": "https://www.decidim.barcelona/processes/PAM2020",
+    "answers": {
+     "topic": {
+      "type": "choice",
+      "choice": "environment",
+      "confidence": 1.0,
+      "probabilities": {
+       "tourism": 0.0,
+       "public_space": 0.0,
+       "education_culture": 0.0,
+       "other": 0.0,
+       "housing": 0.0,
+       "environment": 1.0,
+       "social": 0.0,
+       "mobility": 0.0,
+       "government": 0.0,
+       "economy": 0.0
+      }
+     },
+     "about_tourism": {
+      "type": "noul",
+      "noul": 0.02
+     },
+     "complaint": {
+      "type": "noul",
+      "noul": 0.13
+     },
+     "scale": {
+      "type": "score",
+      "score": 2.0,
+      "confidence": 1.0,
+      "legend": {
+       "0": "A small fix in one place (one street, one bench, one crossing).",
+       "1": "A change for one neighbourhood or district.",
+       "2": "A change for the whole city."
+      },
+      "probabilities": {
+       "0": 0.0,
+       "1": 0.0,
+       "2": 1.0
+      }
+     },
+     "children": {
+      "type": "noul",
+      "noul": 0.03
+     }
+    },
+    "usage": {
+     "input_tokens": 864,
+     "output_tokens": 161
+    },
+    "latency_ms": 270.3,
+    "gloss": "A collection system for glass and plastic containers, like in other countries, that pays people who recycle with money, vouchers or discounts. Machines in markets, supermarkets and public spaces.",
+    "district": "la Barceloneta",
+    "result": "rejected",
+    "city_label": "Residu zero",
+    "year": "2020"
+   }
+  ],
+  "scale_levels": {
+   "0": 4316,
+   "1": 17140,
+   "2": 14312
+  },
+  "children_count": 5286,
+  "about_tourism_count": 1321,
+  "processes": 282,
+  "years": [
+   "2018",
+   "2026"
+  ],
+  "failed": 0,
   "proposals": 35768,
   "answers": 178840,
   "seconds": 1195.5,

@@ -342,7 +342,50 @@ button { font: inherit; color: inherit; }
 .call-field .term, .chart-title .term, .tag .term { margin-right: 0.3em; }
 
 /* Choice criteria: option + its description */
-pre.json .term-key { color: var(--bin-yellow); font-weight: var(--weight-strong); }
+pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-weight: var(--weight-strong); }
+.json-muted { color: var(--color-code-muted); font-style: italic; }
+
+/* ---- The JSON view: J or the { } JSON button ---- */
+.tag-group { display: flex; align-items: center; gap: var(--space-2); }
+.json-btn {
+  font-family: var(--font-mono); font-size: var(--text-sm); cursor: pointer;
+  background: transparent; color: var(--color-muted);
+  border: var(--border) solid var(--color-line); border-radius: var(--radius-pill); padding: 0.15em 0.8em;
+}
+.json-btn:hover { color: var(--color-text); border-color: var(--color-text); }
+.frame-path { font-family: var(--font-mono); font-size: 0.85em; text-transform: none; letter-spacing: 0; color: var(--color-muted); font-weight: var(--weight-text); margin-left: 0.5em; }
+.json-overlay {
+  position: fixed; inset: 0; z-index: 28; background: var(--color-overlay);
+  display: flex; align-items: center; justify-content: center; padding: var(--space-4);
+}
+.json-panel {
+  width: min(100%, calc(var(--u) * 100)); max-height: calc(100vh - 2 * var(--space-4)); overflow: auto;
+  background: var(--color-code-bg); color: var(--color-code-text); border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4); display: grid; gap: var(--space-2); box-shadow: var(--shadow);
+}
+.json-panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
+.json-panel .small { color: var(--color-code-muted); }
+.json-title { font-weight: var(--weight-strong); font-size: var(--text-lg); }
+.json-code { font-family: var(--font-mono); font-size: var(--text-md); line-height: 1.45; white-space: pre-wrap; word-break: break-word; margin: 0; padding: 0; max-height: none; overflow: visible; background: transparent; }
+.json-inline { display: none; }
+.view-scroll .json-inline { display: block; font-size: var(--text-sm); }
+.view-scroll .json-inline summary { cursor: pointer; color: var(--color-focus); }
+.view-scroll .json-inline pre { font-size: var(--text-xs); }
+.view-scroll .json-btn { display: none; }
+
+/* ---- Decidim: proposals and the five-question frame ---- */
+.proposal { display: grid; gap: var(--space-2); }
+.proposal-title { font-weight: var(--weight-strong); font-size: var(--text-lg); line-height: 1.2; }
+.proposal-text { font-size: var(--text-sm); }
+.proposal-gloss { font-size: var(--text-sm); color: var(--color-muted); font-style: italic; }
+.state-block > * { display: block; }
+.state-block .small { margin-top: var(--space-1); }
+.stats--small .stat-num { font-size: var(--text-2xl); }
+.qlist { margin: 0; padding-left: 1.4em; display: grid; gap: var(--space-1); font-size: var(--text-sm); }
+.qlist .term { margin-left: 0.3em; color: var(--color-muted); }
+.qlist .small { display: block; }
+.qlist--answers li { display: flex; justify-content: space-between; gap: var(--space-2); }
+.qlist--answers .qname { color: var(--color-muted); }
 .kinds-list { list-style: none; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: var(--text-sm); }
 .kinds-list .term { margin-left: 0.3em; }
 .list-big .term { font-size: 0.7em; color: var(--color-muted); margin-left: 0.4em; }

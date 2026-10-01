@@ -1,0 +1,124 @@
+[
+  {
+    "id": "17120",
+    "title": "Carril bici Av. Vallcarca",
+    "body": "Completar el carril bici de av. Vallcarca que ara mateix està inconnex. Es necessita una via segura per a la bici per a connectar pl. Lesseps amb Ronda de Dalt",
+    "url": "https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17120",
+    "published_at": "2020-02-03 18:33:22 +0100",
+    "state": "acceptada",
+    "likes": "16",
+    "process": "https://www.decidim.barcelona/processes/PAM2020",
+    "answers": {
+      "topic": {
+        "type": "choice",
+        "choice": "mobility",
+        "confidence": 1.0,
+        "probabilities": {
+          "government": 0.0,
+          "mobility": 1.0,
+          "education_culture": 0.0,
+          "housing": 0.0,
+          "environment": 0.0,
+          "tourism": 0.0,
+          "social": 0.0,
+          "other": 0.0,
+          "public_space": 0.0,
+          "economy": 0.0
+        }
+      },
+      "about_tourism": {
+        "type": "noul",
+        "noul": 0.03
+      },
+      "complaint": {
+        "type": "noul",
+        "noul": 0.91
+      },
+      "scale": {
+        "type": "score",
+        "score": 0.24,
+        "confidence": 0.64,
+        "legend": {
+          "0": "A small fix in one place (one street, one bench, one crossing).",
+          "1": "A change for one neighbourhood or district.",
+          "2": "A change for the whole city."
+        },
+        "probabilities": {
+          "0": 0.76,
+          "1": 0.24,
+          "2": 0.0
+        }
+      },
+      "children": {
+        "type": "noul",
+        "noul": 0.08
+      }
+    },
+    "usage": {
+      "input_tokens": 807,
+      "output_tokens": 162
+    },
+    "latency_ms": 249.6
+  },
+  {
+    "id": "17535",
+    "title": "Instal·lar sistema de recollida selectiva de residus remunerada",
+    "body": "Habilitar sistema de recollida, com fan en altres països, d'envasos de vidre i/o plàstic (ampliable a altres materials), bonificant als ciutadans que reciclen amb remuneració, vals o descomptes. Instal·lacions posades en mercat, supermercats o espais públics a càrrec Adm. Públiques.",
+    "url": "https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17535",
+    "published_at": "2020-02-10 20:43:12 +0100",
+    "state": "rebutjada",
+    "likes": "6",
+    "process": "https://www.decidim.barcelona/processes/PAM2020",
+    "answers": {
+      "topic": {
+        "type": "choice",
+        "choice": "environment",
+        "confidence": 1.0,
+        "probabilities": {
+          "tourism": 0.0,
+          "public_space": 0.0,
+          "education_culture": 0.0,
+          "other": 0.0,
+          "housing": 0.0,
+          "environment": 1.0,
+          "social": 0.0,
+          "mobility": 0.0,
+          "government": 0.0,
+          "economy": 0.0
+        }
+      },
+      "about_tourism": {
+        "type": "noul",
+        "noul": 0.02
+      },
+      "complaint": {
+        "type": "noul",
+        "noul": 0.13
+      },
+      "scale": {
+        "type": "score",
+        "score": 2.0,
+        "confidence": 1.0,
+        "legend": {
+          "0": "A small fix in one place (one street, one bench, one crossing).",
+          "1": "A change for one neighbourhood or district.",
+          "2": "A change for the whole city."
+        },
+        "probabilities": {
+          "0": 0.0,
+          "1": 0.0,
+          "2": 1.0
+        }
+      },
+      "children": {
+        "type": "noul",
+        "noul": 0.03
+      }
+    },
+    "usage": {
+      "input_tokens": 864,
+      "output_tokens": 161
+    },
+    "latency_ms": 270.3
+  }
+]

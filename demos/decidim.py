@@ -8,6 +8,9 @@ Step 1  download:  python demos/decidim.py download
 Step 2  run:       python demos/decidim.py run [--limit N] [--csv PATH]
         (asks 5 questions about every proposal, in parallel; resumes if interrupted)
 Step 3  summary:   python demos/decidim.py summary
+Extra   examples:  python demos/decidim.py examples 17120 17535
+        (copies a few full records into captures/decidim/examples.json, which is committed;
+         results.jsonl holds every proposal text and stays out of git)
 
 Results go to captures/decidim/ (results.jsonl and summary.json).
 """
@@ -235,6 +238,12 @@ def summary() -> None:
         "topics": dict(sorted(topics.items(), key=lambda kv: -kv[1])),
         "about_tourism_share": round(sum(r["answers"]["about_tourism"]["noul"] >= 0.5 for r in recs) / max(len(recs), 1), 3),
         "complaint_share": round(sum(r["answers"]["complaint"]["noul"] >= 0.5 for r in recs) / max(len(recs), 1), 3),
+        "about_tourism_count": sum(r["answers"]["about_tourism"]["noul"] >= 0.5 for r in recs),
+        "children_count": sum(r["answers"]["children"]["noul"] >= 0.5 for r in recs),
+        # "How big a change?", rounded to the nearest level: one place / one district / whole city
+        "scale_levels": {str(k): sum(round(r["answers"]["scale"]["score"]) == k for r in recs) for k in range(3)},
+        "processes": len({r.get("process") for r in recs if r.get("process")}),
+        "years": [min(r["published_at"][:4] for r in recs), max(r["published_at"][:4] for r in recs)] if recs else None,
     }
     last = OUT / "last_run.json"
     if last.exists():
@@ -243,9 +252,25 @@ def summary() -> None:
     print(json.dumps(s, indent=2))
 
 
+def examples(ids: list[str]) -> None:
+    """Copy a few full records out of results.jsonl into the committed examples.json."""
+    keep = ("id", "title", "body", "url", "published_at", "state", "likes", "process", "answers", "usage", "latency_ms")
+    found = {}
+    for line in (OUT / "results.jsonl").read_text(encoding="utf-8").splitlines():
+        r = json.loads(line)
+        if str(r["id"]) in ids:
+            found[str(r["id"])] = {k: r.get(k) for k in keep}
+    missing = [i for i in ids if i not in found]
+    if missing:
+        sys.exit(f"Not found in results.jsonl: {', '.join(missing)}")
+    save_json(OUT / "examples.json", [found[i] for i in ids])
+    print(f"Saved {len(ids)} records to {OUT / 'examples.json'}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["download", "run", "summary"])
+    ap.add_argument("cmd", choices=["download", "run", "summary", "examples"])
+    ap.add_argument("ids", nargs="*", help="for 'examples': the proposal ids to copy")
     ap.add_argument("--csv", type=Path, help="path to a proposals CSV you downloaded yourself")
     ap.add_argument("--limit", type=int, help="only the first N proposals (try 50 first)")
     args = ap.parse_args()
@@ -253,6 +278,8 @@ def main() -> None:
         download()
     elif args.cmd == "run":
         asyncio.run(run(args.csv or find_csv(), args.limit))
+    elif args.cmd == "examples":
+        examples(args.ids)
     else:
         summary()
 

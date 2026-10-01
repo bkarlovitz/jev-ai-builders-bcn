@@ -76,9 +76,12 @@
   --color-section-text: #f7f5f0;
   --color-section-muted: #a9adb5;
 
-  /* Code blocks */
+  /* Code blocks and the JSON view */
   --color-code-bg: #15171c;
   --color-code-text: #e8e6df;
+  --color-code-key: #f2c200;
+  --color-code-muted: #8b9099;
+  --color-overlay: rgba(10, 11, 14, 0.55);
 
   /* The six places in the recycling example. "-ink" is the text colour on top. */
   --bin-yellow: #f2c200;  --bin-yellow-ink: #2a2200;

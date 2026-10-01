@@ -9,7 +9,8 @@ TypeSafe AI. You send some text (the `state`) and a few questions, each with the
 ## The slides
 
 Open `site/index.html` in a browser. It needs no server and no internet. Use the arrow keys to move between
-slides, or press `S` to read everything as one page. The text of each slide, with the speaker notes, is in
+slides, or press `S` to read everything as one page. On slides with a `{ } JSON` button, press `J` (or click
+the button) to see the real request and answer. The text of each slide, with the speaker notes, is in
 `talk/outline.md`.
 
 ## Read the code
@@ -37,6 +38,8 @@ You do not need an API key to see what Jev returned. Every request and answer is
 - `captures/basics/`: one file per customer message.
 - `captures/recycle/`: one file per item (42 items), plus `_summary.json` with all of them in one table.
 - `captures/decidim/summary.json`: the totals for all proposals (count, tokens, cost, time, topics).
+- `captures/decidim/examples.json`: two full proposals with Jev's answers, the ones shown in the talk.
+  The file with every proposal and its answers is not in the repo, because it holds all the proposal texts.
 
 All results were saved on 30 September 2026 with `jev-1.13.0`.
 
@@ -70,6 +73,7 @@ python demos\decidim.py download               # the proposals CSV from decidim.
 python demos\decidim.py run --limit 50         # a small test
 python demos\decidim.py run                    # everything (resumes if interrupted)
 python demos\decidim.py summary
+python demos\decidim.py examples 17120 17535  # copy two full records into captures\decidim\examples.json
 ```
 
 ## Where things are
@@ -84,7 +88,10 @@ python demos\decidim.py summary
 
 - Jev and TypeSafe AI: https://docs.typesafe.ai
 - Recycling rules: Ajuntament de Barcelona, [street bins](https://ajuntament.barcelona.cat/neteja-i-residus/en/household-waste-collection/five-fractions-domestic-waste-collection-system/street-bins) and the [Waste Finder](https://ajuntament.barcelona.cat/cercador-de-residus/en)
-- Proposals: [Decidim Barcelona open data](https://www.decidim.barcelona/open-data)
+- Proposals: [Decidim Barcelona open data](https://www.decidim.barcelona/open-data). The two proposals quoted in
+  the slides and in `captures/decidim/examples.json` are from decidim.barcelona, under CC BY-SA 4.0:
+  [17120](https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17120) and
+  [17535](https://www.decidim.barcelona/processes/PAM2020/f/3733/proposals/17535).
 
 ## Licence
 

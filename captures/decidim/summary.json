@@ -20,6 +20,18 @@
   },
   "about_tourism_share": 0.037,
   "complaint_share": 0.454,
+  "about_tourism_count": 1321,
+  "children_count": 5286,
+  "scale_levels": {
+    "0": 4316,
+    "1": 17140,
+    "2": 14312
+  },
+  "processes": 282,
+  "years": [
+    "2018",
+    "2026"
+  ],
   "last_run": {
     "proposals_this_run": 35768,
     "failed_this_run": 0,
