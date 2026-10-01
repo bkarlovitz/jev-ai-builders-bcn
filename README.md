@@ -46,9 +46,12 @@ https://www.decidim.barcelona/open-data, unzip it into a `data` folder here, and
 
 ## Where things are
 
+- `site/`: the slides. Open `site/index.html` in a browser; it needs no server and no internet.
+  Arrow keys move between slides, `P` hides the reader text for presenting, `S` shows everything as one page.
+- `talk/outline.md`: the outline and speaker notes.
 - `demos/`: the scripts.
 - `captures/`: saved Jev results, so the demos and the presentation work offline.
-- `talk/outline.md`: the outline and speaker notes.
+- `tools/build_site_data.py`: copies the saved results into `site/data/talk-data.js`.
 
 ## Sources
 

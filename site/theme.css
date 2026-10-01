@@ -1,0 +1,111 @@
+/* =========================================================================
+   theme.css: the whole look of the deck lives here.
+
+   To change the style, edit the values in this file only. deck.css uses these
+   tokens and contains no colours, fonts or sizes of its own.
+
+   Sizes use --u, a "slide unit": 1% of the slide width on a 16:9 screen. It is
+   the smaller of 1vw and (16/9)vh, so a slide keeps its proportions on any
+   screen. Every text size has a minimum in px so it stays readable on small
+   screens.
+   ========================================================================= */
+
+:root {
+  /* ---- fonts --------------------------------------------------------- */
+  /* To use a custom font, put the files in site/fonts/, add an @font-face
+     rule below, and put its name first in the list. Never load fonts from
+     the internet: the deck must work offline. */
+  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-text);
+  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+
+  --weight-text: 400;
+  --weight-strong: 650;
+  --weight-display: 750;
+  --tracking-display: -0.025em;
+  --tracking-label: 0.08em;
+  --leading-text: 1.45;
+  --leading-display: 1.05;
+
+  /* ---- slide unit and type scale ------------------------------------- */
+  --u: min(1vw, 1.7778vh);
+
+  --text-xs: max(12px, calc(var(--u) * 1.2));
+  --text-sm: max(14px, calc(var(--u) * 1.5));
+  --text-md: max(16px, calc(var(--u) * 2));
+  --text-lg: max(18px, calc(var(--u) * 2.6));
+  --text-xl: max(22px, calc(var(--u) * 3.4));
+  --text-2xl: max(26px, calc(var(--u) * 4.6));
+  --text-3xl: max(32px, calc(var(--u) * 6.4));
+  --text-stat: max(34px, calc(var(--u) * 7.2));
+
+  /* ---- spacing ------------------------------------------------------- */
+  --space-1: calc(var(--u) * 0.5);
+  --space-2: calc(var(--u) * 1);
+  --space-3: calc(var(--u) * 1.75);
+  --space-4: calc(var(--u) * 2.75);
+  --space-5: calc(var(--u) * 4);
+  --space-6: calc(var(--u) * 6);
+
+  --slide-pad-x: max(20px, calc(var(--u) * 7));
+  --slide-pad-y: max(20px, calc(var(--u) * 4.5));
+  --slide-max-width: calc(var(--u) * 100);
+
+  /* ---- colours ------------------------------------------------------- */
+  --color-bg: #f7f5f0;
+  --color-surface: #ffffff;
+  --color-text: #16181d;
+  --color-muted: #5f646e;
+  --color-line: #dedad1;
+  --color-soft: #ece9e2;
+  --color-accent: #16181d;
+  --color-focus: #1f6fd6;
+  --color-good: #17603a;
+  --color-good-soft: #dff3e4;
+  --color-warn: #7a4b00;
+  --color-warn-soft: #fdeccc;
+  --color-wrong: #b3261e;
+
+  /* Section slides (title, "Example 1", "Example 2") use these. */
+  --color-section-bg: #16181d;
+  --color-section-text: #f7f5f0;
+  --color-section-muted: #a9adb5;
+
+  /* Code blocks */
+  --color-code-bg: #15171c;
+  --color-code-text: #e8e6df;
+
+  /* The six places in the recycling example. "-ink" is the text colour on top. */
+  --bin-yellow: #f2c200;  --bin-yellow-ink: #2a2200;
+  --bin-blue: #1f6fd6;    --bin-blue-ink: #ffffff;
+  --bin-green: #2e9e4f;   --bin-green-ink: #ffffff;
+  --bin-brown: #8b5a2b;   --bin-brown-ink: #ffffff;
+  --bin-grey: #7a7f87;    --bin-grey-ink: #ffffff;
+  --bin-green-point: #0f766e; --bin-green-point-ink: #ffffff;
+
+  /* QR code on the title slide */
+  --qr-size: max(120px, calc(var(--u) * 17));
+  --qr-bg: #ffffff;
+  --qr-ink: var(--color-text);
+
+  /* Charts */
+  --chart-track: var(--color-soft);
+  --chart-bar: var(--color-text);
+  --chart-bar-height: max(10px, calc(var(--u) * 1.9));
+
+  /* ---- shapes and motion --------------------------------------------- */
+  --radius-sm: max(4px, calc(var(--u) * 0.5));
+  --radius-md: max(8px, calc(var(--u) * 1.1));
+  --radius-pill: 999px;
+  --border: max(1px, calc(var(--u) * 0.1));
+  --border-strong: max(2px, calc(var(--u) * 0.25));
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+
+  --duration-slide: 220ms;
+  --duration-step: 260ms;
+  --duration-bar: 450ms;
+}
+
+/* When the reader text is shown under each slide (not presenting), the slides
+   get a little smaller so the text fits below them. */
+:root.has-captions { --u: min(0.88vw, 1.564vh); }

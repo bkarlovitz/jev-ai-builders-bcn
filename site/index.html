@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is Jev, and why should I use it?</title>
+<meta name="description" content="A short talk about Jev, the fast decision model from TypeSafe AI: what it does, and how you build with it. With two examples from Barcelona.">
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body class="view-deck show-captions is-loading">
+
+<!--
+  Each <section class="slide"> is one slide.
+    .slide-body  what is on screen
+   , "2" ...  parts that appear one key press at a time
+    .reader      a short text for people reading later (hidden while presenting)
+    .notes       speaker notes (press N, or open the speaker view with V)
+  The text comes from talk/outline.md. Keep the two in step.
+-->
+
+<main class="deck" id="deck">
+
+<!-- 1 -->
+<section class="slide slide--section slide--title" id="title" data-title="Title">
+  <div class="slide-body">
+    <h1>What is Jev, and why should I use it?</h1>
+    <figure class="qr">
+      <!-- Placeholder: replace this div with the QR code image (for example <img src="qr.svg" alt="">)
+           once the address of the published deck is known. -->
+      <div class="qr-code" role="img" aria-label="QR code placeholder">QR code</div>
+    </figure>
+  </div>
+  <aside class="notes">Name, one line about me. “You have probably heard of Jev. I spent some time building with it, and this is what I learned.”</aside>
+</section>
+
+<!-- 2 -->
+<section class="slide" id="two-ways" data-title="Two ways to use AI">
+  <div class="slide-body">
+    <h2>Two ways to use AI</h2>
+    <div class="cols">
+      <div class="card">
+        <p class="card-label">Chat</p>
+        <p class="card-big">We ask.<br>It writes.</p>
+      </div>
+      <div class="card card--strong">
+        <p class="card-label">Decide</p>
+        <p class="card-big">A program asks.<br>The model picks.</p>
+      </div>
+    </div>
+  </div>
+  <div class="reader"><p>Most of us use AI by chatting: we ask, and the model writes. Jev works in a different way. A program asks it a question, and it picks an answer.</p></div>
+  <aside class="notes">“Most of us use AI by chatting. We ask, it writes. Jev does not write. It decides.” The plan: how it works, two things I built with it, and when to use it.</aside>
+</section>
+
+<!-- 3 -->
+<section class="slide" id="for-programs" data-title="A model for programs">
+  <div class="slide-body">
+    <h2>A model for programs, not people</h2>
+    <table class="compare">
+      <thead><tr><th></th><th>Chat model (LLM)</th><th>Jev</th></tr></thead>
+      <tbody>
+        <tr><th>What it does</th><td>writes text</td><td>picks an answer</td></tr>
+        <tr><th>Who uses the result</th><td>a person</td><td>a program</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="reader"><p>A chat model writes text for a person to read. Jev picks an answer for a program to use.</p></div>
+  <aside class="notes">“The kind of decision an expert makes in one second.”</aside>
+</section>
+
+<!-- 4 -->
+<section class="slide" id="fast-cheap" data-title="Fast and cheap">
+  <div class="slide-body">
+    <h2>Fast and cheap, because it does not write</h2>
+    <div class="stats">
+      <div><p class="stat-num">0.1 s</p><p class="stat-label">a typical call, says TypeSafe</p></div>
+      <div><p class="stat-num">$0.042</p><p class="stat-label">per million tokens you send</p></div>
+      <div><p class="stat-num">$0</p><p class="stat-label">for the answers</p></div>
+    </div>
+  </div>
+  <div class="reader"><p>TypeSafe says most calls take about 100 milliseconds. You pay $0.042 for every million tokens of text you send, and nothing for the answers.</p></div>
+  <aside class="notes">From my laptop I saw about 250 milliseconds for the full trip, and about 60 of those were inside TypeSafe's servers.</aside>
+</section>
+
+<!-- 5 -->
+<section class="slide" id="one-call" data-title="How one call works">
+  <div class="slide-body">
+    <h2>How one call works</h2>
+    <div class="flow">
+      <div class="flow-box">your text<br>+ your questions<small>each with its own options</small></div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-box flow-box--jev">Jev</div>
+      <div class="flow-arrow" aria-hidden="true">→</div>
+      <div class="flow-box">one answer per question<small>and how sure it is</small></div>
+    </div>
+  </div>
+  <div class="reader"><p>You send some text and a few questions. Each question has a fixed list of possible answers. Jev gives back one answer for each question, and a number that says how sure it is.</p></div>
+  <aside class="notes">The answer is always one of your options. It cannot invent a new one. You can ask many questions in one call, and they are answered at the same time.</aside>
+</section>
+
+<!-- 6 -->
+<section class="slide" id="question-types" data-title="Three kinds of question">
+  <div class="slide-body">
+    <h2>Three kinds of question</h2>
+    <div class="cols-3">
+      <div class="card">
+        <p class="kind-name">Choice</p>
+        <p class="kind-what">Pick one option.</p>
+        <p class="kind-example">Which bin? → <strong>brown</strong></p>
+      </div>
+      <div class="card">
+        <p class="kind-name">Score</p>
+        <p class="kind-what">Pick a level.</p>
+        <p class="kind-example">How dirty is it? → <strong>1.35</strong> of 2</p>
+      </div>
+      <div class="card">
+        <p class="kind-name">Noul</p>
+        <p class="kind-what">Yes or no, as a probability.</p>
+        <p class="kind-example">Is it packaging? → <strong>0.94</strong></p>
+      </div>
+    </div>
+  </div>
+  <div class="reader"><p>Choice picks one option from your list. Score picks a level on a scale that you describe. Noul answers yes or no, as a probability.</p></div>
+  <aside class="notes">The examples are real answers from the recycling demo: a wine cork, an oily napkin, a yogurt pot.</aside>
+</section>
+
+<!-- 7 -->
+<section class="slide" id="not-sure" data-title="“I'm not sure” is useful">
+  <div class="slide-body">
+    <h2>“I'm not sure” is useful</h2>
+    <div class="cols">
+      <div>
+        <p class="chart-title">banana peel <span class="tag tag--good">sure</span></p>
+        <div class="bars" data-bars="banana peel"></div>
+      </div>
+      <div>
+        <p class="chart-title">used pen <span class="tag tag--warn">not sure</span></p>
+        <div class="bars" data-bars="used pen"></div>
+      </div>
+    </div>
+    <p class="big"><strong>Sure</strong> → act. &nbsp; <strong>Not sure</strong> → check, or ask a person.</p>
+  </div>
+  <div class="reader"><p>Jev gives a probability for every option. When one option has almost all of it, Jev is sure. When it is spread over several options, Jev is not sure, and your program can ask a person.</p></div>
+  <aside class="notes">The model tells you how sure it is, and your program can use that. High confidence does not mean the answer is correct. It means the model did not hesitate.</aside>
+</section>
+
+<!-- 8 -->
+<section class="slide slide--section" id="which-bin" data-title="Example 1: Which bin?">
+  <div class="slide-body">
+    <div class="slide-title-row">
+      <p class="eyebrow">Example 1</p>
+      <h2>Which bin?</h2>
+    </div>
+    <div class="bins" data-bins></div>
+    <p class="statement">Where does a wine cork go?</p>
+    <p class="big"><span class="chip" data-bin="brown">brown</span> &nbsp;Cork is organic.</p>
+  </div>
+  <div class="reader"><p>Barcelona has five street bins. Some things do not go in any bin: you take them to a recycling centre called a Green Point. It is not always clear where something goes.</p></div>
+  <aside class="notes">Ask the room, calmly: “Where does a wine cork go?” Wait. “Brown. It is organic.”</aside>
+</section>
+
+<!-- 9 -->
+<section class="slide" id="options" data-title="Your rules go in the options">
+  <div class="slide-body">
+    <h2>Your rules go in the options</h2>
+    <ul class="options" data-options></ul>
+    <p class="small">The descriptions come from the city's website.</p>
+  </div>
+  <div class="reader"><p>I did not teach Jev anything about Barcelona. I wrote the city's rules into the options, in plain words. Jev reads the item, reads the options, and picks.</p></div>
+  <aside class="notes">This is the main idea of building with Jev: you write your rules as options. These six descriptions are the city's rules, made short.</aside>
+</section>
+
+<!-- 10 -->
+<section class="slide" id="wrong-options" data-title="My first options were wrong">
+  <div class="slide-body">
+    <div class="slide-title-row">
+      <h2>My first options were wrong</h2>
+      <p class="lead">broken drinking glass</p>
+    </div>
+    <div class="cols">
+      <div>
+        <p class="chart-title">My first options <span class="tag tag--warn">“broken glass” under grey</span></p>
+        <div class="bars" data-bars-v1></div>
+      </div>
+      <div>
+        <p class="chart-title">The city's rules <span class="tag tag--good">Green Point added</span></p>
+        <div class="bars" data-bars="broken drinking glass"></div>
+      </div>
+    </div>
+    <p class="big">Jev follows the rules you give it.</p>
+  </div>
+  <div class="reader"><p>My first version had five options, and I wrote “broken glass” under the grey bin. Jev said grey, and it was 99% sure. The city says broken glass goes to a Green Point. When I fixed the options, Jev said Green Point.</p></div>
+  <aside class="notes">My first version had a mistake. I wrote “broken glass” under the grey bin. Jev said grey, 99% sure. But the city says broken glass goes to a Green Point. When I fixed the options, Jev said Green Point. It follows the rules you give it, so the rules must be right.</aside>
+</section>
+
+<!-- 11 -->
+<section class="slide" id="one-item" data-title="One item, one call">
+  <div class="slide-body">
+    <h2>One item, one call</h2>
+    <div class="picker" role="group" aria-label="Choose an item" data-picker></div>
+    <div class="bars" data-result-bars></div>
+    <p class="pick-line" data-result-pick></p>
+    <p class="small" data-result-meta>About 250 ms. About 900 tokens. One dollar pays for about 27,000 of these calls.</p>
+  </div>
+  <div class="reader"><p>Here is one real call. I sent the words “wine cork” and the question with six options. Jev answered “brown” with 95% probability, in about a quarter of a second. Choose another item to see its saved answer.</p></div>
+  <aside class="notes">Click another item if useful. Optional: if the wifi is good, run it live in the terminal and take one item from the room.</aside>
+</section>
+
+<!-- 12 -->
+<section class="slide" id="real-call" data-title="The real call">
+  <div class="slide-body">
+    <h2>The real call</h2>
+    <div class="code-cols">
+      <div class="stack"><p class="small">What I sent (one of the five questions)</p><pre data-json="request"></pre></div>
+      <div class="stack"><p class="small">What Jev sent back</p><pre data-json="response"></pre></div>
+    </div>
+  </div>
+  <div class="reader"><p>This is the real request and answer for the wine cork, for one of the five questions in the call. The full call is in the repo.</p></div>
+  <aside class="notes">Point at: the item, the question, the options. Then the answer: the choice, the confidence, a probability for every option, and the token count.</aside>
+</section>
+
+<!-- 13 -->
+<section class="slide" id="small-questions" data-title="Ask small questions">
+  <div class="slide-body">
+    <h2>Ask small questions</h2>
+    <div class="cols">
+      <ol class="list-big list-num">
+        <li>Where should it go?</li>
+        <li>What is it made of?</li>
+        <li>Is it packaging?</li>
+        <li>Is it a glass bottle or jar?</li>
+        <li>How much food or oil is on it?</li>
+      </ol>
+      <div>
+        <p class="chart-title">paper napkin with oil on it</p>
+        <table class="answers"><tbody data-small-answers></tbody></table>
+      </div>
+    </div>
+  </div>
+  <div class="reader"><p>You can ask several small questions in the same call. They are answered at the same time, so it is not slower.</p></div>
+  <aside class="notes">One call, five questions. The first is the direct question. The other four are small facts about the item.</aside>
+</section>
+
+<!-- 14 -->
+<section class="slide" id="code-decides" data-title="Your code decides">
+  <div class="slide-body">
+    <h2>Your code decides</h2>
+    <ul class="list-big list-dash">
+      <li>Glass, but not a bottle or jar → <span class="chip" data-bin="green_point">Green Point</span></li>
+      <li>Paper, and not clean → <span class="chip" data-bin="brown">brown</span></li>
+      <li>A small answer is not sure → “check the city guide”</li>
+    </ul>
+    <div class="callout">
+      <p class="callout-title">My first paper rule was wrong. I changed one number.</p>
+      <p class="code-change">CLEAN_PAPER_BELOW = <s data-limit="first_version">1.5</s> <strong data-limit="now">0.5</strong></p>
+      <p>Oily napkin: <span class="chip" data-bin="blue">blue</span> (wrong) → <span class="chip" data-bin="brown">brown</span>. No new call to Jev.</p>
+    </div>
+  </div>
+  <div class="reader"><p>The rules are normal code, so you can read them, test them and change them. My first paper rule sent an oily napkin to the blue bin. I changed one number, and it was fixed without calling Jev again.</p></div>
+  <aside class="notes">Jev answers the small questions. My code makes the decision. When I fixed the rule, I did not call the model again, because I already had its answers.</aside>
+</section>
+
+<!-- 15 -->
+<section class="slide" id="results" data-title="42 everyday items">
+  <div class="slide-body">
+    <h2><span data-k="recycle.items">42</span> everyday items</h2>
+    <div class="stats">
+      <div><p class="stat-num"><span data-k="recycle.direct_right">36</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with the direct question</p></div>
+      <div><p class="stat-num"><span data-k="recycle.rules_right">33</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with small questions + my rules</p></div>
+    </div>
+    <p class="big">Every mistake in my rules came with “not sure”.</p>
+    <p class="small"><span data-k="recycle.unclear">6</span> more items have no clear answer from the city.</p>
+    <details class="all-items">
+      <summary>See all <span data-k="recycle.items">42</span> items</summary>
+      <div class="table-scroll"><table class="items"><thead><tr><th>Item</th><th>City</th><th>Jev, direct</th><th>Sure?</th><th>My rules</th><th>Rules not sure about</th></tr></thead><tbody data-all-items></tbody></table></div>
+    </details>
+  </div>
+  <div class="reader"><p>I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question was right every time, because the city's rules are in the options. My rules were wrong three times, and each time the code said it was not sure.</p></div>
+  <aside class="notes">The direct question won here, because the city's rules are in the options. My rules were weaker, but every mistake came with a warning.</aside>
+</section>
+
+<!-- 16 -->
+<section class="slide" id="three-answers" data-title="Three answers">
+  <div class="slide-body">
+    <h2>Three answers</h2>
+    <div class="cols-3">
+      <div class="card">
+        <p class="card-label">Broken drinking glass</p>
+        <p class="card-big"><span class="chip" data-bin="green_point">Green Point</span></p>
+        <p class="muted">100%. Not the green bin.</p>
+      </div>
+      <div class="card">
+        <p class="card-label">Coffee capsule</p>
+        <p class="card-big"><span class="chip" data-bin="yellow">yellow</span></p>
+        <p class="muted">My rules, and “not sure”. The city says Green Point.</p>
+      </div>
+      <div class="card">
+        <p class="card-label">Used pen</p>
+        <p class="card-big">47% / 45%</p>
+        <p class="muted">Green Point or grey. Not sure, and the city's own pages do not agree.</p>
+      </div>
+    </div>
+  </div>
+  <div class="reader"><p>Three answers worth a look. The broken glass goes to a Green Point, not the green bin. For the coffee capsule my rules were wrong, but they said “not sure”. For the used pen Jev is not sure, and neither is the city.</p></div>
+  <aside class="notes">For the pen, “not sure” is the honest answer.</aside>
+</section>
+
+<!-- 17 -->
+<section class="slide slide--section" id="every-proposal" data-title="Example 2: Every proposal in the city">
+  <div class="slide-body">
+    <div class="slide-title-row">
+      <p class="eyebrow">Example 2</p>
+      <h2>Every proposal in the city</h2>
+    </div>
+    <div class="stats">
+      <div><p class="stat-num" data-k="decidim.proposals">35,768</p><p class="stat-label">proposals on decidim.barcelona</p></div>
+      <div><p class="stat-num" data-k="decidim.minutes">20 min</p><p class="stat-label">5 questions about each one</p></div>
+      <div><p class="stat-num" data-k="decidim.cost">$1.34</p><p class="stat-label">for all of it</p></div>
+    </div>
+  </div>
+  <div class="reader"><p>Barcelona has a public website where people and groups send proposals to the city: more than 35,000 since 2018, mostly in Catalan. I asked Jev five questions about every one. It took 20 minutes and cost $1.34. Jev is trained mostly on English; on a sample, its topic agreed with the city's own label about 8 times in 10.</p></div>
+  <aside class="notes">The text is in Catalan and Spanish, and Jev is trained mostly on English, so I checked a sample: it agreed with the city's own topic labels about 8 times in 10.</aside>
+</section>
+
+<!-- 18 -->
+<section class="slide" id="topics" data-title="What the proposals are about">
+  <div class="slide-body">
+    <h2>What the proposals are about</h2>
+    <div class="topics" data-topics></div>
+  </div>
+  <div class="reader"><p>The main topic of every proposal, as Jev chose it from ten options.</p></div>
+  <aside class="notes">Education and culture, mobility and social topics are the biggest. Tourism is the main topic of only 583, but it is mentioned in about 1,300.</aside>
+</section>
+
+<!-- 19 -->
+<section class="slide slide--statement" id="cheap" data-title="When reading gets cheap">
+  <div class="slide-body">
+    <h2>When reading gets cheap</h2>
+    <p class="statement">One person, one minute for each proposal: about 600 hours.</p>
+    <p class="statement">Jev: 20 minutes and $1.34.</p>
+    <p class="lead">When something gets very cheap, people find new uses for it. That idea comes from the economist William Stanley Jevons, and it is where the name Jev comes from.</p>
+  </div>
+  <div class="reader"><p>Reading every proposal would take one person about 600 hours. Jev did it in 20 minutes for $1.34. When something gets very cheap, people find new uses for it: that is the idea behind the name Jev.</p></div>
+  <aside class="notes">Could one person read them all? Not really. When something gets very cheap, people find new uses for it.</aside>
+</section>
+
+<!-- 20 -->
+<section class="slide" id="when" data-title="When to use it, and when not">
+  <div class="slide-body">
+    <h2>When to use it, and when not</h2>
+    <div class="cols">
+      <div class="card list-card">
+        <p class="card-label">Good for</p>
+        <ul class="list-big list-dash"><li>sorting and routing</li><li>checking and scoring</li><li>big piles of text</li><li>things that must be fast</li></ul>
+      </div>
+      <div class="card list-card list-card--no">
+        <p class="card-label">Not good for</p>
+        <ul class="list-big list-dash"><li>writing text</li><li>maths and dates</li><li>text that tries to trick it</li><li>images</li></ul>
+      </div>
+    </div>
+  </div>
+  <div class="reader"><p>Jev is good when a program needs a quick decision about some text. It is not good at writing, at maths or at dates, and it cannot look at images. It works together with chat models; it does not replace them.</p></div>
+  <aside class="notes">It works with LLMs, not instead of them. TypeSafe publishes this list of weak points themselves.</aside>
+</section>
+
+<!-- 21 -->
+<section class="slide" id="becoming-normal" data-title="This is becoming normal">
+  <div class="slide-body">
+    <h2>This is becoming normal</h2>
+    <p class="lead">OpenAI Decisions API, announced 29 September 2026</p>
+    <ul class="list-big list-dash">
+      <li>the same idea</li>
+      <li>about 150 ms</li>
+      <li>text and images</li>
+      <li>limited preview, no price yet</li>
+    </ul>
+  </div>
+  <div class="reader"><p>Three days before this talk, OpenAI announced a product with the same idea. So this is becoming a kind of model, not one product from one company.</p></div>
+  <aside class="notes">It is built on GPT-6 Luna. The numbers are OpenAI's own.</aside>
+</section>
+
+<!-- 22 -->
+<section class="slide slide--section" id="remember" data-title="Three things to remember">
+  <div class="slide-body">
+    <h2>Three things to remember</h2>
+    <ol class="list-big list-num">
+      <li>Chat models write for people. Jev decides for programs.</li>
+      <li>Write your rules in the options. Ask small questions. Let your code decide.</li>
+      <li>Use “not sure”.</li>
+    </ol>
+    <p class="links"><a href="https://docs.typesafe.ai">docs.typesafe.ai</a> <a href="https://github.com/bkarlovitz/jev-ai-builders-bcn">github.com/bkarlovitz/jev-ai-builders-bcn</a></p>
+  </div>
+  <div class="reader"><p>The code, the saved results and the speaker notes are all in the repo. Sources: TypeSafe AI documentation; Ajuntament de Barcelona street bins page and Waste Finder; Decidim Barcelona open data; OpenAI DevDay 2026 recap. All results were saved on 30 September 2026 with jev-1.13.0.</p></div>
+  <aside class="notes">Thank you. Questions.</aside>
+</section>
+
+</main>
+
+<div class="progress" aria-hidden="true"></div>
+
+<nav class="controls" aria-label="Slide controls">
+  <button type="button" data-act="prev" aria-label="Previous">←</button>
+  <span class="count" data-count>1 / 22</span>
+  <button type="button" data-act="next" aria-label="Next">→</button>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" data-act="overview" title="All slides (O)">All</button>
+  <button type="button" data-act="view" title="Slides or one long page (S)">Page</button>
+  <button type="button" data-act="present" title="Hide the text under the slides (P)">Present</button>
+</nav>
+
+<div class="overview" data-overview hidden>
+  <h2>All slides</h2>
+  <ol data-overview-list></ol>
+</div>
+
+<div class="notes-overlay" data-notes-overlay hidden></div>
+
+<div class="speaker" data-speaker>
+  <div class="speaker-head">
+    <div><span class="speaker-title" data-sp-title></span> <span class="muted" data-sp-count></span></div>
+    <div class="speaker-timer" data-sp-timer>0:00</div>
+  </div>
+  <div class="speaker-notes" data-sp-notes></div>
+  <div class="speaker-side">
+    <div class="box"><p class="small">Step</p><p data-sp-step></p></div>
+    <div class="box"><p class="small">Next slide</p><p data-sp-next></p></div>
+    <div class="box"><p class="small">On screen for readers</p><p data-sp-reader></p></div>
+  </div>
+  <div class="speaker-foot">
+    <button type="button" data-sp-act="prev">← Back</button>
+    <button type="button" data-sp-act="next">Next →</button>
+    <button type="button" data-sp-act="reset">Reset timer</button>
+  </div>
+</div>
+
+<script src="data/talk-data.js"></script>
+<script src="talk.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

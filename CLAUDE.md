@@ -14,7 +14,8 @@ answers with probabilities, not text. The repo holds two demos, their saved resu
 demos/             recycle.py, decidim.py, jev_common.py, requirements.txt
 captures/          saved Jev results (committed, so everything works offline)
 talk/outline.md    outline and speaker notes
-site/              the presentation page (static HTML/CSS/JS), once built
+site/              the presentation page (static HTML/CSS/JS); see site/HANDOFF.md
+tools/             build_site_data.py: copies saved results into site/data/talk-data.js
 data/              raw Decidim download (gitignored)
 ```
 
@@ -36,8 +37,12 @@ Run the scripts from the repo root. See `README.md` for all commands.
   the gitignored `.env`. Do not print it, log it, or write it into captures.
 - **Every demo must work offline.** Live calls are an extra; saved results in `captures/` are the baseline.
   Do not delete or regenerate captures without being asked.
-- **The presentation page never calls the API.** Its data is copied from `captures/`. It uses relative
-  paths only, local fonts, no CDN and no build step, so the same files run from a website or from disk.
+- **The presentation page never calls the API.** Its data is copied from `captures/` by
+  `python tools/build_site_data.py`; run that after any capture changes. The page uses relative paths only,
+  system fonts, no CDN and no build step, so the same files run from a website or from disk.
+- **Keep `talk/outline.md` and `site/index.html` in step.** Each outline section is one slide.
+- **All styling lives in `site/theme.css`** (fonts, colours, sizes, spacing, motion). `site/deck.css` uses
+  only those tokens. Do not put colours, fonts or sizes anywhere else.
 - **Language:** the talk is for an international audience. Write talk text in plain English (B1–B2 level):
   short sentences, common words, no idioms.
 - **Be honest with results.** Show what Jev actually returned, including wrong and unsure answers.
