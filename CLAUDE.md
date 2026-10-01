@@ -39,7 +39,7 @@ Run the scripts from the repo root. See `README.md` for all commands.
   Do not delete or regenerate captures without being asked.
 - **The presentation page never calls the API.** Its data is copied from `captures/` by
   `python tools/build_site_data.py`; run that after any capture changes. The page uses relative paths only,
-  system fonts, no CDN and no build step, so the same files run from a website or from disk.
+  local font files (`site/fonts/`), no CDN and no build step, so the same files run from a website or from disk.
 - **Keep `talk/outline.md` and `site/index.html` in step.** Each outline section is one slide.
 - **All styling lives in `site/theme.css`** (fonts, colours, sizes, spacing, motion). `site/deck.css` uses
   only those tokens. Do not put colours, fonts or sizes anywhere else.

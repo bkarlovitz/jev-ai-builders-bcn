@@ -4,11 +4,31 @@
    To change the style, edit the values in this file only. deck.css uses these
    tokens and contains no colours, fonts or sizes of its own.
 
+   The style: Geist and Geist Mono, zinc greys on white, one violet accent.
+   Labels are small mono capitals; bins are tinted chips with a thin ring.
+
    Sizes use --u, a "slide unit": 1% of the slide width on a 16:9 screen. It is
    the smaller of 1vw and (16/9)vh, so a slide keeps its proportions on any
    screen. Every text size has a minimum in px so it stays readable on small
    screens.
    ========================================================================= */
+
+/* ---- fonts: local files (SIL Open Font License), never from the internet,
+   so the deck works offline ---------------------------------------------- */
+@font-face {
+  font-family: "Geist";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/Geist-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Geist Mono";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("fonts/GeistMono-Variable.woff2") format("woff2");
+}
 
 /* The tokens are declared on :root and again on .dense, so a dense slide
    (a slide with more on it) recomputes every size from a smaller --u. */
@@ -17,18 +37,17 @@
 
 :root, .dense {
   /* ---- fonts --------------------------------------------------------- */
-  /* To use a custom font, put the files in site/fonts/, add an @font-face
-     rule below, and put its name first in the list. Never load fonts from
-     the internet: the deck must work offline. */
-  --font-text: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: var(--font-text);
-  --font-mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: "Geist Mono", ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  --font-features: normal;  /* OpenType features of the text font, e.g. "ss01" */
 
   --weight-text: 400;
-  --weight-strong: 650;
-  --weight-display: 750;
-  --tracking-display: -0.025em;
-  --tracking-label: 0.08em;
+  --weight-medium: 500;
+  --weight-strong: 550;
+  --weight-display: 600;
+  --tracking-display: -0.04em;
+  --tracking-label: 0.08em;  /* only for the mono capitals labels */
   --leading-text: 1.45;
   --leading-display: 1.05;
 
@@ -36,12 +55,13 @@
   --u: calc(min(1vw, 1.7778vh) * var(--u-scale) * var(--u-dense, 1));
 
   --text-xs: max(12px, calc(var(--u) * 1.2));
-  --text-sm: max(14px, calc(var(--u) * 1.5));
+  --text-sm: max(16px, calc(var(--u) * 1.55));
   --text-md: max(16px, calc(var(--u) * 2));
   --text-lg: max(18px, calc(var(--u) * 2.6));
   --text-xl: max(22px, calc(var(--u) * 3.4));
-  --text-2xl: max(26px, calc(var(--u) * 4.6));
-  --text-3xl: max(32px, calc(var(--u) * 6.4));
+  --text-2xl: max(28px, calc(var(--u) * 5));
+  --text-3xl: max(34px, calc(var(--u) * 7.2));
+  --text-title: max(34px, calc(var(--u) * 7.6));
   --text-stat: max(34px, calc(var(--u) * 7.2));
 
   /* ---- spacing ------------------------------------------------------- */
@@ -57,39 +77,50 @@
   --slide-max-width: calc(var(--u) * 100);
 
   /* ---- colours ------------------------------------------------------- */
-  --color-bg: #f7f5f0;
+  --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-text: #16181d;
-  --color-muted: #5f646e;
-  --color-line: #dedad1;
-  --color-soft: #ece9e2;
-  --color-accent: #16181d;
-  --color-focus: #1f6fd6;
+  --color-text: #09090b;
+  --color-muted: #52525b;
+  --color-line: rgba(9, 9, 11, 0.1);
+  --color-ring: rgba(9, 9, 11, 0.08);
+  --color-soft: #f4f4f5;
+  --color-accent: #7c3aed;
+  --color-focus: #7c3aed;
   --color-good: #17603a;
   --color-good-soft: #dff3e4;
   --color-warn: #7a4b00;
   --color-warn-soft: #fdeccc;
   --color-wrong: #b3261e;
 
-  /* Section slides (title, "Example 1", "Example 2") use these. */
-  --color-section-bg: #16181d;
-  --color-section-text: #f7f5f0;
-  --color-section-muted: #a9adb5;
+  /* Section slides (title, "Example 1", "Example 2", the end): white with a
+     faint dot grid. */
+  --color-section-bg: #ffffff;
+  --color-section-text: #09090b;
+  --color-section-muted: #52525b;
+  --section-dots: rgba(9, 9, 11, 0.09);
+  --section-dots-gap: calc(var(--u) * 2.4);
 
-  /* Code blocks and the JSON view */
-  --color-code-bg: #15171c;
-  --color-code-text: #e8e6df;
-  --color-code-key: #f2c200;
-  --color-code-muted: #8b9099;
-  --color-overlay: rgba(10, 11, 14, 0.55);
+  /* Code blocks and the JSON view: a light panel */
+  --color-code-bg: #fafafa;
+  --color-code-text: #18181b;
+  --color-code-key: #7c3aed;
+  --color-code-muted: #71717a;
+  --color-overlay: rgba(250, 250, 250, 0.6);
+  --overlay-blur: 10px;
 
-  /* The six places in the recycling example. "-ink" is the text colour on top. */
+  /* The six places in the recycling example. "-ink" is the text colour on a
+     solid fill. Chips and tiles mix these with white: --chip-tint for the
+     background, --chip-ring for the ring, --chip-text (mixed with
+     --color-text) for the text. */
   --bin-yellow: #f2c200;  --bin-yellow-ink: #2a2200;
   --bin-blue: #1f6fd6;    --bin-blue-ink: #ffffff;
   --bin-green: #2e9e4f;   --bin-green-ink: #ffffff;
   --bin-brown: #8b5a2b;   --bin-brown-ink: #ffffff;
   --bin-grey: #7a7f87;    --bin-grey-ink: #ffffff;
   --bin-green-point: #0f766e; --bin-green-point-ink: #ffffff;
+  --chip-tint: 12%;
+  --chip-ring: 35%;
+  --chip-text: 55%;
 
   /* QR code on the title slide */
   --qr-size: max(120px, calc(var(--u) * 17));
@@ -97,17 +128,18 @@
   --qr-ink: var(--color-text);
 
   /* Charts */
-  --chart-track: var(--color-soft);
-  --chart-bar: var(--color-text);
-  --chart-bar-height: max(10px, calc(var(--u) * 1.9));
+  --chart-track: #f4f4f5;
+  --chart-bar: #18181b;
+  --chart-bar-height: max(8px, calc(var(--u) * 1.2));
 
   /* ---- shapes and motion --------------------------------------------- */
-  --radius-sm: max(4px, calc(var(--u) * 0.5));
-  --radius-md: max(8px, calc(var(--u) * 1.1));
+  --radius-sm: max(4px, calc(var(--u) * 0.45));
+  --radius-md: max(8px, calc(var(--u) * 1));
   --radius-pill: 999px;
   --border: max(1px, calc(var(--u) * 0.1));
   --border-strong: max(2px, calc(var(--u) * 0.25));
-  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --shadow: 0 1px 2px rgba(9, 9, 11, 0.05), 0 20px 50px -12px rgba(9, 9, 11, 0.18);
+  --shadow-small: 0 4px 16px rgba(9, 9, 11, 0.06);
 
   --duration-slide: 220ms;
   --duration-step: 260ms;

@@ -21,3 +21,14 @@ captures/decidim/results.jsonl
 
 # Local preview config
 .claude/launch.json
+
+# ui.sh skills: installed locally, not part of the repo
+.claude/skills/add-dark-mode/
+.claude/skills/brand-kit/
+.claude/skills/canonicalize-tailwind/
+.claude/skills/componentize/
+.claude/skills/dark-mode-image/
+.claude/skills/design/
+.claude/skills/ideas/
+.claude/skills/make-responsive/
+.claude/skills/markup-from-image/
