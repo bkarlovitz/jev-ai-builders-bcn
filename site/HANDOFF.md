@@ -7,7 +7,7 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 
 | File | What it is |
 |---|---|
-| `index.html` | The 17 slides. Each has on-screen content, a short reader text and hidden speaker notes |
+| `index.html` | The 16 slides. Each has on-screen content, a short reader text and hidden speaker notes |
 | `theme.css` | **The whole look**: fonts, colours, sizes, spacing, motion. Edit this file to restyle |
 | `deck.css` | Layout and components. Uses the tokens from `theme.css`; no colours or fonts of its own |
 | `deck.js` | The slide engine: navigation, steps, views, overview, speaker view |
@@ -44,7 +44,7 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 
 ## To check after publishing
 
-1. Open the published address. The title slide appears, and the counter says `1 / 17`.
+1. Open the published address. The title slide appears, and the counter says `1 / 16`.
 2. Press → a few times: the next slide appears each time.
 3. Go to `#one-item` and click another item: the bars change.
 4. Open it on a phone: it shows as one long page.

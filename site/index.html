@@ -210,36 +210,12 @@
       <li>Paper, and not clean → <span class="chip" data-bin="brown">brown</span></li>
       <li>A small answer is not sure → “check the city guide”</li>
     </ul>
-    <div class="callout">
-      <p class="callout-title">My first paper rule was wrong. I changed one number.</p>
-      <p class="code-change">CLEAN_PAPER_BELOW = <s data-limit="first_version">1.5</s> <strong data-limit="now">0.5</strong></p>
-      <p>Oily napkin: <span class="chip" data-bin="blue">blue</span> (wrong) → <span class="chip" data-bin="brown">brown</span>. No new call to Jev.</p>
-    </div>
   </div>
-  <div class="reader"><p>The rules are normal code, so you can read them, test them and change them. My first paper rule sent an oily napkin to the blue bin. I changed one number, and it was fixed without calling Jev again.</p></div>
-  <aside class="notes">“Jev answers the small questions. My code makes the decision. When I fixed the rule, I did not call the model again; I already had its answers. This is how TypeSafe says to build: code owns the decision, the model supplies the judgment.”</aside>
+  <div class="reader"><p>The rules are normal code, so you can read them, test them and change them. Jev answers the small questions; the code makes the decision.</p></div>
+  <aside class="notes">“Jev answers the small questions. My code makes the decision. The rules are normal code: you can read them, test them and change them, without calling the model again. This is how TypeSafe says to build: code owns the decision, the model supplies the judgment.”</aside>
 </section>
 
 <!-- 11 -->
-<section class="slide" id="results" data-title="42 everyday items">
-  <div class="slide-body">
-    <h2><span data-k="recycle.items">42</span> everyday items</h2>
-    <div class="stats">
-      <div><p class="stat-num"><span data-k="recycle.direct_right">36</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with the direct question</p></div>
-      <div><p class="stat-num"><span data-k="recycle.rules_right">33</span> of <span data-k="recycle.known">36</span></p><p class="stat-label">right with small questions + my rules</p></div>
-    </div>
-    <p class="big"><span data-k="recycle.flagged">8</span> items said “not sure”. The 3 mistakes were among them.</p>
-    <p class="small"><span data-k="recycle.unclear">6</span> items: the city has no clear answer.</p>
-    <details class="all-items">
-      <summary>See all <span data-k="recycle.items">42</span> items</summary>
-      <div class="table-scroll"><table class="items"><thead><tr><th>Item</th><th>City</th><th>Jev, direct</th><th>Sure?</th><th>My rules</th><th>Rules not sure about</th></tr></thead><tbody data-all-items></tbody></table></div>
-    </details>
-  </div>
-  <div class="reader"><p>I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question was right every time, because the city's list is in the criteria. My rules were wrong three times, and each time the code said it was not sure.</p></div>
-  <aside class="notes">“The direct question wins here because the city's list is in the criteria, so it is close to a lookup. Small questions give you facts you can reuse and rules you can change. Pick by your problem.”</aside>
-</section>
-
-<!-- 12 -->
 <section class="slide slide--section dense" id="every-proposal" data-title="Every proposal in the city">
   <div class="slide-body">
     <div class="slide-title-row">
@@ -265,7 +241,7 @@
   <aside class="notes">“Same shape as the bins, but here the state is a title and up to 2,000 characters of Catalan. Jev is trained mostly on English, so I checked a sample: its topic agreed with the city's own label about 8 times in 10. The 20 minutes was my own rate limit, 30 calls a second.”</aside>
 </section>
 
-<!-- 13 -->
+<!-- 12 -->
 <section class="slide" id="topics" data-title="What the proposals are about">
   <div class="slide-body">
     <h2>What the proposals are about</h2>
@@ -275,7 +251,7 @@
   <aside class="notes">“Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a problem” question was weak, about 45% unsure, so I do not show it.</aside>
 </section>
 
-<!-- 14 -->
+<!-- 13 -->
 <section class="slide slide--statement" id="cheap" data-title="When reading gets cheap">
   <div class="slide-body">
     <h2>When reading gets cheap</h2>
@@ -287,7 +263,7 @@
   <aside class="notes">Could one person read them all? Not really. When something gets very cheap, people find new uses for it.</aside>
 </section>
 
-<!-- 15 -->
+<!-- 14 -->
 <section class="slide" id="when" data-title="When to use it, and when not">
   <div class="slide-body">
     <h2>When to use it, and when not</h2>
@@ -306,7 +282,7 @@
   <aside class="notes">“TypeSafe publishes this list themselves. It works with LLMs, not instead of them.”</aside>
 </section>
 
-<!-- 16 -->
+<!-- 15 -->
 <section class="slide" id="becoming-normal" data-title="This is becoming normal">
   <div class="slide-body">
     <h2>This is becoming normal</h2>
@@ -322,7 +298,7 @@
   <aside class="notes">It is built on GPT-6 Luna. The numbers are OpenAI's own.</aside>
 </section>
 
-<!-- 17 -->
+<!-- 16 -->
 <section class="slide slide--section" id="remember" data-title="Three things to remember">
   <div class="slide-body">
     <h2>Three things to remember</h2>
@@ -343,7 +319,7 @@
 
 <nav class="controls" aria-label="Slide controls">
   <button type="button" data-act="prev" aria-label="Previous">←</button>
-  <span class="count" data-count>1 / 17</span>
+  <span class="count" data-count>1 / 16</span>
   <button type="button" data-act="next" aria-label="Next">→</button>
   <span class="sep" aria-hidden="true"></span>
   <button type="button" data-act="overview" title="All slides (O)">All</button>

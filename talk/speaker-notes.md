@@ -57,38 +57,33 @@ see each other. Why ask small facts when the direct question works? Next slide.�
 
 ## 10. Your code decides
 
-“Jev answers the small questions. My code makes the decision. When I fixed the rule, I did not call the model
-again; I already had its answers. This is how TypeSafe says to build: code owns the decision, the model
-supplies the judgment.”
+“Jev answers the small questions. My code makes the decision. The rules are normal code: you can read them,
+test them and change them, without calling the model again. This is how TypeSafe says to build: code owns the
+decision, the model supplies the judgment.”
 
-## 11. 42 everyday items
-
-“The direct question wins here because the city's list is in the criteria, so it is close to a lookup. Small
-questions give you facts you can reuse and rules you can change. Pick by your problem.”
-
-## 12. Every proposal in the city
+## 11. Every proposal in the city
 
 “Same shape as the bins, but here the state is a title and up to 2,000 characters of Catalan. Jev is trained
 mostly on English, so I checked a sample: its topic agreed with the city's own label about 8 times in 10. The
 20 minutes was my own rate limit, 30 calls a second.”
 
-## 13. What the proposals are about
+## 12. What the proposals are about
 
 “Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a problem” question was
 weak, about 45% unsure, so I do not show it.
 
-## 14. When reading gets cheap
+## 13. When reading gets cheap
 
 Could one person read them all? Not really. When something gets very cheap, people find new uses for it.
 
-## 15. When to use it, and when not
+## 14. When to use it, and when not
 
 “TypeSafe publishes this list themselves. It works with LLMs, not instead of them.”
 
-## 16. This is becoming normal
+## 15. This is becoming normal
 
 It is built on GPT-6 Luna. The numbers are OpenAI's own.
 
-## 17. Three things to remember
+## 16. Three things to remember
 
 Thank you. Questions.

@@ -7,7 +7,7 @@ Outline. AI Builders, Barcelona, 2 October 2026.
 The recycling example teaches every concept, from slide 3 on. Decidim shows the same pattern at volume.
 Speaker notes are also in `talk/speaker-notes.md`.
 
-17 slides, about 12 minutes. Times are rough. Two reveal steps: slides 3 and 5.
+16 slides, about 12 minutes. Times are rough. Two reveal steps: slides 3 and 5.
 
 ---
 
@@ -120,28 +120,16 @@ Speaker notes are also in `talk/speaker-notes.md`.
 ### 10. Your code decides (0:50)
 
 - **On screen:** Rules in plain words: glass, but not a bottle or jar → Green Point; paper, and not clean →
-  brown; a small answer is not sure → "check the city guide". Callout: "My first paper rule was wrong. I
-  changed one number. CLEAN_PAPER_BELOW = 1.5 → 0.5. Oily napkin: blue (wrong) → brown. No new call to Jev."
-- **Reader text:** The rules are normal code, so you can read them, test them and change them. My first paper
-  rule sent an oily napkin to the blue bin. I changed one number, and it was fixed without calling Jev again.
-- **Speaker notes:** “Jev answers the small questions. My code makes the decision. When I fixed the rule, I
-  did not call the model again; I already had its answers. This is how TypeSafe says to build: code owns the
-  decision, the model supplies the judgment.”
-
-### 11. 42 everyday items (0:40)
-
-- **On screen:** "36 of 36: right with the direct question." "33 of 36: right with small questions + my
-  rules." "8 items said not sure. The 3 mistakes were among them." "6 items: the city has no clear answer."
-  (The full table of 42 items shows only in the long-page view.)
-- **Reader text:** I tried 42 everyday items. For 36 of them the city has a clear answer. The direct question
-  was right every time, because the city's list is in the criteria. My rules were wrong three times, and each
-  time the code said it was not sure.
-- **Speaker notes:** “The direct question wins here because the city's list is in the criteria, so it is close
-  to a lookup. Small questions give you facts you can reuse and rules you can change. Pick by your problem.”
+  brown; a small answer is not sure → "check the city guide".
+- **Reader text:** The rules are normal code, so you can read them, test them and change them. Jev answers the
+  small questions; the code makes the decision.
+- **Speaker notes:** “Jev answers the small questions. My code makes the decision. The rules are normal code:
+  you can read them, test them and change them, without calling the model again. This is how TypeSafe says to
+  build: code owns the decision, the model supplies the judgment.”
 
 ## Example 2: Every proposal in the city (volume)
 
-### 12. Every proposal in the city (0:40)
+### 11. Every proposal in the city (0:40)
 
 - **On screen:** Example 2. "decidim.barcelona, 2018 to 2026, mostly in Catalan." 35,768 proposals / 5
   questions about each one / 20 min for all of them / $1.34 in total. The five questions with their types:
@@ -155,7 +143,7 @@ Speaker notes are also in `talk/speaker-notes.md`.
   Catalan. Jev is trained mostly on English, so I checked a sample: its topic agreed with the city's own label
   about 8 times in 10. The 20 minutes was my own rate limit, 30 calls a second.”
 
-### 13. What the proposals are about (0:30)
+### 12. What the proposals are about (0:30)
 
 - **On screen:** Bar chart of the main topic: education and culture 6,847 / mobility 6,177 / social 5,517 /
   public space 5,327 / environment 4,803 / economy 2,022 / government 1,839 / housing 1,529 / other 1,124 /
@@ -164,7 +152,7 @@ Speaker notes are also in `talk/speaker-notes.md`.
 - **Speaker notes:** “Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a
   problem” question was weak, about 45% unsure, so I do not show it.
 
-### 14. When reading gets cheap (0:30)
+### 13. When reading gets cheap (0:30)
 
 - **On screen:** "One person, one minute for each proposal: about 600 hours." "Jev: 20 minutes and $1.34."
   "When something gets very cheap, people find new uses for it. That idea comes from the economist William
@@ -176,7 +164,7 @@ Speaker notes are also in `talk/speaker-notes.md`.
 
 ## Closing
 
-### 15. When to use it, and when not (0:40)
+### 14. When to use it, and when not (0:40)
 
 - **On screen:** Good for: sorting and routing, checking and scoring, big piles of text, things that must be
   fast. Not good for: writing text, maths and dates, text that tries to trick it, images.
@@ -185,7 +173,7 @@ Speaker notes are also in `talk/speaker-notes.md`.
   replace them.
 - **Speaker notes:** “TypeSafe publishes this list themselves. It works with LLMs, not instead of them.”
 
-### 16. This is becoming normal (0:25)
+### 15. This is becoming normal (0:25)
 
 - **On screen:** "OpenAI Decisions API, announced 29 September 2026." The same idea / about 150 ms / text and
   images / limited preview, no price yet.
@@ -193,7 +181,7 @@ Speaker notes are also in `talk/speaker-notes.md`.
   becoming a kind of model, not one product from one company.
 - **Speaker notes:** It is built on GPT-6 Luna. The numbers are OpenAI's own.
 
-### 17. Three things to remember (0:30)
+### 16. Three things to remember (0:30)
 
 - **On screen:** 1. LLMs write for people. Jev decides for programs. 2. Write your rules in the criteria. Ask
   small questions. Let your code decide. 3. Use "not sure". Links: docs.typesafe.ai and this repo.
