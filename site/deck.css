@@ -97,15 +97,14 @@ button { font: inherit; color: inherit; }
 .view-deck [data-step].is-shown { opacity: 1; transform: none; }
 .all-steps [data-step] { opacity: 1 !important; transform: none !important; }
 
-/* Reader text: never shown in the slides view. */
+/* Reader text: never shown on the slides, in any view. The speaker view still shows it. */
 .reader { display: none; }
 .reader p + p { margin-top: var(--space-1); }
 
 .notes { display: none; }
 
 /* =========================================================================
-   Scroll view: all slides one after another, with reader text.
-   Used automatically on phones and narrow windows; press S to switch.
+   Scroll view: all slides one after another. Press S or the Page button.
    ========================================================================= */
 
 .view-scroll .slide {
@@ -114,16 +113,6 @@ button { font: inherit; color: inherit; }
   padding-bottom: var(--space-6);
   border-bottom: var(--border) solid var(--color-line);
 }
-.view-scroll .slide .reader {
-  display: block;
-  width: 100%;
-  max-width: var(--slide-max-width);
-  margin: var(--space-4) auto 0;
-  padding-top: var(--space-3);
-  border-top: var(--border) dashed var(--color-line);
-  font-size: var(--text-md);
-}
-.view-scroll .slide--section .reader { border-top-color: var(--color-section-muted); }
 
 /* =========================================================================
    Swipe view: phones. One slide per screen; swipe sideways to move.
@@ -151,20 +140,9 @@ button { font: inherit; color: inherit; }
   padding: calc(var(--phone-pad-top) + env(safe-area-inset-top)) calc(var(--phone-pad-x) + env(safe-area-inset-right))
            calc(var(--phone-bar-height) + env(safe-area-inset-bottom) + var(--phone-pad-top)) calc(var(--phone-pad-x) + env(safe-area-inset-left));
 }
-/* Auto margins centre the slide and its reader text when there is room, and
-   start them at the top when there is not (nothing is cut off). */
-.view-swipe .slide-body { margin-top: auto; gap: var(--phone-gap); }
-.view-swipe .slide:not(:has(.reader)) .slide-body { margin-bottom: auto; }
-.view-swipe .slide .reader {
-  display: block;
-  width: 100%;
-  margin: var(--phone-gap) 0 auto;
-  padding-top: var(--space-3);
-  border-top: var(--border) dashed var(--color-line);
-  color: var(--color-muted);
-  font-size: var(--text-md);
-}
-.view-swipe .reader p + p { margin-top: var(--space-2); }
+/* Auto margins centre the slide when there is room, and start it at the top
+   when there is not (nothing is cut off). */
+.view-swipe .slide-body { margin-top: auto; margin-bottom: auto; gap: var(--phone-gap); }
 /* Small labels stay readable on a phone: at least --text-sm */
 .layout-stack .frame-path { display: block; margin: 0.25em 0 0; font-size: 1em; }
 .layout-stack .list-big .term, .layout-stack .tag { font-size: var(--text-sm); }

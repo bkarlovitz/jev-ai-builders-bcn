@@ -7,7 +7,7 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 
 | File | What it is |
 |---|---|
-| `index.html` | The 17 slides. Each has on-screen content, a short reader text and hidden speaker notes |
+| `index.html` | The 17 slides. Each has on-screen content, a short reader text (shown only in the speaker view) and hidden speaker notes |
 | `theme.css` | **The whole look**: fonts, colours, sizes, spacing, motion. Edit this file to restyle |
 | `deck.css` | Layout and components. Uses the tokens from `theme.css`; no colours or fonts of its own |
 | `deck.js` | The slide engine: navigation, steps, views, overview, speaker view |
@@ -30,12 +30,12 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 ## How it behaves
 
 - **Slides view** (default on screens wider than 700 px): one slide at a time, full size, for presenting.
-  The reader text is not shown here; it is in the page view and on phones.
+  The reader text is never shown on the slides, in any view; only the speaker view shows it.
 - **Phones** (700 px wide or less): one slide per screen; swipe sideways to move. A slide that is taller than
-  the screen scrolls up and down. The reader text is under each slide, every step is shown, and the bar at
+  the screen scrolls up and down. Every step is shown, and the bar at
   the bottom has All, back, the slide number, next, and Page. `{ } JSON` opens a full-screen sheet with
   Request, Response and Close.
-- **Page view:** every slide one after another, with its reader text. Press `S`, use the "Page" button, or
+- **Page view:** every slide one after another. Press `S`, use the "Page" button, or
   open `index.html?page`. On a phone the choice between slides and page is remembered.
 - **Steps:** some slides reveal parts one key press at a time. `index.html?all` shows every step at once.
 - **Keys:** → space Enter Page Down = next. ← Page Up = back. Home / End. `F` full screen. `O` all slides.
