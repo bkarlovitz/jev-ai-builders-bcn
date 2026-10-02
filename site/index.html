@@ -8,13 +8,13 @@
 <link rel="stylesheet" href="theme.css">
 <link rel="stylesheet" href="deck.css">
 </head>
-<body class="view-deck show-captions is-loading">
+<body class="view-deck is-loading">
 
 <!--
   Each <section class="slide"> is one slide.
     .slide-body  what is on screen
    , "2" ...  parts that appear one key press at a time
-    .reader      a short text for people reading later (hidden while presenting)
+    .reader      a short text for people reading later (page view and phones only)
     .notes       speaker notes (press N, or open the speaker view with V)
   The text comes from talk/outline.md. Keep the two in step.
 -->
@@ -26,9 +26,7 @@
   <div class="slide-body">
     <h1>What is Jev, and why should I use it?</h1>
     <figure class="qr">
-      <!-- Placeholder: replace this div with the QR code image (for example <img src="qr.svg" alt="">)
-           once the address of the published deck is known. -->
-      <div class="qr-code" role="img" aria-label="QR code placeholder">QR code</div>
+      <img src="qr.svg" alt="QR code for uwchlan.co/jev-ai-builders-bcn">
     </figure>
   </div>
   <aside class="notes">Name, one line about me. “You have probably heard of Jev. I spent some time building with it, and this is what I learned.”</aside>
@@ -37,22 +35,37 @@
 <!-- 2 -->
 <section class="slide" id="vs-llm" data-title="Jev next to an LLM">
   <div class="slide-body">
-    <h2>Jev next to an LLM</h2>
+    <h2>LLMs write for people. Jev decides for programs.</h2>
     <table class="compare compare--rows">
       <thead><tr><th></th><th>LLM</th><th>Jev</th></tr></thead>
       <tbody>
-        <tr><th>What it gives back</th><td>text</td><td>one of your answers, with a probability for each</td></tr>
-        <tr><th>Who it is for</th><td>a person reads it</td><td>your code uses it directly</td></tr>
-        <tr><th>How sure it is</th><td>no probability for each answer</td><td>a probability for every answer, every time</td></tr>
+        <tr><th>What it gives back</th><td>text</td><td>one of your answers, with a probability for every answer, every time</td></tr>
+        <tr><th>What it is trained for</th><td>text people like (RLHF)</td><td>calibrated decisions (RLCD)</td></tr>
       </tbody>
     </table>
-    <p class="small">TypeSafe calls this a System One model.</p>
   </div>
   <div class="reader"><p>Jev understands language like an LLM, but it is trained to give back decisions with probabilities, not text.</p></div>
-  <aside class="notes">“Is Jev an LLM? It understands language like one. It does not write. It is trained to give back decisions with probabilities.” If asked about training: TypeSafe calls it RLCD (calibrated decisions), instead of RLHF (text that people like). If someone thinks of JSON mode: “JSON mode fixes the format of an LLM's answer. It still writes one token at a time, and it does not give you a probability for every answer.” In passing: about 100 ms according to TypeSafe, about 250 ms from my laptop; $0.042 per million input tokens, and the answers are free.</aside>
+  <aside class="notes">“Is Jev an LLM? It understands language like one. It does not write.” Then the two rows: “An LLM gives back text. Jev gives back one of your answers, with a probability for every answer, every time. An LLM is trained to write text people like: RLHF. Jev is trained for calibrated decisions: TypeSafe calls that RLCD.” If someone thinks of JSON mode: “JSON mode fixes the format of an LLM's answer. It still writes one token at a time, and it does not give you a probability for every answer.” If someone brings up logprobs: “Logprobs are for each token, not for each of your answers, and RLHF tends to make them badly calibrated. Jev is trained for exactly that.”</aside>
 </section>
 
 <!-- 3 -->
+<section class="slide" id="question-types" data-title="Three kinds of question">
+  <div class="slide-body">
+    <h2>Three kinds of question</h2>
+    <table class="compare compare--rows compare--kinds">
+      <thead><tr><th></th><th>For example</th><th>What you get back</th></tr></thead>
+      <tbody>
+        <tr><th>Choice</th><td>Which team should handle this ticket?</td><td>one of your options, with a probability for each</td></tr>
+        <tr><th>Score</th><td>How urgent is it?</td><td>a position on levels you describe</td></tr>
+        <tr><th>Noul</th><td>Is the customer asking for a refund?</td><td>yes or no, as one number</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="reader"><p>Jev answers three kinds of question. The next example uses all three.</p></div>
+  <aside class="notes">“Jev answers three kinds of question. A Choice picks one of your options. A Score gives a position on levels you describe. A Noul is yes or no, as one number. Now let's see all three on one real example: recycling in Barcelona.”</aside>
+</section>
+
+<!-- 4 -->
 <section class="slide slide--section" id="which-bin" data-title="Which bin?">
   <div class="slide-body">
     <div class="slide-title-row">
@@ -60,14 +73,13 @@
       <h2>Which bin?</h2>
     </div>
     <div class="bins" data-bins></div>
-    <p class="statement">Where does a wine cork go?</p>
-    <p class="big" data-step="1"><span class="chip" data-bin="brown">brown</span> &nbsp;Cork is organic.</p>
+    <p class="statement">Recycling in Barcelona</p>
   </div>
   <div class="reader"><p>Barcelona has five street bins. Some things do not go in any bin: you take them to a recycling centre called a Green Point. It is not always clear where something goes.</p></div>
-  <aside class="notes">Ask the room, calmly: “Where does a wine cork go?” Wait. Next key: “Brown. It is organic.” Then: “The city has rules. Let's give the rules to Jev.”</aside>
+  <aside class="notes">“Barcelona has five street bins, and a Green Point for things that go in none of them. It is not always clear where something goes. The city has rules. Let's give them to Jev.”</aside>
 </section>
 
-<!-- 4 -->
+<!-- 5 -->
 <section class="slide" id="city-rules" data-title="The city's rules">
   <div class="slide-body">
     <h2>The city's rules</h2>
@@ -75,20 +87,20 @@
       <li><span class="chip" data-bin="yellow">yellow</span><span class="rule-name">packaging</span><span class="rule-text">plastic packaging and bags, cans, cartons, caps and lids, foil, trays</span></li>
       <li><span class="chip" data-bin="blue">blue</span><span class="rule-name">paper and cardboard</span><span class="rule-text">clean boxes, newspapers, magazines, envelopes, paper bags, receipts</span></li>
       <li><span class="chip" data-bin="green">green</span><span class="rule-name">glass</span><span class="rule-text">bottles and jars only, without lids</span></li>
-      <li class="is-focus"><span class="chip" data-bin="brown">brown</span><span class="rule-name">organic</span><span class="rule-text">food, egg shells, <mark>corks</mark>, tea bags, coffee grounds, oily napkins, flowers</span></li>
+      <li><span class="chip" data-bin="brown">brown</span><span class="rule-name">organic</span><span class="rule-text">food, egg shells, corks, tea bags, coffee grounds, oily napkins, flowers</span></li>
       <li><span class="chip" data-bin="grey">grey</span><span class="rule-name">general waste</span><span class="rule-text">cigarette ends, nappies, used tissues, dust, hair</span></li>
       <li><span class="chip" data-bin="green_point">Green Point</span><span class="rule-name">not a street bin</span><span class="rule-text">toys, ceramics, plates and drinking glasses, mirrors, bulbs, single-use coffee capsules</span></li>
     </ul>
     <div class="foot-row"><p class="small">Written from the city's website.</p><p class="small">Next: give these rules to Jev.</p></div>
   </div>
   <div class="reader"><p>I did not teach Jev anything about Barcelona. I wrote the city's rules in plain words. They are shortened here; the full text sent to Jev is in the repo.</p></div>
-  <aside class="notes">“The city publishes rules. Here they are, in plain words. Cork is in the brown line. Now let's give these six lines to Jev, exactly like this.”</aside>
+  <aside class="notes">“The city publishes rules. Here they are, in plain words. Now let's give these six lines to Jev, exactly like this.”</aside>
 </section>
 
-<!-- 5 -->
-<section class="slide" id="one-call" data-title="One call" data-json="cork-bin">
+<!-- 6 -->
+<section class="slide" id="one-call" data-title="Choice: one of your options" data-json="cork-bin">
   <div class="slide-body">
-    <div class="title-tag-row"><h2>One call</h2><span class="tag-group"><span class="type-tag"><span class="term">type</span> choice</span><button type="button" class="json-btn" data-json-open>{ } JSON</button></span></div>
+    <div class="title-tag-row"><h2>Choice: one of your options</h2><button type="button" class="json-btn" data-json-open>{ } JSON</button></div>
     <div class="frame">
       <div class="frame-col">
         <p class="frame-head">I send <code class="frame-path">request</code></p>
@@ -103,16 +115,15 @@
         <div class="frame-row frame-row--stack"><span class="term">probabilities</span><div class="bars bars--compact" data-top-bars="wine cork"></div></div>
       </div>
     </div>
-    <p class="small" data-result-meta-static>225 ms · 882 tokens · about 27,000 calls for one dollar</p>
   </div>
-  <div class="reader"><p>This is a real call. The state is the item. The question has instructions and criteria. Jev sends back its choice, a probability for every criterion, and a confidence number. The same request also had four more questions; see “Ask small questions”.</p></div>
-  <aside class="notes">Step 1, the left side: “State is the text Jev reads. The question has instructions and criteria. The criteria are the six rules from the last slide, word for word.” Next key, the right side: “Jev gives a probability for every criterion. The choice is the highest. Confidence says how concentrated that is. This question type is a Choice; there are two more.” Press J for the real request: “This is the real request. State is an object with my own field, item; the backticks in the instructions point at it. bin, brown, green_point are my names.” J again for the response: “Jev gives my names back, with a probability for each, and a confidence. 882 tokens in; the answer is free.” Esc to close.</aside>
+  <div class="reader"><p>This is a real call. The state is the item. The question has instructions and criteria. Jev sends back its choice, a probability for every criterion, and a confidence number. The same request also had four more questions; see “Break the decision into small questions”.</p></div>
+  <aside class="notes">“First item: a wine cork. Where does it go?” Step 1, the left side: “State is the text Jev reads. The question has instructions and criteria. The criteria are the six rules from the last slide, word for word.” Next key, the right side: “Jev gives a probability for every criterion. The choice is the highest. Confidence says how concentrated that is. This is a Choice.” Press J for the real request: “This is the real request. State is an object with my own field, item; the backticks in the instructions point at it. bin, brown, green_point are my names.” J again for the response: “Jev gives my names back, with a probability for each, and a confidence. 882 tokens in; the answer is free.” Esc to close.</aside>
 </section>
 
-<!-- 6 -->
+<!-- 7 -->
 <section class="slide dense" id="score" data-title="Score: a position on your levels" data-json="napkin-dirt">
   <div class="slide-body">
-    <div class="title-tag-row"><h2>Score: a position on your levels</h2><span class="tag-group"><span class="type-tag"><span class="term">type</span> score</span><button type="button" class="json-btn" data-json-open>{ } JSON</button></span></div>
+    <div class="title-tag-row"><h2>Score: a position on your levels</h2><button type="button" class="json-btn" data-json-open>{ } JSON</button></div>
     <div class="frame">
       <div class="frame-col">
         <p class="frame-head">I send <code class="frame-path">request</code></p>
@@ -133,10 +144,10 @@
   <aside class="notes">“Same frame. The criteria are now levels, in order. Jev does not pick one; it gives a probability for each level, and the score is the weighted average, so it can land between two. For this napkin: between ‘a little’ and ‘covered’. The city only needs clean or not clean. My code decides where to cut; that comes later.”</aside>
 </section>
 
-<!-- 7 -->
+<!-- 8 -->
 <section class="slide" id="noul" data-title="Noul: yes or no, as one number" data-json="cork-noul">
   <div class="slide-body">
-    <div class="title-tag-row"><h2>Noul: yes or no, as one number</h2><span class="tag-group"><span class="type-tag"><span class="term">type</span> noul</span><button type="button" class="json-btn" data-json-open>{ } JSON</button></span></div>
+    <div class="title-tag-row"><h2>Noul: yes or no, as one number</h2><button type="button" class="json-btn" data-json-open>{ } JSON</button></div>
     <div class="frame">
       <div class="frame-col">
         <p class="frame-head">I send <code class="frame-path">request</code></p>
@@ -156,7 +167,7 @@
   <aside class="notes">“Third type. Yes or no, as a probability. No criteria needed. Is a cork packaging? 0.37: Jev is not sure, and that is fair. It does not mean ‘a little bit packaging’; it means yes and no are both possible. Which brings us to the useful part.”</aside>
 </section>
 
-<!-- 8 -->
+<!-- 9 -->
 <section class="slide" id="not-sure" data-title="“Not sure” is useful">
   <div class="slide-body">
     <h2>“Not sure” is useful</h2>
@@ -177,11 +188,11 @@
   <aside class="notes">“Confidence tells you how concentrated the probabilities are. TypeSafe suggests starting around 0.8 to act and below 0.5 to ask a person, and tuning it for your case. My demo uses 0.6.” If asked about the pen: the city is also unclear; its two pages disagree, between grey and yellow.</aside>
 </section>
 
-<!-- 9 -->
-<section class="slide dense" id="small-questions" data-title="A second way: ask small questions" data-json="napkin-all">
+<!-- 10 -->
+<section class="slide dense" id="small-questions" data-title="Break the decision into small questions" data-json="napkin-all">
   <div class="slide-body">
-    <div class="title-tag-row"><h2>A second way: ask small questions</h2><button type="button" class="json-btn" data-json-open>{ } JSON</button></div>
-    <p class="big">One call, five questions, the same state.</p>
+    <div class="title-tag-row"><h2>Break the decision into small questions</h2><button type="button" class="json-btn" data-json-open>{ } JSON</button></div>
+    <p class="big">TypeSafe's advice: small questions, one call, the same state.</p>
     <div class="cols">
       <ol class="list-big list-num">
         <li>Where should it go? <span class="term">choice</span></li>
@@ -197,32 +208,18 @@
     </div>
     <p class="small">Five questions take about the same time as one.</p>
   </div>
-  <div class="reader"><p>One call can hold many questions about the same state. They are answered at the same time, and they cannot see each other's answers.</p></div>
-  <aside class="notes">“Question 1 is the direct question. Questions 2 to 5 are small facts. They are answered together and cannot see each other.” Press J twice for the response: “One request, five questions, one answer object.” If short on time, skip the JSON here.</aside>
-</section>
-
-<!-- 10 -->
-<section class="slide" id="code-decides" data-title="Your code decides">
-  <div class="slide-body">
-    <h2>Your code decides</h2>
-    <ul class="list-big list-dash">
-      <li>Glass, but not a bottle or jar → <span class="chip" data-bin="green_point">Green Point</span></li>
-      <li>Paper, and not clean → <span class="chip" data-bin="brown">brown</span></li>
-      <li>A small answer is not sure → “check the city guide”</li>
-    </ul>
-  </div>
-  <div class="reader"><p>The rules are normal code, so you can read them, test them and change them. Jev answers the small questions; the code makes the decision.</p></div>
-  <aside class="notes">“Jev answers the small questions. My code makes the decision. The rules are normal code: you can read them, test them and change them, without calling the model again. This is how TypeSafe says to build: code owns the decision, the model supplies the judgment.”</aside>
+  <div class="reader"><p>TypeSafe recommends breaking a decision into small questions. One call can hold many of them about the same state; they are answered at the same time and cannot see each other's answers.</p></div>
+  <aside class="notes">“TypeSafe recommends breaking a decision into small questions. Each one is a simple fact that Jev can answer well and you can check. Question 1 is the direct question, for comparison. Questions 2 to 5 are the small facts. They are answered together, in one call, and cannot see each other's answers.” Press J twice for the response: “One request, five questions, one answer object.” If short on time, skip the JSON here. Then: “Next: what my code does with them.”</aside>
 </section>
 
 <!-- 11 -->
-<section class="slide slide--section dense" id="every-proposal" data-title="Every proposal in the city">
+<section class="slide slide--section dense" id="every-proposal" data-title="What is the city being asked for?">
   <div class="slide-body">
     <div class="slide-title-row">
       <p class="eyebrow">Example 2</p>
-      <h2>Every proposal in the city</h2>
+      <h2>What is the city being asked for?</h2>
     </div>
-    <p class="lead">decidim.barcelona is the city's website for public participation. People, groups and the council post proposals. Others support and comment. The council answers.</p>
+    <p class="lead"><a href="https://www.decidim.barcelona/" target="_blank" rel="noopener">decidim.barcelona</a> is the city's website for public participation. People, groups and the council post proposals. Others support and comment. The council answers.</p>
     <div class="stats stats--4 stats--small">
       <div><p class="stat-num" data-k="decidim.proposals">35,768</p><p class="stat-label">proposals</p></div>
       <div><p class="stat-num" data-k="decidim.processes">282</p><p class="stat-label">participation processes</p></div>
@@ -239,7 +236,7 @@
   <div class="slide-body">
     <h2>Two proposals</h2>
     <div class="cols" data-proposal-cards></div>
-    <p class="small">From decidim.barcelona, CC BY-SA 4.0. The English is a short version, not a full translation.</p>
+    <p class="small">From decidim.barcelona, CC BY-SA 4.0.</p>
   </div>
   <div class="reader"><p>Two real proposals from 2020. Most proposals are this short: half of them are under 211 characters.</p></div>
   <aside class="notes">“Most are this short: half are under 211 characters. I did not translate anything for Jev; it reads the Catalan.”</aside>
@@ -266,7 +263,6 @@
       <div class="frame-col">
         <p class="frame-head">Jev sends back <code class="frame-path">response.answers</code></p>
         <ol class="qlist qlist--answers" data-proposal-answers="17120"></ol>
-        <p class="small" data-proposal-meta="17120"></p>
       </div>
     </div>
   </div>
@@ -280,56 +276,57 @@
     <h2>What came back</h2>
     <div class="topics" data-topics></div>
     <p class="big">How big a change: <span data-scale-level="0">4,316</span> one place · <span data-scale-level="1">17,140</span> one district · <span data-scale-level="2">14,312</span> whole city</p>
-    <p class="small"><span data-k="decidim.minutes">20 min</span> · <span data-k="decidim.cost">$1.34</span> · <span data-k="decidim.failed">0</span> failures</p>
+    <p class="small"><span data-k="decidim.minutes">20 min</span> · <span data-k="decidim.cost">$1.34</span></p>
   </div>
   <div class="reader"><p>The main topic of every proposal, as Jev chose it from ten criteria, and how big a change each proposal asks for. All 35,768 proposals took 20 minutes and cost $1.34.</p></div>
   <aside class="notes">“Tourism is the main topic of 583, but it is mentioned in about 1,300.” The “describes a problem” question was weak, about 45% unsure, so I do not show it. The 20 minutes was my own rate limit, 30 calls a second.</aside>
 </section>
 
 <!-- 15 -->
-<section class="slide slide--statement" id="cheap" data-title="When reading gets cheap">
+<section class="slide slide--statement" id="cheap" data-title="Why it's called Jev">
   <div class="slide-body">
-    <h2>When reading gets cheap</h2>
-    <p class="statement">One person, one minute for each proposal: about 600 hours.</p>
-    <p class="statement">Jev: 20 minutes and $1.34.</p>
-    <p class="lead">When something gets very cheap, people find new uses for it. That idea comes from the economist William Stanley Jevons, and it is where the name Jev comes from.</p>
+    <h2>Why it's called Jev</h2>
+    <p class="statement">In 1865, William Stanley Jevons noticed that when steam engines used coal more efficiently, Britain burned more coal, not less.</p>
+    <p class="lead">Decision models do the same for AI: sorting, routing, checking and scoring text get cheap enough to use everywhere.</p>
+    <p class="small">Every Decidim proposal: about 600 hours for a person, 20 minutes and $1.34 for Jev.</p>
   </div>
-  <div class="reader"><p>Reading every proposal would take one person about 600 hours. Jev did it in 20 minutes for $1.34. When something gets very cheap, people find new uses for it: that is the idea behind the name Jev.</p></div>
-  <aside class="notes">Could one person read them all? Not really. When something gets very cheap, people find new uses for it.</aside>
+  <div class="reader"><p>Jev is named after the economist William Stanley Jevons: when something gets cheaper, people use more of it. Decision models make sorting, routing, checking and scoring text cheap enough to use everywhere. Reading every Decidim proposal would take one person about 600 hours; Jev did it in 20 minutes for $1.34.</p></div>
+  <aside class="notes">“Why is it called Jev? William Stanley Jevons, an economist. In 1865 he noticed that more efficient steam engines made Britain burn more coal, not less: when something gets cheap, people find many more uses for it. Decision models do that for AI. A big class of everyday problems, like sorting, routing, checking and scoring text, becomes cheap enough to run on everything, not just a sample. You just saw it: 600 hours of reading for 20 minutes and $1.34.”</aside>
 </section>
 
 <!-- 16 -->
-<section class="slide" id="when" data-title="When to use it, and when not">
+<section class="slide dense" id="when" data-title="Where it fits">
   <div class="slide-body">
-    <h2>When to use it, and when not</h2>
+    <h2>Where it fits</h2>
     <div class="cols">
       <div class="card list-card">
         <p class="card-label">Good for</p>
-        <ul class="list-big list-dash"><li>sorting and routing</li><li>checking and scoring</li><li>big piles of text</li><li>things that must be fast</li></ul>
+        <ul class="list-big list-dash"><li><span>routing <span class="small">· which bin?</span></span></li><li><span>scoring <span class="small">· how much food?</span></span></li><li><span>reading at volume <span class="small">· every proposal</span></span></li><li>fast checks inside your code</li></ul>
       </div>
       <div class="card list-card list-card--no">
         <p class="card-label">Not good for</p>
-        <ul class="list-big list-dash"><li>writing text</li><li>maths and dates</li><li>text that tries to trick it</li><li>images</li></ul>
+        <ul class="list-big list-dash"><li>writing text</li><li>maths and dates</li><li>images</li></ul>
       </div>
     </div>
-    <p class="small">OpenAI announced the same idea on 29 September 2026: the Decisions API.</p>
+    <p class="big">Use it next to an LLM, not instead of one.</p>
+    <p>29 September 2026: OpenAI announced the same idea, the Decisions API. 1 October: Cloudflare released Clef, with open weights and Jev's API. This is becoming a kind of model, not one product.</p>
   </div>
-  <div class="reader"><p>Jev is good when a program needs a quick decision about some text. It is not good at writing, at maths or at dates, and it cannot look at images. It works together with chat models; it does not replace them.</p></div>
-  <aside class="notes">“TypeSafe publishes this list themselves. It works with LLMs, not instead of them.” Then the footer: “Three days ago OpenAI announced the same idea, so this is becoming a kind of model, not one product.” If asked: built on GPT-6 Luna, about 150 ms, text and images, limited preview, no price yet; the numbers are OpenAI's own.</aside>
+  <div class="reader"><p>Jev fits where a program needs a quick decision about text: routing, scoring, reading at volume. It does not write, it is not good at maths or dates, and it cannot look at images. Text from users can try to trick it, so check its answers in your code. Use it next to an LLM, not instead of one. On 29 September 2026 OpenAI announced the same idea: the Decisions API. On 1 October Cloudflare released Clef, an open-weight decision model that uses the same API as Jev.</p></div>
+  <aside class="notes">“These are the things you just saw: routing, scoring, reading at volume. TypeSafe publishes the ‘not good for’ list themselves. Text from users can try to trick it, so check its answers in your code. Use it next to an LLM, not instead of one.” Then: “Three days ago OpenAI announced the same idea. Yesterday Cloudflare released Clef: open weights, the same three question types, and Jev's API, so you can switch by changing the endpoint. This is becoming a kind of model, not one product.” If asked: built on GPT-6 Luna, about 150 ms, text and images, limited preview, no price yet; the numbers are OpenAI's own. Clef, if asked: two sizes, Clef (27B) and Clef-flash (9B), Apache 2.0 on Hugging Face, hosted on Workers AI; Cloudflare says it is faster than Jev, but those are Cloudflare's own numbers.</aside>
 </section>
 
 <!-- 17 -->
-<section class="slide slide--section" id="remember" data-title="Three things to remember">
+<section class="slide slide--section" id="remember" data-title="Thank you">
   <div class="slide-body">
-    <h2>Three things to remember</h2>
-    <ol class="list-big list-num">
-      <li>LLMs write for people. Jev decides for programs.</li>
-      <li>Write your rules in the criteria. Ask small questions. Let your code decide.</li>
-      <li>Use “not sure”.</li>
-    </ol>
-    <p class="links"><a href="https://docs.typesafe.ai">docs.typesafe.ai</a> <a href="https://github.com/bkarlovitz/jev-ai-builders-bcn">github.com/bkarlovitz/jev-ai-builders-bcn</a></p>
+    <h2>Thank you. Questions?</h2>
+    <ul class="list-big list-dash">
+      <li><a href="https://docs.typesafe.ai" target="_blank" rel="noopener">docs.typesafe.ai</a></li>
+      <li><a href="https://github.com/bkarlovitz/jev-ai-builders-bcn" target="_blank" rel="noopener">github.com/bkarlovitz/jev-ai-builders-bcn</a></li>
+      <li><a href="https://ajuntament.barcelona.cat/neteja-i-residus/en/household-waste-collection/five-fractions-domestic-waste-collection-system/street-bins" target="_blank" rel="noopener">ajuntament.barcelona.cat</a></li>
+      <li><a href="https://www.decidim.barcelona/" target="_blank" rel="noopener">decidim.barcelona</a></li>
+    </ul>
   </div>
-  <div class="reader"><p>The code, the saved results and the speaker notes are all in the repo. Sources: TypeSafe AI documentation; Ajuntament de Barcelona street bins page and Waste Finder; Decidim Barcelona open data; OpenAI DevDay 2026 recap. All results were saved on 30 September 2026 with jev-1.13.0.</p></div>
+  <div class="reader"><p>The code, the saved results and the speaker notes are all in the repo. Sources: TypeSafe AI documentation; Ajuntament de Barcelona street bins page and Waste Finder; Decidim Barcelona open data; OpenAI DevDay 2026 recap; Cloudflare changelog, 1 October 2026; W. S. Jevons, The Coal Question (1865). All results were saved on 30 September 2026 with jev-1.13.0.</p></div>
   <aside class="notes">Thank you. Questions.</aside>
 </section>
 
@@ -344,7 +341,6 @@
   <span class="sep" aria-hidden="true"></span>
   <button type="button" data-act="overview" title="All slides (O)">All</button>
   <button type="button" data-act="view" title="Slides or one long page (S)">Page</button>
-  <button type="button" data-act="present" title="Hide the text under the slides (P)">Present</button>
 </nav>
 
 <div class="overview" data-overview hidden>
@@ -361,7 +357,7 @@
       <button type="button" role="tab" data-json-part="2">Response</button>
       <button type="button" data-json-part="0">Close</button>
     </div>
-    <div class="json-panel-head"><p class="json-title" data-json-title></p><p class="small json-hint">J: next · Esc: close</p></div>
+    <div class="json-panel-head"><p class="json-title" data-json-title></p></div>
     <pre class="json-code" data-json-code></pre>
     <p class="small" data-json-note></p>
   </div>

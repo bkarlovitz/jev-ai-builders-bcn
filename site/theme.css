@@ -4,7 +4,7 @@
    To change the style, edit the values in this file only. deck.css uses these
    tokens and contains no colours, fonts or sizes of its own.
 
-   The style: Geist and Geist Mono, zinc greys on white, one violet accent.
+   The style: Geist and Geist Mono, zinc greys on white, one persimmon accent.
    Labels are small mono capitals; bins are tinted chips with a thin ring.
 
    Sizes use --u, a "slide unit": 1% of the slide width on a 16:9 screen. It is
@@ -84,8 +84,8 @@
   --color-line: rgba(9, 9, 11, 0.1);
   --color-ring: rgba(9, 9, 11, 0.08);
   --color-soft: #f4f4f5;
-  --color-accent: #7c3aed;
-  --color-focus: #7c3aed;
+  --color-accent: #c2410c;
+  --color-focus: #c2410c;
   --color-good: #17603a;
   --color-good-soft: #dff3e4;
   --color-warn: #7a4b00;
@@ -103,7 +103,7 @@
   /* Code blocks and the JSON view: a light panel */
   --color-code-bg: #fafafa;
   --color-code-text: #18181b;
-  --color-code-key: #7c3aed;
+  --color-code-key: #c2410c;
   --color-code-muted: #71717a;
   --color-overlay: rgba(250, 250, 250, 0.6);
   --overlay-blur: 10px;
@@ -155,6 +155,3 @@
   --duration-bar: 450ms;
 }
 
-/* When the reader text is shown under each slide (not presenting), the slides
-   get a little smaller so the text fits below them. */
-:root.has-captions { --u-scale: 0.88; }

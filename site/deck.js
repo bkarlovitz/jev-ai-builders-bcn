@@ -12,11 +12,11 @@
      → space PageDown Enter   next step or slide      ← PageUp   back
      Home End                 first or last slide
      F  full screen           O  all slides           S  slides or one long page
-     P  hide or show the text under the slides (presenting)
      N  speaker notes box     V  open the speaker view in a new window
-     J  the real JSON behind the slide: request, then response, then close (Esc closes)
+     J  the real JSON behind the slide: request, then response, then close. While it is open,
+        → / ← (and the Request, Response and Close buttons) move forward and back; Esc closes
 
-   URL options: ?present  ?page  ?notes  ?speaker  ?all (show every step at once)
+   URL options: ?page  ?notes  ?speaker  ?all (show every step at once)
    and #slide-id to open a slide. */
 (function () {
   "use strict";
@@ -119,12 +119,6 @@
     if (narrow.matches) store(next === "page" ? "page" : "slides");
     setMode(next);
   }
-  function setPresenting(on) {
-    body.classList.toggle("is-presenting", on);
-    body.classList.toggle("show-captions", !on);
-    document.documentElement.classList.toggle("has-captions", !on);
-    q('[data-act="present"]').textContent = on ? "Show text" : "Present";
-  }
 
   /* ---- rendering ---- */
   function render() {
@@ -179,12 +173,12 @@
     render();
   }
   function next() {
-    state.json = 0;
+    if (state.json) { stepJson(1); return; }
     if (mode === "deck" && state.step < stepsIn(slides[state.index])) { state.step++; render(); }
     else if (state.index < slides.length - 1) goTo(state.index + 1, 0);
   }
   function prev() {
-    state.json = 0;
+    if (state.json) { stepJson(-1); return; }
     if (mode === "deck" && state.step > 0) { state.step--; render(); }
     else if (state.index > 0) goTo(state.index - 1, mode === "deck" ? stepsIn(slides[state.index - 1]) : 0);
   }
@@ -215,6 +209,13 @@
     if (pageView || !slides[state.index].hasAttribute("data-json")) return;
     if (mode === "swipe" && state.json === 2) return;  // on a phone, close with the Close button
     state.json = (state.json + 1) % 3;
+    render();
+  }
+  // While the JSON is open: forward is request, response, closed; back is response, request, closed.
+  function stepJson(dir) {
+    if (mode === "swipe" && state.json === 2 && dir > 0) return;  // on a phone, close with the Close button
+    state.json = state.json + dir;
+    if (state.json < 1 || state.json > 2) state.json = 0;
     render();
   }
 
@@ -248,6 +249,15 @@
     var k = e.key;
     if (!overview.hidden) { if (k === "Escape" || k === "o" || k === "O") toggleOverview(false); return; }
     var deck = mode === "deck";
+    if (state.json) {
+      var panel = q(".json-panel");
+      if (k === "ArrowRight" || ((k === "j" || k === "J") && !e.shiftKey)) { e.preventDefault(); stepJson(1); }
+      else if (k === "ArrowLeft" || ((k === "j" || k === "J") && e.shiftKey)) { e.preventDefault(); stepJson(-1); }
+      else if (k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey && !onControl)) { e.preventDefault(); panel.scrollBy(0, k === "ArrowDown" ? 60 : panel.clientHeight * 0.8); }
+      else if (k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey && !onControl)) { e.preventDefault(); panel.scrollBy(0, k === "ArrowUp" ? -60 : -panel.clientHeight * 0.8); }
+      else if (k === "Escape") { state.json = 0; render(); }
+      return;
+    }
     if (k === "ArrowRight" || (deck && (k === "PageDown" || k === "ArrowDown")) || (!pageView && (k === " " || k === "Enter") && !onControl && !e.shiftKey)) { e.preventDefault(); next(); }
     else if (k === "ArrowLeft" || (deck && (k === "PageUp" || k === "ArrowUp")) || (!pageView && k === " " && e.shiftKey && !onControl)) { e.preventDefault(); prev(); }
     else if (k === "Home") { e.preventDefault(); goTo(0, 0); }
@@ -255,7 +265,6 @@
     else if (k === "f" || k === "F") fullscreen();
     else if (k === "o" || k === "O") toggleOverview(true);
     else if (k === "s" || k === "S") toggleView();
-    else if (k === "p" || k === "P") setPresenting(!body.classList.contains("is-presenting"));
     else if (k === "n" || k === "N") toggleNotes();
     else if (k === "v" || k === "V") openSpeaker();
     else if (k === "j" || k === "J") cycleJson();
@@ -288,7 +297,6 @@
       else if (a === "prev") prev();
       else if (a === "overview") toggleOverview(true);
       else if (a === "view") toggleView();
-      else if (a === "present") setPresenting(!body.classList.contains("is-presenting"));
     });
   });
 
@@ -319,7 +327,7 @@
   window.addEventListener("resize", function () { if (mode === "swipe") swipeTo(state.index, false); });
   narrow.addEventListener("change", function () { if (!params.has("page")) setMode(defaultMode()); });
 
-  // Hide the control bar while presenting, until the mouse moves.
+  // Hide the slides view's control bar until the mouse moves.
   var controls = q(".controls"), idleTimer = null;
   function wake() {
     controls.classList.remove("is-idle");
@@ -332,7 +340,6 @@
   /* ---- start ---- */
   var start = slides.map(function (s) { return "#" + s.id; }).indexOf(location.hash);
   state.index = start > 0 ? start : 0;
-  setPresenting(params.has("present"));
   setMode(mode);
   if (params.has("notes")) toggleNotes();
   if (params.has("all")) body.classList.add("all-steps");

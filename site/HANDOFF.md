@@ -29,10 +29,8 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 
 ## How it behaves
 
-- **Slides view** (default on screens wider than 700 px): one slide at a time, with the reader text under
-  each slide.
-- **Presenting:** press `P`, use the "Present" button, or open `index.html?present`. The reader text is
-  hidden and the slides get a little bigger.
+- **Slides view** (default on screens wider than 700 px): one slide at a time, full size, for presenting.
+  The reader text is not shown here; it is in the page view and on phones.
 - **Phones** (700 px wide or less): one slide per screen; swipe sideways to move. A slide that is taller than
   the screen scrolls up and down. The reader text is under each slide, every step is shown, and the bar at
   the bottom has All, back, the slide number, next, and Page. `{ } JSON` opens a full-screen sheet with
@@ -42,7 +40,8 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 - **Steps:** some slides reveal parts one key press at a time. `index.html?all` shows every step at once.
 - **Keys:** → space Enter Page Down = next. ← Page Up = back. Home / End. `F` full screen. `O` all slides.
   `N` speaker notes box. `V` speaker view in a second window, with notes, the next slide and a timer.
-  `J` on slides with a `{ } JSON` button: the real request, then the response, then closed (`Esc` closes).
+  `J` on slides with a `{ } JSON` button: the real request, then the response, then closed. While it is open,
+  `→` / `←` or the Request, Response and Close buttons move forward and back; `Esc` closes.
   In page view the same JSON is shown under the slide as "The real request and answer".
 - **Links to a slide:** every slide has an id, for example `index.html#every-proposal`.
 - Checked on 1 October 2026 at 1280×720, 1366×768, 1440×900, 1920×1080, 2560×1080, 1024×768 and 768×1024

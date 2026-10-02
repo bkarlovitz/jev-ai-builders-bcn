@@ -97,22 +97,8 @@ button { font: inherit; color: inherit; }
 .view-deck [data-step].is-shown { opacity: 1; transform: none; }
 .all-steps [data-step] { opacity: 1 !important; transform: none !important; }
 
-/* Reader text: shown under the slide when not presenting. */
+/* Reader text: never shown in the slides view. */
 .reader { display: none; }
-.show-captions.view-deck .slide .reader {
-  display: block;
-  position: absolute;
-  left: var(--slide-pad-x);
-  right: max(var(--slide-pad-x), 360px); /* leave room for the control bar */
-  bottom: var(--space-3);
-  max-width: var(--slide-max-width);
-  margin: 0 auto;
-  padding-top: var(--space-2);
-  border-top: var(--border) solid var(--color-line);
-  color: var(--color-muted);
-  font-size: var(--text-sm);
-}
-.show-captions.view-deck .slide { padding-bottom: calc(var(--slide-pad-y) + var(--space-6) + var(--space-3)); }
 .reader p + p { margin-top: var(--space-1); }
 
 .notes { display: none; }
@@ -202,19 +188,17 @@ button { font: inherit; color: inherit; }
 }
 .view-swipe .controls button { min-width: var(--tap-size); min-height: var(--tap-size); padding: 0 12px; }
 .view-swipe .controls [data-act="overview"] { order: -1; }
-.view-swipe .controls .sep, .view-swipe .controls [data-act="present"] { display: none; }
+.view-swipe .controls .sep { display: none; }
 .view-swipe .controls .count { color: var(--color-text); font-weight: var(--weight-medium); }
 
 /* The JSON view: a full-screen sheet with tabs */
-.json-tabs { display: none; }
+.json-tabs { display: flex; gap: var(--space-2); }
 .view-swipe .json-overlay { padding: 0; }
 .view-swipe .json-panel {
   width: 100%; height: 100%; max-height: none; border-radius: 0; align-content: start;
   padding: calc(var(--phone-pad-top) + env(safe-area-inset-top)) var(--phone-pad-x) calc(var(--phone-pad-top) + env(safe-area-inset-bottom));
 }
 .view-swipe .json-code { font-size: var(--text-code-phone); }
-.view-swipe .json-hint { display: none; }
-.view-swipe .json-tabs { display: flex; gap: var(--space-2); }
 .json-tabs button {
   min-height: var(--tap-size); padding: 0 16px; cursor: pointer;
   font-family: var(--font-mono); font-size: var(--text-sm);
@@ -382,6 +366,7 @@ button { font: inherit; color: inherit; }
 .compare--rows { font-size: var(--text-md); }
 .compare--rows th, .compare--rows td { padding: var(--space-2) var(--space-2); }
 .compare--rows tbody th { width: 18%; }
+.compare--kinds tbody th { color: var(--color-text); font-weight: var(--weight-strong); }
 /* On a phone: each row's label above the two values */
 .layout-stack .compare--rows tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-3); border-bottom: var(--border) solid var(--color-line); }
 .layout-stack .compare--rows th, .layout-stack .compare--rows td { border-bottom: 0; padding-left: 0; padding-right: 0; }
@@ -467,7 +452,7 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
 .json-panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3); }
 .json-panel .small { color: var(--color-code-muted); }
 .json-title { font-weight: var(--weight-strong); font-size: var(--text-lg); }
-.json-code { font-family: var(--font-mono); font-size: var(--text-md); line-height: 1.45; white-space: pre-wrap; word-break: break-word; margin: 0; padding: 0; max-height: none; overflow: visible; background: transparent; box-shadow: none; }
+.json-code { font-family: var(--font-mono); font-size: var(--text-md); line-height: 1.45; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0; margin: 0; padding: 0; max-height: none; overflow-x: hidden; background: transparent; box-shadow: none; }
 .json-inline { display: none; }
 .view-scroll .json-inline { display: block; font-size: var(--text-sm); }
 .view-scroll .json-inline summary { cursor: pointer; color: var(--color-focus); }
@@ -625,7 +610,8 @@ pre {
   word-break: break-word;
   box-shadow: inset 0 0 0 var(--border) var(--color-line);
 }
-pre.json { max-height: none; }
+pre.json { max-height: none; white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: hidden; }
+.json-line { display: block; }
 .code-cols { display: grid; grid-template-columns: 1.25fr 1fr; gap: var(--space-3); }
 .layout-stack .code-cols { grid-template-columns: 1fr; }
 code.inline { font-size: 0.9em; }
@@ -705,7 +691,7 @@ code.inline { font-size: 0.9em; }
 .controls button:hover { background: var(--color-soft); }
 .controls .count { font-variant-numeric: tabular-nums; color: var(--color-muted); min-width: 4.2em; text-align: center; }
 .controls .sep { width: var(--border); align-self: stretch; background: var(--color-line); margin: 2px 4px; }
-.is-presenting .controls.is-idle { opacity: 0; pointer-events: none; }
+.view-deck .controls.is-idle { opacity: 0; pointer-events: none; }
 .view-scroll .controls [data-act="prev"], .view-scroll .controls [data-act="next"], .view-scroll .controls .count { display: none; }
 
 .overview {

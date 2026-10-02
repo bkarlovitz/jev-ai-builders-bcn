@@ -188,14 +188,6 @@
     if (v instanceof Collapsed) return '<span class="json-muted">{ … ' + esc(v.text) + " }</span>";
     if (v === null || typeof v !== "object") return esc(JSON.stringify(v));
     var inner = pad + "  ";
-    var simple = Object.keys(v).every(function (k) { return v[k] === null || typeof v[k] !== "object" || v[k] instanceof Collapsed; });
-    if (simple && JSON.stringify(v).length < 110) {
-      return "{ " + Object.keys(v).map(function (k) {
-        var key = esc(JSON.stringify(k));
-        if (TERMS[k]) key = '<span class="term-key">' + key + "</span>";
-        return key + ": " + jsonHtml(v[k]);
-      }).join(", ") + " }";
-    }
     var parts = Object.keys(v).map(function (k) {
       if (v[k] instanceof More) return inner + '<span class="json-muted">… ' + esc(v[k].text) + "</span>";
       var key = esc(JSON.stringify(k));
@@ -203,6 +195,13 @@
       return inner + key + ": " + jsonHtml(v[k], inner);
     });
     return "{\n" + parts.join(",\n") + "\n" + pad + "}";
+  }
+  // One block per line, so a long line wraps under its own indent instead of at the left edge
+  function jsonLines(html) {
+    return html.split("\n").map(function (line) {
+      var n = line.length - line.replace(/^ +/, "").length + 2;
+      return '<span class="json-line" style="padding-left:' + n + 'ch;text-indent:-' + n + 'ch">' + line + "</span>";
+    }).join("");
   }
   function shortCriterion(text) {
     var cut = text.indexOf(":");
@@ -370,7 +369,7 @@
     var call = view[0], file = view[1];
     return {
       title: part === 1 ? "Request: what I send" : "Response: what Jev sends back",
-      html: jsonHtml(part === 1 ? call.request : call.response),
+      html: jsonLines(jsonHtml(part === 1 ? call.request : call.response)),
       note: "Real data, shortened (… marks what is left out). Full JSON in " + file + "."
     };
   };
