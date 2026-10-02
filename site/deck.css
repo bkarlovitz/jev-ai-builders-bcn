@@ -140,6 +140,91 @@ button { font: inherit; color: inherit; }
 .view-scroll .slide--section .reader { border-top-color: var(--color-section-muted); }
 
 /* =========================================================================
+   Swipe view: phones. One slide per screen; swipe sideways to move.
+   The browser's own scrolling snaps to each slide. A slide that is taller
+   than the screen scrolls up and down inside itself.
+   ========================================================================= */
+
+.view-swipe .deck {
+  position: fixed; inset: 0;
+  display: flex;
+  overflow-x: auto; overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.view-swipe .deck::-webkit-scrollbar { display: none; }
+.view-swipe .slide {
+  flex: 0 0 100%;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  justify-content: flex-start;
+  padding: calc(var(--phone-pad-top) + env(safe-area-inset-top)) calc(var(--phone-pad-x) + env(safe-area-inset-right))
+           calc(var(--phone-bar-height) + env(safe-area-inset-bottom) + var(--phone-pad-top)) calc(var(--phone-pad-x) + env(safe-area-inset-left));
+}
+/* Auto margins centre the slide and its reader text when there is room, and
+   start them at the top when there is not (nothing is cut off). */
+.view-swipe .slide-body { margin-top: auto; gap: var(--phone-gap); }
+.view-swipe .slide:not(:has(.reader)) .slide-body { margin-bottom: auto; }
+.view-swipe .slide .reader {
+  display: block;
+  width: 100%;
+  margin: var(--phone-gap) 0 auto;
+  padding-top: var(--space-3);
+  border-top: var(--border) dashed var(--color-line);
+  color: var(--color-muted);
+  font-size: var(--text-md);
+}
+.view-swipe .reader p + p { margin-top: var(--space-2); }
+/* Small labels stay readable on a phone: at least --text-sm */
+.layout-stack .frame-path { display: block; margin: 0.25em 0 0; font-size: 1em; }
+.layout-stack .list-big .term, .layout-stack .tag { font-size: var(--text-sm); }
+/* Frame rows: the term above its value, so the value gets the full width */
+.view-swipe .frame-row { grid-template-columns: 1fr; gap: 0.1em; }
+/* Yes/no line: the other items' labels on a second row, under the 0.5 mark */
+.layout-stack .yesno { margin: 3.2em 0 4.4em; }
+.layout-stack .yesno-mark:not(.is-main) .yesno-label { top: calc(var(--space-2) + 1.7em); }
+
+/* The control bar: full width at the bottom, big buttons */
+.view-swipe .controls {
+  left: 0; right: 0; bottom: 0;
+  height: calc(var(--phone-bar-height) + env(safe-area-inset-bottom));
+  padding: 0 calc(var(--phone-pad-x) / 2 + env(safe-area-inset-right)) env(safe-area-inset-bottom) calc(var(--phone-pad-x) / 2 + env(safe-area-inset-left));
+  justify-content: space-between;
+  border-radius: 0;
+  background: var(--phone-bar-bg);
+  backdrop-filter: blur(var(--overlay-blur)); -webkit-backdrop-filter: blur(var(--overlay-blur));
+  box-shadow: 0 calc(var(--border) * -1) 0 var(--color-line);
+  font-size: var(--text-md);
+}
+.view-swipe .controls button { min-width: var(--tap-size); min-height: var(--tap-size); padding: 0 12px; }
+.view-swipe .controls [data-act="overview"] { order: -1; }
+.view-swipe .controls .sep, .view-swipe .controls [data-act="present"] { display: none; }
+.view-swipe .controls .count { color: var(--color-text); font-weight: var(--weight-medium); }
+
+/* The JSON view: a full-screen sheet with tabs */
+.json-tabs { display: none; }
+.view-swipe .json-overlay { padding: 0; }
+.view-swipe .json-panel {
+  width: 100%; height: 100%; max-height: none; border-radius: 0; align-content: start;
+  padding: calc(var(--phone-pad-top) + env(safe-area-inset-top)) var(--phone-pad-x) calc(var(--phone-pad-top) + env(safe-area-inset-bottom));
+}
+.view-swipe .json-code { font-size: var(--text-code-phone); }
+.view-swipe .json-hint { display: none; }
+.view-swipe .json-tabs { display: flex; gap: var(--space-2); }
+.json-tabs button {
+  min-height: var(--tap-size); padding: 0 16px; cursor: pointer;
+  font-family: var(--font-mono); font-size: var(--text-sm);
+  background: transparent; color: var(--color-muted);
+  border: var(--border) solid var(--color-line); border-radius: var(--radius-sm);
+}
+.json-tabs button[aria-selected="true"] { color: var(--color-text); border-color: var(--color-text); }
+.json-tabs [data-json-part="0"] { margin-left: auto; }
+
+/* =========================================================================
    Slide types
    ========================================================================= */
 
@@ -205,7 +290,7 @@ button { font: inherit; color: inherit; }
 @media (orientation: portrait), (max-aspect-ratio: 5/4) {
   .cols { grid-template-columns: 1fr; gap: var(--space-4); }
 }
-.view-scroll .cols, .view-scroll .cols-3 { grid-template-columns: 1fr; }
+.layout-stack .cols, .layout-stack .cols-3 { grid-template-columns: 1fr; }
 
 /* =========================================================================
    Components
@@ -259,7 +344,7 @@ button { font: inherit; color: inherit; }
 }
 .bin small { display: block; font-weight: var(--weight-text); font-size: var(--text-sm); color: var(--color-muted); margin-top: var(--space-1); }
 @media (max-aspect-ratio: 5/4) { .bins { grid-template-columns: repeat(3, 1fr); } }
-.view-scroll .bins { grid-template-columns: repeat(3, 1fr); }
+.layout-stack .bins { grid-template-columns: repeat(3, 1fr); }
 
 /* Probability bars */
 .bars { display: grid; gap: var(--space-1); }
@@ -297,6 +382,12 @@ button { font: inherit; color: inherit; }
 .compare--rows { font-size: var(--text-md); }
 .compare--rows th, .compare--rows td { padding: var(--space-2) var(--space-2); }
 .compare--rows tbody th { width: 18%; }
+/* On a phone: each row's label above the two values */
+.layout-stack .compare--rows tr { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--space-3); border-bottom: var(--border) solid var(--color-line); }
+.layout-stack .compare--rows th, .layout-stack .compare--rows td { border-bottom: 0; padding-left: 0; padding-right: 0; }
+.layout-stack .compare--rows thead th:first-child { display: none; }
+.layout-stack .compare--rows thead tr { border-bottom: 0; }
+.layout-stack .compare--rows tbody th { grid-column: 1 / -1; width: auto; padding-bottom: 0; }
 
 /* How one call works */
 .flow { display: flex; align-items: center; gap: var(--space-3); }
@@ -318,8 +409,8 @@ button { font: inherit; color: inherit; }
   .flow { flex-direction: column; align-items: stretch; }
   .flow-arrow { text-align: center; transform: rotate(90deg); }
 }
-.view-scroll .flow { flex-direction: column; align-items: stretch; }
-.view-scroll .flow-arrow { text-align: center; transform: rotate(90deg); }
+.layout-stack .flow { flex-direction: column; align-items: stretch; }
+.layout-stack .flow-arrow { text-align: center; transform: rotate(90deg); }
 
 /* Question types */
 .kind-name { font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-xl); letter-spacing: var(--tracking-display); }
@@ -410,8 +501,8 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
   .call { flex-direction: column; }
   .call-arrow { transform: rotate(90deg); text-align: center; }
 }
-.view-scroll .call { flex-direction: column; }
-.view-scroll .call-arrow { transform: rotate(90deg); text-align: center; }
+.layout-stack .call { flex-direction: column; }
+.layout-stack .call-arrow { transform: rotate(90deg); text-align: center; }
 
 /* Score: items placed on a 0-2 scale */
 .scale { display: grid; gap: var(--space-3); padding: 0 var(--space-4); }
@@ -450,11 +541,11 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
 .scale-tick.is-start::before, .scale-mark.is-start::after { left: 0; }
 .scale-tick.is-end::before, .scale-mark.is-end::after { left: 100%; }
 /* Narrow screens: raise every other label so neighbours do not overlap */
-.view-scroll .scale-line { margin-top: 9.5em; }
-.view-scroll .scale-mark-name { white-space: normal; max-width: 9em; }
-.view-scroll .scale-tick span { white-space: normal; max-width: 7em; }
-.view-scroll .scale-tick.is-end span { text-align: right; }
-.view-scroll .scale-mark:nth-of-type(even) { padding-bottom: calc(var(--space-3) + 4.8em); }
+.layout-stack .scale-line { margin-top: 9.5em; }
+.layout-stack .scale-mark-name { white-space: normal; max-width: 9em; }
+.layout-stack .scale-tick span { white-space: normal; max-width: 7em; }
+.layout-stack .scale-tick.is-end span { text-align: right; }
+.layout-stack .scale-mark:nth-of-type(even) { padding-bottom: calc(var(--space-3) + 4.8em); }
 
 /* ---- The city's rules: chip, short name, one line of examples ---- */
 .rules-table { list-style: none; display: grid; gap: var(--space-2); }
@@ -463,7 +554,7 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
 .rules-table li.is-focus { color: var(--color-text); }
 .rules-table mark { background: color-mix(in srgb, var(--bin-brown) 16%, var(--color-surface)); color: inherit; padding: 0 0.25em; border-radius: var(--radius-sm); font-weight: var(--weight-strong); }
 .foot-row { display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
-.view-scroll .rules-table li { grid-template-columns: 1fr; gap: var(--space-1); }
+.layout-stack .rules-table li { grid-template-columns: 1fr; gap: var(--space-1); }
 .rules-table .chip { justify-self: start; }
 
 /* ---- The fixed frame: I send / Jev sends back ---- */
@@ -485,7 +576,7 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
 .levels li { padding: 0.1em 0; }
 .bars--compact .bar-row { grid-template-columns: 7em 1fr 3.2em; }
 @media (orientation: portrait), (max-aspect-ratio: 5/4) { .frame { grid-template-columns: 1fr; gap: var(--space-3); } }
-.view-scroll .frame { grid-template-columns: 1fr; gap: var(--space-3); }
+.layout-stack .frame { grid-template-columns: 1fr; gap: var(--space-3); }
 
 /* ---- Noul: a no-to-yes line with a mark at 0.5 ---- */
 .yesno { display: flex; align-items: center; gap: var(--space-2); margin: calc(var(--u) * 5) 0 calc(var(--u) * 4); font-size: var(--text-sm); }
@@ -504,7 +595,7 @@ pre.json .term-key, .json-code .term-key { color: var(--color-code-key); font-we
 /* Option descriptions */
 .options { list-style: none; display: grid; gap: var(--space-1); font-size: var(--text-sm); }
 .options li { display: grid; grid-template-columns: 8.5em 1fr; gap: var(--space-3); align-items: baseline; }
-.view-scroll .options li { grid-template-columns: 1fr; gap: var(--space-1); }
+.layout-stack .options li { grid-template-columns: 1fr; gap: var(--space-1); }
 
 /* Item picker */
 .picker { display: flex; flex-wrap: wrap; gap: var(--space-2); }
@@ -536,7 +627,7 @@ pre {
 }
 pre.json { max-height: none; }
 .code-cols { display: grid; grid-template-columns: 1.25fr 1fr; gap: var(--space-3); }
-.view-scroll .code-cols { grid-template-columns: 1fr; }
+.layout-stack .code-cols { grid-template-columns: 1fr; }
 code.inline { font-size: 0.9em; }
 
 /* Lists with big text */
@@ -578,6 +669,9 @@ code.inline { font-size: 0.9em; }
 .topic-track { background: var(--chart-track); border-radius: var(--radius-sm); height: calc(var(--chart-bar-height) * 0.8); }
 .topic-fill { background: var(--chart-bar); height: 100%; border-radius: var(--radius-sm); }
 .topic-num { text-align: right; font-variant-numeric: tabular-nums; }
+/* On a phone: name and number on one line, the bar full width under them */
+.layout-stack .topic-row { grid-template-columns: 1fr auto; row-gap: 0.25em; }
+.layout-stack .topic-track { grid-column: 1 / -1; order: 3; }
 
 /* Results table (scroll view only) */
 .all-items { font-size: var(--text-sm); }

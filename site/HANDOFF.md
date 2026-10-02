@@ -33,8 +33,12 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
   each slide.
 - **Presenting:** press `P`, use the "Present" button, or open `index.html?present`. The reader text is
   hidden and the slides get a little bigger.
-- **Page view:** every slide one after another, with its reader text. Used automatically on phones and narrow
-  windows. Press `S`, use the "Page" button, or open `index.html?page`.
+- **Phones** (700 px wide or less): one slide per screen; swipe sideways to move. A slide that is taller than
+  the screen scrolls up and down. The reader text is under each slide, every step is shown, and the bar at
+  the bottom has All, back, the slide number, next, and Page. `{ } JSON` opens a full-screen sheet with
+  Request, Response and Close.
+- **Page view:** every slide one after another, with its reader text. Press `S`, use the "Page" button, or
+  open `index.html?page`. On a phone the choice between slides and page is remembered.
 - **Steps:** some slides reveal parts one key press at a time. `index.html?all` shows every step at once.
 - **Keys:** → space Enter Page Down = next. ← Page Up = back. Home / End. `F` full screen. `O` all slides.
   `N` speaker notes box. `V` speaker view in a second window, with notes, the next slide and a timer.
@@ -49,5 +53,5 @@ path on the website (for example `/talks/jev/`) and serve it as static files. No
 1. Open the published address. The title slide appears, and the counter says `1 / 17`.
 2. Press → a few times: the next slide appears each time.
 3. Go to `#one-item` and click another item: the bars change.
-4. Open it on a phone: it shows as one long page.
+4. Open it on a phone: one slide per screen, and swiping sideways moves to the next slide.
 5. Turn the network off and open a local copy of `site/index.html`: everything still works.

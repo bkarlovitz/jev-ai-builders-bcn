@@ -356,7 +356,12 @@
 
 <div class="json-overlay" data-json-overlay hidden>
   <div class="json-panel" role="dialog" aria-label="The real request and answer">
-    <div class="json-panel-head"><p class="json-title" data-json-title></p><p class="small">J: next · Esc: close</p></div>
+    <div class="json-tabs" role="tablist" aria-label="Request or response">
+      <button type="button" role="tab" data-json-part="1">Request</button>
+      <button type="button" role="tab" data-json-part="2">Response</button>
+      <button type="button" data-json-part="0">Close</button>
+    </div>
+    <div class="json-panel-head"><p class="json-title" data-json-title></p><p class="small json-hint">J: next · Esc: close</p></div>
     <pre class="json-code" data-json-code></pre>
     <p class="small" data-json-note></p>
   </div>

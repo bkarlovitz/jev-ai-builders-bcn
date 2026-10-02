@@ -141,6 +141,15 @@
   --shadow: 0 1px 2px rgba(9, 9, 11, 0.05), 0 20px 50px -12px rgba(9, 9, 11, 0.18);
   --shadow-small: 0 4px 16px rgba(9, 9, 11, 0.06);
 
+  /* ---- phones (the swipe view: one slide per screen) ------------------ */
+  --phone-pad-x: 20px;
+  --phone-pad-top: 28px;
+  --phone-gap: 28px;           /* between the slide and its reader text */
+  --phone-bar-height: 60px;    /* the control bar at the bottom */
+  --phone-bar-bg: rgba(255, 255, 255, 0.9);
+  --tap-size: 48px;            /* smallest button you can tap easily */
+  --text-code-phone: 14px;     /* JSON on a phone */
+
   --duration-slide: 220ms;
   --duration-step: 260ms;
   --duration-bar: 450ms;

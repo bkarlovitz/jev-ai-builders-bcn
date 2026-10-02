@@ -2,6 +2,12 @@
    keyboard and touch, a long-page view, an overview, and a speaker view.
    Plain script, no modules, so it also runs from file://.
 
+   Three views
+     deck   one slide at a time (screens wider than 700 px)
+     swipe  phones: one slide per screen, swipe sideways (native scroll snap)
+     page   every slide one after another; S or the Page button switches to it.
+            On a phone the choice between swipe and page is remembered.
+
    Keys
      → space PageDown Enter   next step or slide      ← PageUp   back
      Home End                 first or last slide
@@ -79,20 +85,39 @@
   }
 
   /* ---- views ---- */
+  var deckEl = q(".deck");
   var narrow = window.matchMedia("(max-width: 700px)");
-  var pageView = params.has("page") || narrow.matches;
+  var STORE = "jevDeckPhoneView";
+  function stored() { try { return localStorage.getItem(STORE); } catch (e) { return null; } }
+  function store(v) { try { localStorage.setItem(STORE, v); } catch (e) { /* private mode */ } }
+  function defaultMode() {
+    if (params.has("page")) return "page";
+    if (narrow.matches) return stored() === "page" ? "page" : "swipe";
+    return "deck";
+  }
+  var mode = defaultMode(), pageView = mode === "page";
 
-  function setView(page) {
-    pageView = page;
-    body.classList.toggle("view-scroll", page);
-    body.classList.toggle("view-deck", !page);
-    q('[data-act="view"]').textContent = page ? "Slides" : "Page";
-    if (page) {
-      slides[state.index].scrollIntoView({ behavior: "instant", block: "start" });
-    } else {
-      window.scrollTo(0, 0);
-    }
+  function swipeTo(index, smooth) {
+    deckEl.scrollTo({ left: index * deckEl.clientWidth, behavior: smooth ? "smooth" : "instant" });
+  }
+  function setMode(m) {
+    mode = m;
+    pageView = m === "page";
+    body.classList.toggle("view-deck", m === "deck");
+    body.classList.toggle("view-swipe", m === "swipe");
+    body.classList.toggle("view-scroll", m === "page");
+    body.classList.toggle("layout-stack", m !== "deck");
+    q('[data-act="view"]').textContent = pageView ? "Slides" : "Page";
+    if (m === "page") slides[state.index].scrollIntoView({ behavior: "instant", block: "start" });
+    else window.scrollTo(0, 0);
+    if (m === "swipe") swipeTo(state.index, false);
     render();
+  }
+  // The Page / Slides button and the S key
+  function toggleView() {
+    var next = pageView ? (narrow.matches ? "swipe" : "deck") : "page";
+    if (narrow.matches) store(next === "page" ? "page" : "slides");
+    setMode(next);
   }
   function setPresenting(on) {
     body.classList.toggle("is-presenting", on);
@@ -106,13 +131,13 @@
     slides.forEach(function (s, i) {
       var active = i === state.index;
       s.classList.toggle("is-active", active);
-      s.setAttribute("aria-hidden", String(!pageView && !active));
+      s.setAttribute("aria-hidden", String(mode === "deck" && !active));
       s.querySelectorAll("[data-step]").forEach(function (e) {
-        e.classList.toggle("is-shown", pageView || i < state.index || (active && Number(e.getAttribute("data-step")) <= state.step));
+        e.classList.toggle("is-shown", mode !== "deck" || i < state.index || (active && Number(e.getAttribute("data-step")) <= state.step));
       });
     });
-    body.classList.toggle("on-section", !pageView && slides[state.index].classList.contains("slide--section"));
-    var steps = stepsIn(slides[state.index]);
+    body.classList.toggle("on-section", mode === "deck" && slides[state.index].classList.contains("slide--section"));
+    var steps = mode === "deck" ? stepsIn(slides[state.index]) : 0;
     var progress = slides.length > 1 ? (state.index + (steps ? state.step / (steps + 1) : 0)) / (slides.length - 1) : 1;
     q(".progress").style.width = (progress * 100) + "%";
     q("[data-count]").textContent = (state.index + 1) + " / " + slides.length;
@@ -127,11 +152,16 @@
       q("[data-json-title]").textContent = view.title;
       q("[data-json-code]").innerHTML = view.html;
       q("[data-json-note]").textContent = view.note;
-      // Shrink the code until the panel fits the screen (never below 14 px)
+      overlay.querySelectorAll("[data-json-part]").forEach(function (b) {
+        if (b.getAttribute("role") === "tab") b.setAttribute("aria-selected", String(Number(b.getAttribute("data-json-part")) === state.json));
+      });
+      // Shrink the code until the panel fits the screen (never below 14 px).
+      // On a phone the sheet scrolls instead.
       var code = q("[data-json-code]"), panel = overlay.querySelector(".json-panel");
       code.style.fontSize = "";
+      panel.scrollTop = 0;
       var size = parseFloat(getComputedStyle(code).fontSize);
-      while (panel.scrollHeight > panel.clientHeight + 1 && size > 14) {
+      while (mode === "deck" && panel.scrollHeight > panel.clientHeight + 1 && size > 14) {
         size -= 1;
         code.style.fontSize = size + "px";
       }
@@ -141,20 +171,22 @@
 
   function goTo(index, step) {
     state.json = 0;
+    var from = state.index;
     state.index = Math.max(0, Math.min(slides.length - 1, index));
     state.step = Math.max(0, Math.min(stepsIn(slides[state.index]), step || 0));
     if (pageView) slides[state.index].scrollIntoView({ behavior: "smooth", block: "start" });
+    if (mode === "swipe") swipeTo(state.index, Math.abs(state.index - from) === 1);
     render();
   }
   function next() {
     state.json = 0;
-    if (!pageView && state.step < stepsIn(slides[state.index])) { state.step++; render(); }
+    if (mode === "deck" && state.step < stepsIn(slides[state.index])) { state.step++; render(); }
     else if (state.index < slides.length - 1) goTo(state.index + 1, 0);
   }
   function prev() {
     state.json = 0;
-    if (!pageView && state.step > 0) { state.step--; render(); }
-    else if (state.index > 0) goTo(state.index - 1, pageView ? 0 : stepsIn(slides[state.index - 1]));
+    if (mode === "deck" && state.step > 0) { state.step--; render(); }
+    else if (state.index > 0) goTo(state.index - 1, mode === "deck" ? stepsIn(slides[state.index - 1]) : 0);
   }
 
   /* ---- overview ---- */
@@ -181,6 +213,7 @@
   // J: request, then response, then closed. Only on slides with data-json.
   function cycleJson() {
     if (pageView || !slides[state.index].hasAttribute("data-json")) return;
+    if (mode === "swipe" && state.json === 2) return;  // on a phone, close with the Close button
     state.json = (state.json + 1) % 3;
     render();
   }
@@ -214,13 +247,14 @@
     var onControl = tag === "button" || tag === "summary" || tag === "a";
     var k = e.key;
     if (!overview.hidden) { if (k === "Escape" || k === "o" || k === "O") toggleOverview(false); return; }
-    if (k === "ArrowRight" || k === "PageDown" || (!pageView && k === "ArrowDown") || ((k === " " || k === "Enter") && !onControl && !e.shiftKey)) { e.preventDefault(); next(); }
-    else if (k === "ArrowLeft" || k === "PageUp" || (!pageView && k === "ArrowUp") || (k === " " && e.shiftKey && !onControl)) { e.preventDefault(); prev(); }
+    var deck = mode === "deck";
+    if (k === "ArrowRight" || (deck && (k === "PageDown" || k === "ArrowDown")) || (!pageView && (k === " " || k === "Enter") && !onControl && !e.shiftKey)) { e.preventDefault(); next(); }
+    else if (k === "ArrowLeft" || (deck && (k === "PageUp" || k === "ArrowUp")) || (!pageView && k === " " && e.shiftKey && !onControl)) { e.preventDefault(); prev(); }
     else if (k === "Home") { e.preventDefault(); goTo(0, 0); }
     else if (k === "End") { e.preventDefault(); goTo(slides.length - 1, 0); }
     else if (k === "f" || k === "F") fullscreen();
     else if (k === "o" || k === "O") toggleOverview(true);
-    else if (k === "s" || k === "S") setView(!pageView);
+    else if (k === "s" || k === "S") toggleView();
     else if (k === "p" || k === "P") setPresenting(!body.classList.contains("is-presenting"));
     else if (k === "n" || k === "N") toggleNotes();
     else if (k === "v" || k === "V") openSpeaker();
@@ -231,7 +265,7 @@
   var touchX = null, touchY = null;
   document.addEventListener("touchstart", function (e) { touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }, { passive: true });
   document.addEventListener("touchend", function (e) {
-    if (pageView || touchX === null) return;
+    if (mode !== "deck" || touchX === null) return;
     var dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { if (dx < 0) next(); else prev(); }
     touchX = null;
@@ -243,6 +277,9 @@
   q("[data-json-overlay]").addEventListener("click", function (e) {
     if (e.target === e.currentTarget) { state.json = 0; render(); }
   });
+  document.querySelectorAll("[data-json-part]").forEach(function (b) {
+    b.addEventListener("click", function () { state.json = Number(b.getAttribute("data-json-part")); render(); });
+  });
 
   document.querySelectorAll("[data-act]").forEach(function (b) {
     b.addEventListener("click", function () {
@@ -250,7 +287,7 @@
       if (a === "next") next();
       else if (a === "prev") prev();
       else if (a === "overview") toggleOverview(true);
-      else if (a === "view") setView(!pageView);
+      else if (a === "view") toggleView();
       else if (a === "present") setPresenting(!body.classList.contains("is-presenting"));
     });
   });
@@ -268,6 +305,20 @@
     });
   }, { passive: true });
 
+  // In the swipe view, follow the sideways scroll position.
+  var swipeTicking = false;
+  deckEl.addEventListener("scroll", function () {
+    if (mode !== "swipe" || swipeTicking) return;
+    swipeTicking = true;
+    requestAnimationFrame(function () {
+      swipeTicking = false;
+      var i = Math.round(deckEl.scrollLeft / Math.max(1, deckEl.clientWidth));
+      if (i !== state.index && i >= 0 && i < slides.length) { state.index = i; state.step = 0; state.json = 0; render(); }
+    });
+  }, { passive: true });
+  window.addEventListener("resize", function () { if (mode === "swipe") swipeTo(state.index, false); });
+  narrow.addEventListener("change", function () { if (!params.has("page")) setMode(defaultMode()); });
+
   // Hide the control bar while presenting, until the mouse moves.
   var controls = q(".controls"), idleTimer = null;
   function wake() {
@@ -282,7 +333,7 @@
   var start = slides.map(function (s) { return "#" + s.id; }).indexOf(location.hash);
   state.index = start > 0 ? start : 0;
   setPresenting(params.has("present"));
-  setView(pageView);
+  setMode(mode);
   if (params.has("notes")) toggleNotes();
   if (params.has("all")) body.classList.add("all-steps");
   setTimeout(function () { body.classList.remove("is-loading"); }, 60);
